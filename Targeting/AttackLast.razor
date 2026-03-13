@@ -1,0 +1,10 @@
+hotkey 'Set Last Target' 
+pause 150
+while targetexists 
+endwhile
+@setvar! myTarget lasttarget
+hotkey 'Attack last target'
+overhead '>☻ HERE ☻<' 2263 myTarget
+if skill 'archery' > 79
+    script 'AutoDexer_1.3'
+endif

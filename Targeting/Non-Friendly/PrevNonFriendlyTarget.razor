@@ -1,0 +1,7 @@
+clearsysmsg 
+hotkey 'Previous non-Friendly player target'
+@setvar! mytarget lasttarget 
+if insysmsg 'No one matching that was found'
+else
+    overhead '■■■ HERE ■■■' 2263 mytarget
+endif
