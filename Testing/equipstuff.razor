@@ -1,0 +1,41 @@
+ if listexists itemList
+    clearlist itemList
+else
+    createlist itemList
+endif
+
+
+pushlist itemList 1
+pushlist itemList 2
+pushlist itemList 3
+
+if list itemList == 0
+    @setvar! itemsInList 0
+elseif list itemList == 1
+    @setvar! itemsInList 1
+elseif list itemList == 2
+    @setvar! itemsInList 2
+elseif list itemList == 3
+    @setvar! itemsInList 3
+elseif list itemList == 4
+    @setvar! itemsInList 4
+else
+    @setvar! itemsInList 9001
+endif
+                    
+sysmsg  'start'
+
+foreach item in itemList
+    if item == 2
+        continue
+    endif
+    sysmsg  'item:{{item}} : index:{{index}} : Count:{{itemsInList}}'
+    wait 100
+endfor
+
+sysmsg  'end'
+
+pushlist itemList 4
+
+
+replay

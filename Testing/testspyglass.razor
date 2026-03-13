@@ -1,0 +1,105 @@
+## 1 = active.. 0 = not active
+@setvar! annouceplayerboats 1
+
+## 1 = active.. 0 = not active
+@setvar! showshipbombs 1
+
+
+## DO NOT EDIT..
+if cooldown spyglass > 15000 and findtype '5365' backpack
+    cooldown spyglass 0
+endif
+if not timerexists preventspamtimer
+    createtimer preventspamtimer
+    settimer preventspamtimer 0
+endif
+
+while not dead
+    if not queued and not targetexists and not cooldown spyglass 
+        # Closegump for more smooth spyglass
+        if gumpexists 2890020940
+            gumpclose 2890020940
+            pause 25
+        endif
+        while targetexists 
+            sysmsg 'Target cursor up'
+            wait 500
+        endwhile
+        sysmsg '> Running spyglass !!' 44
+        //Valorite
+        if findtype '5365' backpack 1763 as glass
+            while targetexists 
+            endwhile
+            dclick glass
+            wft 500
+            target 'self'
+            waitforgump 2890020940
+        //Agapite
+        elseif findtype '5365' backpack 2425 as glass
+            while targetexists 
+            endwhile
+            dclick glass
+            wft 500
+            target 'self'
+            waitforgump 2890020940
+        elseif findtype '5365' backpack as glass
+            while targetexists 
+            endwhile
+            dclick glass
+            wft 500
+            target 'self'
+            waitforgump 2890020940
+        elseif not findtype '5365' backpack
+            sysmsg 'No more spyglass in backpack' 33
+            cooldown spyglass 1000000
+        endif
+    
+        getlabel backpack clientsync
+        clearsysmsg 
+        if ingump 'Search for ships' 2890020940
+            gumpresponse 4 2890020940
+        cooldown spyglass 10000
+        endif 
+        
+        ## Stop script if youre no longer on a ship 
+        if insysmsg 'You must be onboard a ship'
+            stop
+        endif
+        
+        if annouceplayerboats = 1
+            if ingump "a small ship" 2890020940 or ingump "a small dragon ship" 2890020940 or ingump "a medium ship" 2890020940 or ingump "a medium dragon ship" 2890020940 or ingump "a large ship" 2890020940 or ingump "a large dragon ship" 2890020940 or ingump "a carrack" 2890020940 or ingump "a galleon" 2890020940 or ingump "a longboat" 2890020940  or ingump "a ship of the line" 2890020940 
+                for 2
+                    sysmsg '♦♦ PLAYER BOAT ♦♦' 33
+                    overhead '♦ PLAYER BOAT ♦' 2263
+                endfor
+            endif
+        endif
+        getlabel backpack clientsync
+        while ingump "Next" 2890020940
+            ##if ingump "Next" 2890020940
+                pause 750
+                gumpresponse 3 2890020940
+                if annouceplayerboats = 1
+                    if ingump "a small ship" 2890020940 or ingump "a small dragon ship" 2890020940 or ingump "a medium ship" 2890020940 or ingump "a medium dragon ship" 2890020940 or ingump "a large ship" 2890020940 or ingump "a large dragon ship" 2890020940 or ingump "a carrack" 2890020940 or ingump "a galleon" 2890020940 or ingump "a longboat" 2890020940  or ingump "a ship of the line" 2890020940 
+                        for 2
+                            sysmsg '♦♦ PLAYER BOAT ♦♦' 33
+                            overhead '♦ PLAYER BOAT ♦' 2263
+                        endfor
+                    endif
+                endif
+            ##endif
+        endwhile
+    endif
+
+    if showshipbombs = 1
+        if findtype '5188' ground -1 -1 10 as sbomb
+            if timer preventspamtimer > 3000
+                settimer preventspamtimer 0
+                for 1
+                    overhead "↓↓ SHIP B898OMB ↓↓" 2263 sbomb
+                    overhead "↓↓ SHIP BOMB ↓↓" 33 sbomb
+                endfor
+            endif
+        endif
+    endif
+endwhile

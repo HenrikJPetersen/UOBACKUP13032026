@@ -1,0 +1,12 @@
+if findtype 'Time bag' backpack as equipasap
+    overhead 'Equipping time satchel'
+    lift equipasap
+    drop self 'outertorso'
+    pause 250
+    dclick equipasap
+elseif findtype 'Time bag' self as equippedsatchel
+    getlabel equippedsatchel satchellabel
+    if 'time dungeon satchel' in satchellabel
+        overhead 'Already equipped!! yaaaay'
+    endif
+endif

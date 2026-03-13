@@ -1,0 +1,21 @@
+if not listexists discordlist
+    createlist discordlist
+else
+    clearlist discordlist
+endif
+
+if findtypelist discordlist "a frost daevil|a bonechiller|a rage daemon|a fellbeast" ground -1 -1 12
+endif
+
+if list discordlist > 0
+    foreach mob in discordlist
+        getlabel mob mymoblabel
+        if 'discord' in mymoblabel
+            overhead 'Handled' 2263 mob
+        else
+            skill 'discordance'
+            wft 500
+            target mob
+        endif
+    endfor
+endif

@@ -1,0 +1,110 @@
+# Pot handling
+setvar! autopot 1
+setvar! notifyPots 0
+
+if not findbuff 'food'
+    if findtype 'tray' backpack as food
+        dclick food
+    else
+        sysmsg 'No food buff and no food in backpack' 33
+    endif
+endif
+
+if notifyPots = 1
+    if not findbuff 'Strength'
+        overhead '>> MISSING STR <<' 36
+        overhead '>> MISSING STR <<' 33
+    endif
+    if not findbuff 'Agility' 
+        overhead '>> MISSING AGI <<' 36
+        overhead '>> MISSING AGI <<' 33
+    endif
+    if not findbuff 'Magic Resist Potion'
+        overhead '>> MISSING MR <<' 36
+        overhead '>> MISSING MR<<' 33
+    endif
+endif
+   
+if autopot = 1
+    if not findbuff 'Strength'
+        dclicktype 3849 backpack 0
+        pause 600
+    endif
+    if not findbuff 'Agility'
+        potion 'Agility'
+        pause 600
+    endif
+    if not findbuff 'Magic resist potion'
+        potion 'Nightsight'
+        pause 600
+    endif
+endif    
+
+## Always open potion satchels, never  drinking a pot, while you have them
+if findtype 'alchemists satchel' backpack as psatchel
+    dclick psatchel
+elseif findtype 'alchemists satchel' self as psatchel
+    dclick psatchel
+else
+    overhead 'Could not find a satchel'
+endif
+
+## Setting spamtimers for notifications.
+if not timerexists spamtimerbombs
+    createtimer spamtimerbombs
+    settimer spamtimerbombs 1000
+else
+    settimer spamtimerbombs 1000
+endif
+if listexists bomblistnotification
+    clearlist bomblistnotification
+else
+    createlist bomblistnotification
+endif
+
+while not dead 
+   # ## Experimental...
+#    getlabel lasttarget mytargetlabel
+#    if 'discord' in mytargetlabel
+#    else
+#        overhead 'No disco no party' 2263 
+#    endif
+#    ## Disable...
+    
+    ## Healing
+    if skill "healing" > 0 and not bandaging and hp < maxhp
+        hotkey 'Bandage Self'
+        pause 600
+    endif
+    pause 25
+    if cooldown bandage > 5 and hp < 50 and not cooldown "heal potion" and skill "healing" > 0
+        potion 'heal'
+    endif
+    pause 25
+    if autopot = 1
+        if not findbuff 'Strength'
+            dclicktype 3849 backpack 0
+            pause 600
+        endif
+        if not findbuff 'Agility'
+            potion 'Agility'
+            pause 600
+        endif
+        if not findbuff 'Magic resist potion'
+            potion 'Nightsight'
+            pause 600
+        endif
+    endif  
+    pause 25
+    if findtypelist bomblistnotification '38226|38213|38215|38224|standing stone|43730' ground -1 -1 5 and timer spamtimerbombs > 1000
+        foreach bomb in bomblistnotification
+            for 1
+                overhead '>>☻☻ BOMB ☻☻<<' 2263 bomb
+                overhead '>>☻☻ BOMB ☻☻<<' 33 bomb
+                overhead '☻☻☻☻☻☻☻☻☻☻☻☻☻☻' 2263 bomb
+            endfor
+            settimer spamtimerbombs 0
+        endfor
+    endif
+    pause 25
+endwhile

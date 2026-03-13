@@ -1,0 +1,9 @@
+if findtype 61745 'ground' -1 -1 2 as scroll
+    dclick scroll
+elseif findtype 61745 'ground' -1 -1 12 as scroll
+    overhead 'HERE' 2263 scroll
+else    
+overhead 'Did not find any'
+endif
+pause 100
+replay

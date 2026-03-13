@@ -1,0 +1,127 @@
+
+# To avoid not finding potions if they are in a satchel
+@setvar! auto_open_potion_satchel 1 
+# Auto equip
+@setvar! auto_equip 0
+# str, agi, mr pots
+@setvar! auto_pots 1
+ # Keep foodbuff up 
+ @setvar! auto_food 1
+# auto healpot
+@setvar! auto_healpot 0
+
+sysmsg '>> AutoDexer: 1.2'
+
+if not listexists satchels
+    createlist satchels
+else  
+    clearlist satchels
+endif
+
+
+ ## Setting spamtimers for notifications.
+if not timerexists spamtimerbombs
+    createtimer spamtimerbombs
+    settimer spamtimerbombs 1000
+else
+    settimer spamtimerbombs 1000
+endif
+if listexists bomblistnotification
+    clearlist bomblistnotification
+else
+    createlist bomblistnotification
+endif
+
+
+
+if not findbuff 'food' and auto_food = 1
+    if findtype 'tray' backpack as food
+        dclick food
+    else
+        sysmsg 'No food buff and no food in backpack' 44
+        @setvar auto_food 0
+    endif
+endif
+
+
+if auto_open_potion_satchel = 1
+    if findtypelist satchels 'alchemists satchel' backpack 
+        foreach s in satchels
+            dclick s
+            pause 50
+            getlabel s mysatchel
+            if '0 stones' in mysatchel
+            elseif '10 stones' in mysatchel
+                menu s 0
+            elseif '20 stones' in mysatchel
+                menu s 0
+            elseif '30 stones' in mysatchel    
+                menu s 0
+            elseif '40 stones' in mysatchel    
+                menu s 0
+            elseif '50 stones' in mysatchel    
+                menu s 0
+            else
+                menu s 0
+            endif
+        endfor
+    endif
+endif
+
+while not dead 
+    getlabel backpack clientsync
+    if findbuff 'Magic Resist Decrease'
+        overhead '>> MR DEBUFF <<' 33
+        potion 'nightsight'
+        pause 350
+    endif
+    if skill 'alchemy' > 79 and auto_pots = 1
+        if not findbuff 'Strength'
+            if findtype 'white potion' backpack
+                potion 'strength'
+                pause 250
+            else
+                sysmsg 'No STR pot buff no STR in backpack' 44
+            endif
+        endif
+        if not findbuff 'Agility'
+            if findtype 'white potion' backpack
+                potion 'agility'
+                pause 250
+            else
+                sysmsg 'No AGI pot buff no AGI in backpack' 44
+            endif
+        endif
+        if not findbuff 'Magic Resist Potion'
+            if findtype 'Black Potion' backpack
+                potion 'nightsight'
+                pause 250
+            else
+                sysmsg 'No MR pot buff no MR in backpack' 44
+            endif
+        endif
+    endif
+    if findtypelist bomblistnotification '38226|38213|38215|38224|standing stone|43730' ground -1 -1 5 and timer spamtimerbombs > 1000
+        foreach bomb in bomblistnotification
+            for 1
+                overhead '>>☻☻ BOMB ☻☻<<' 2263 bomb
+                overhead '>>☻☻ BOMB ☻☻<<' 33 bomb
+                overhead '☻☻☻☻☻☻☻☻☻☻☻☻☻☻' 2263 bomb
+            endfor
+            settimer spamtimerbombs 0
+        endfor
+    endif
+    
+    if skill 'healing' > 79
+        if not bandaging and hp < maxhp or poisoned and not bandaging
+            while targetexists 
+            endwhile
+            hotkey 'Bandage self'
+            pause 500
+        endif
+        
+    endif
+
+    
+endwhile
+    

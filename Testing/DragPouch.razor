@@ -1,0 +1,21 @@
+//Add gold to pouch
+if findtype '' ground -1 -1 2 as shinies and findtype 'pouch' -1 -1 2 ground as shiniespouch
+    lift shinies 60000
+    pause 150
+    drop shinies pouch
+    pause 650
+endif
+
+if findtype 'pouch' ground -1 -1 2 as ppouch 
+    drop backpack
+    pause 250
+    overhead 'Lift off!'
+    lift ppouch
+    drop 0
+    pause 650
+elseif findtype 'pouch' ground -1 -1 6 as ppouch 
+    overhead 'closer!' 2263 ppouch
+    pause 650
+endif
+
+replay

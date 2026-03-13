@@ -1,0 +1,224 @@
+@setvar! timedungeonsatchel 0x5ABADE04
+@setvar! searchcontainer backpack
+
+
+# Specify amount of runes to take
+# 10 = 500(No idea who will ever gets this much)
+
+#11976 KnockRune
+@setvar! amount_knock 10
+#19977 MendRune
+@setvar! amount_mend 10
+#19978 IronfleshRune
+@setvar! amount_ironflesh 10
+#19979 MagicWardRune
+@setvar! amount_magicward 10
+#19979 FortifyrationsRune
+@setvar! amount_fortify 10
+
+#19985 NegatetimeRune
+@setvar! amount_Negatetime 10
+#19984 MassinvisRune
+@setvar! amount_massinvis 10
+#19983 WildcreaturesRune
+@setvar! amount_Wildcreatues 10
+#19982 TimelywealthRune
+@setvar! amount_timelywealth 10
+#19981 RepelRune
+@setvar! rune_amount_repel 10
+
+
+#Knock :             19976
+#Mend :              19977
+#Iron flesh :        19978
+#Magic Ward :        19979
+#Fortify Ration :    19980
+    
+#Negate time :       19985
+#Mass invis :        19984
+#Wild creatues :     19983
+#Timely wealth :     19982
+#Repel :             19981
+    
+#Circle of power :   19991
+#Conjure potion :    19989
+#Awaken earth :      19988
+#Bloom :             19987
+#Refresh :           19986
+    
+## 1st Circle
+
+if not listexists firstcircle
+    createlist firstcircle
+endif
+
+if findtypelist firstcircle 19976|19977|19978|19979|19980  backpack any
+    overhead 'Found runes from first circle'
+endif
+
+while findtype 19980 searchcontainer as rune
+    if amount_fortify = 0
+        lift rune 500
+    else
+        lift rune amount_fortify
+    endif
+    drop timedungeonsatchel 83 65 0
+    while queued
+        pause 75
+    endwhile
+endwhile
+
+while findtype 19979 searchcontainer as rune
+    if amount_magicward = 0
+        lift rune 500
+    else
+        lift rune amount_magicward
+    endif
+    drop timedungeonsatchel 43 65 0
+    while queued
+        pause 75
+    endwhile
+endwhile
+
+while findtype 19978 searchcontainer as rune
+    if amount_ironflesh = 0
+        lift rune 500
+    else
+        lift rune amount_ironflesh
+    endif
+    drop timedungeonsatchel 53 65 0
+    while queued
+        pause 75
+    endwhile
+endwhile
+
+while findtype 19977 searchcontainer as rune
+    if amount_mend = 0
+        lift rune 500
+    else
+        lift rune amount_mend
+    endif
+    drop timedungeonsatchel 73 65 0
+    while queued
+        pause 75
+    endwhile
+endwhile
+
+while findtype 19976 searchcontainer as rune
+    getlabel rune myrunelabel
+    if 'crafted' in myrunelabel
+        ##Sort in main backpack
+    else
+        if amount_knock = 0
+            lift rune 500
+        else
+            lift rune amount_knock
+        endif
+        drop timedungeonsatchel 43 65 0
+        while queued
+        pause 75
+    endwhile
+    endif
+    endwhile
+## 2nd Circle
+#Negate time :       19985
+#Mass invis :        19984
+#Wild creatues :     19983
+#Timely wealth :     19982
+#Repel :             19981
+    
+if findtype 19981 searchcontainer as rune
+    lift rune rune_amount_repel
+    drop timedungeonsatchel 55 100
+    pause 650
+endif
+if findtype 19982 searchcontainer as rune
+    lift rune amount_timelywealth
+    drop timedungeonsatchel 55 93
+    pause 650
+endif
+if findtype 19983 searchcontainer as rune
+    lift rune amount_Wildcreatues
+    drop timedungeonsatchel 55 83
+    pause 650
+endif
+if findtype 19984 searchcontainer as rune
+    lift rune amount_massinvis
+    drop timedungeonsatchel 55 73
+    pause 650
+endif
+if findtype 19985 searchcontainer as rune
+    getlabel rune myrunelabel
+    if 'crafted' in myrunelabel
+        ##Sort in main backpack
+    else
+        lift rune amount_Negatetime
+        drop timedungeonsatchel 55 63
+        pause 650
+    endif
+endif
+
+
+#Circle of power :   19991
+#Conjure potion :    19989
+#Awaken earth :      19988
+#Bloom :             19987
+#Refresh :           19986
+
+if findtype 19986 searchcontainer as rune
+    lift rune 200
+    drop timedungeonsatchel 67 100
+endif
+if findtype 19987 searchcontainer as rune
+    lift rune 200
+    drop timedungeonsatchel 67 93
+endif
+if findtype 19988 searchcontainer as rune
+    lift rune 200
+    drop timedungeonsatchel 67 83
+endif
+if findtype 19989 searchcontainer as rune
+    lift rune 200
+    drop timedungeonsatchel 67 73
+endif
+if findtype 19991 searchcontainer as rune
+    getlabel rune myrunelabel
+    if 'crafted' in myrunelabel
+        @ignore rune
+    else
+        lift rune 200
+        drop timedungeonsatchel 67 63
+    endif
+endif
+
+#Mass sleep :        19995
+#Silver sapling :    19994
+#Animated weapon :   19993
+#Meteor shower :     19992
+#Tremor :            19990
+    
+if findtype 19995 searchcontainer as rune
+    lift rune 200
+    drop timedungeonsatchel 79 100
+endif
+if findtype 19994 searchcontainer as rune
+    lift rune 200
+    drop timedungeonsatchel 79 93
+endif
+if findtype 19993 searchcontainer as rune
+    lift rune 200
+    drop timedungeonsatchel 79 83
+endif
+if findtype 19992 searchcontainer as rune
+    lift rune 200
+    drop timedungeonsatchel 79 73
+endif
+if findtype 19990 searchcontainer as rune
+    getlabel rune myrunelabel
+    if 'crafted' in myrunelabel
+        ##Sort in main backpack
+    else
+        lift rune 200
+        drop timedungeonsatchel 79 63
+    endif
+endif

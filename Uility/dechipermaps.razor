@@ -1,0 +1,74 @@
+## Choose what lvl of map you want to dechyper.
+@setvar maplvl 2
+
+if not varexist ttome
+    @setvar ttome
+endif
+pause 50
+if not gumpexists 1863945839
+    dclick ttome
+    waitforgump 1863945839
+endif
+if findtype '5356' backpack as map
+    getlabel map myMapLabel
+    overhead '{{myMapLabel}}'
+    if "100.0%" in myMapLabel
+        sysmsg 'We are done with this map' 36
+        pause 500
+        getlabel map MyMapLabel
+        @menu ttome 0
+        gumpclose 1520869851
+        replay
+    else
+        //DO SPYGLASS STUFF HERE
+        if not gumpexists 1520869851
+            //Add restock for spyglass
+            if findtype '5365' backpack
+                dclicktype '5365' backpack
+            else
+                sysmsg 'No more spyglass' 33
+                if findtype 'storage shelf' ground 0 0 2 as shelfresupply
+                    @menu shelfresupply 1
+                    pause 250
+                    if insysmsg 'unable to resupply'
+                        sysmsg 'Unable to resupply!!' 33
+                        stop
+                    endif
+                    replay
+                endif
+            endif
+            waitfortarget 500
+            target map
+            replay
+        else
+            gumpresponse 4 1520869851
+            waitforgump 1520869851
+            pause 1500
+            if insysmsg 'you do not have any spyglasses of that material on hand'
+                gumpclose 1520869851
+            endif
+            replay
+        endif
+    endif
+else
+    sysmsg 'Getting a new map lvl: {{maplvl}}' 36
+    if maplvl = 1
+        gumpresponse 10 1863945839
+    elseif maplvl = 2
+        gumpresponse 11 1863945839
+    elseif maplvl = 3
+        gumpresponse 12 1863945839
+    elseif maplvl = 4
+        gumpresponse 13 1863945839
+    endif
+    waitforgump 1863945839
+    pause 500
+    if insysmsg 'no map of that type is currently'
+        stop
+    endif    
+    replay
+endif
+
+
+ 
+

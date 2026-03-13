@@ -1,0 +1,21 @@
+if find 0x48F41117 backpack as satchel
+    @menu satchel 0
+    pause 250
+    dclick satchel
+elseif find 0x48F41117 self as satchel
+     @menu satchel 0
+    pause 250
+    dclick satchel
+endif
+
+
+if findtype 'Time bag' backpack as tsatchel
+    @menu tsatchel 0
+    pause 250
+    dclick tsatchel
+elseif findtype 'time satchel' self as satchel
+     @menu satchel 0
+    pause 250
+    dclick satchel
+
+endif

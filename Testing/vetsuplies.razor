@@ -1,0 +1,52 @@
+if not listexists chestlist
+    createlist chestlist
+endif
+if not listexists ignorechestlist
+    createlist ignorechestlist
+endif
+if not listexists chestsdonelist
+    createlist chestsdonelist
+endif
+
+
+
+if findtypelist chestlist 3703|3651|3646|3645|3647|2475|2472|3650|3702|3646|3708|2474|2473|3709|2711|2604|2639|27288|27286|27287|27289 ground -1 -1 15
+    foreach chest in chestlist
+        overhead {{chest}}
+        @setvar! mychestid chest
+        if not inlist chestsdonelist mychestid
+            pushlist chestsdonelist mychestid 'front'
+        elseif inlist chestsdonelist mychestid
+        endif
+    endfor
+    foreach chest in chestlist
+        sysmsg 'checking range'
+        @setvar! mychestid chest
+        if find chest ground -1 -1 2 and inlist chestsdonelist mychestid
+            sysmsg 'Clicking'
+            dclick chest
+            pause 1000
+            
+        endif
+    endfor
+endif
+
+
+
+
+
+
+
+
+
+pause 1000
+
+replay
+
+clearlist 
+
+foreach c in chestsdonelist
+    overhead c
+endfor
+
+sysmsg 'Done' 33

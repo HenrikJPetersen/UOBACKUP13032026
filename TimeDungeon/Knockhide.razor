@@ -1,0 +1,11 @@
+if findtype 19976 backpack as knock and not cooldown hiding
+    dclick knock
+    wait 1500
+    if not findbuff "Hidden/Stealthing"
+        useskill hiding
+        if findtype 2475 ground -1 -1 2 as chest
+            dclick chest
+            break
+        endif
+    endif
+endif

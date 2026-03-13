@@ -1,0 +1,25 @@
+clearsysmsg 
+if findtype '19976' backpack as rune
+    overhead 'Found one in backpack'
+    dclick rune
+    pause 1500
+    if insysmsg 'You must wait a moment before you may use another rune.'
+        if findtype 'Time bag' self as equippedsatchel
+            @menu equippedsatchel 0
+        endif
+    endif
+elseif findtype 'Time bag' self as equippedsatchel
+    if findtype '19976' equippedsatchel as rune
+        lift rune
+        drop backpack 43 65 0
+        pause 25
+        dclick rune
+        pause 1500
+        if insysmsg 'You must wait a moment before you may use another rune.'
+            @menu equippedsatchel 0
+        endif
+    endif
+endif
+
+    
+    

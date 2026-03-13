@@ -1,0 +1,15 @@
+if findtype 19980 backpack as FortifyRune
+    dclick FortifyRune
+elseif findtype 'Time bag' backpack as tsatchel
+    if findtype 19980 tsatchel as FortifyRune
+        dclick FortifyRune
+    else
+        overhead 'No fortify rune found in time bag'
+    endif
+else
+    overhead 'No fortify runes found'
+endif
+
+if skill 'healing' > 79
+    script 'AutoDexer_1.2'
+endif

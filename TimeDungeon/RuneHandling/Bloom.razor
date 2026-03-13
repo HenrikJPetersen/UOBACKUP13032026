@@ -1,0 +1,15 @@
+if findtype 19987 backpack as bloomrune
+    dclick bloomrune
+elseif findtype 'Time bag' backpack as tsatchel
+    if findtype 19987 tsatchel as bloomrune
+        dclick bloomrune
+    else
+        overhead 'No bloom rune found in time bag'
+    endif
+else
+    overhead 'No bloom runes found'
+endif
+
+if skill 'healing' > 79
+    script 'AutoDexer_1.2'
+endif

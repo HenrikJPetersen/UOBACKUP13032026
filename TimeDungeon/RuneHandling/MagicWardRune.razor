@@ -1,0 +1,15 @@
+if findtype 19979 backpack as wardRune
+    dclick wardRune
+elseif findtype 'Time bag' backpack as tsatchel
+    if findtype 19979 tsatchel as wardRune
+        dclick wardRune
+    else
+        overhead 'No ward rune found in time bag'
+    endif
+else
+    overhead 'No ward runes found'
+endif
+
+if skill 'healing' > 79
+    script 'AutoDexer_1.2'
+endif

@@ -1,0 +1,15 @@
+if findtype 19981 backpack as repelrune
+    dclick repelrune
+elseif findtype 'Time bag' backpack as tsatchel
+    if findtype 19981 tsatchel as repelrune
+        dclick repelrune
+    else
+        overhead 'No repel rune found in time bag'
+    endif
+else
+    overhead 'No repel runes found'
+endif
+
+if skill 'healing' > 79
+    script 'AutoDexer_1.2'
+endif

@@ -1,0 +1,18 @@
+clearignore 
+@setvar! container
+pause 500
+while findtype 3712 container as parachest
+    getlabel parachest mylabel
+    sysmsg mylabel 44
+    if "0 stones" in mylabel
+        ignore parachest
+    else
+        overhead mylabel
+        hotkey 'Grab item'
+        wft 1000
+        target parachest
+        
+        ignore parachest
+    endif
+    
+endwhile

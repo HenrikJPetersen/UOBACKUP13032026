@@ -1,0 +1,147 @@
+@setvar! loothealpots 1
+@setvar! lootcurepots 1
+@setvar! lootstampots 1
+@setvar! lootexplopots 1
+@setvar! lootagipots 1
+@setvar! lootstrpots 1
+@setvar! lootropes 1
+
+if not listexists chestlist
+    createlist chestlist
+else 
+    clearlist chestlist
+endif
+
+while findtypelist chestlist 2641|2643|3644|2448|2713|2608|3710|2637|3789|3790|3786|3791|3701|3712|3703|3651|3646|3645|3647|2475|2472|3650|3702|3646|3708|2474|2473|3709|2711|2604|2639|27288|27286|27287|27289 ground -1 -1 2
+    pause 250
+    foreach chest in chestlist
+        clearsysmsg 
+        overhead '>> chest here <<' 2263 chest
+        dclick chest
+        while queued 
+        endwhile
+        if insysmsg 'it appears to be locked'
+            overhead '> Needs to knock or lockpick <' 2263 chest
+            @ignore chest
+        endif
+        
+        ## Rune and relics ID:
+        ## 18705|19976|19977|19978|19979|19980|19981|19981|19982|19983|19985|19986|19987|19988|19989|19990|19991|19992|19993|19994|19995|49482|49528|50278|50612|53280|53694|53696|53876|54570|54591|54601|54717|54718|54831|55204|55247|55420
+        while findtype 18705|19976|19977|19978|19979|19980|19981|19981|19982|19983|19984|19985|19986|19987|19988|19989|19990|19991|19992|19993|19994|19995|49482|49528|50278|50612|53280|53694|53696|53876|54570|54591|54601|54717|54718|54831|55204|55247|55420 chest as item
+            getlabel item myitemlabel
+            overhead 'Found a rune or relic: {{myitemlabel}}'
+            hotkey 'grab item'
+            wft 250
+            target item
+            while queued 
+            endwhile
+            @ignore item
+        endwhile
+        ## 12686:Essence - 17087:Mcd - 5356:Tmap - 
+            while findtype 12686|17087|5356|199816|22336|3985|49729|29030|49730 chest as item
+            getlabel item myitemlabel
+            sysmsg  'Found: {{myitemlabel}} ' 44
+            hotkey 'grab item'
+            wft 250
+            target item
+            while queued 
+            endwhile
+            @ignore item
+        endwhile
+        ## Arcane scroll handling
+        while findtype 3827 chest 2609 as item
+            sysmsg  'Found arcane scroll' 44
+            hotkey 'grab item'
+            wft 250
+            target item
+            while queued 
+            endwhile
+            @ignore item
+        endwhile
+        
+        if lootropes = 1 and counttype '5370' backpack < 100
+            while findtype 5370 chest as item
+                sysmsg  'Found ropes' 44
+                hotkey 'grab item'
+                wft 250
+                target item
+                while queued 
+                endwhile
+                @ignore item
+            endwhile
+        endif
+        
+        if loothealpots = 1 and counttype '3852' backpack < 60
+            while findtype 3852 chest as item
+                sysmsg  'Found heal pot' 44
+                hotkey 'grab item'
+                wft 250
+                target item
+                while queued 
+                endwhile
+                @ignore item
+            endwhile
+        endif
+        if lootexplopots = 1 and counttype '3853' backpack < 50
+            while findtype 3853 chest as item
+                sysmsg  'Found explo pot' 44
+                hotkey 'grab item'
+                wft 250
+                target item
+                while queued 
+                endwhile
+                @ignore item
+            endwhile
+        endif
+        if lootcurepots = 1 and counttype '3847' backpack < 50
+            while findtype 3847 chest as item
+                sysmsg 'Found cure pot' 44
+                hotkey 'grab item'
+                wft 250
+                target item
+                while queued 
+                endwhile
+                @ignore item
+            endwhile
+        endif
+        if lootstampots = 1 and counttype '3851' backpack < 50
+            while findtype 3851 chest as item
+                sysmsg 'Found refresh pot' 44
+                hotkey 'grab item'
+                wft 250
+                target item
+                while queued 
+                endwhile
+                @ignore item
+            endwhile
+        endif
+        if lootagipots = 1 and counttype '3848' backpack < 20
+            while findtype 3848 chest as item
+                sysmsg  'Found agility potion' 44
+                hotkey 'grab item'
+                wft 250
+                target item
+                while queued 
+                endwhile
+                @ignore item
+            endwhile
+            
+        endif
+         if lootstrpots = 1 and counttype '3849' backpack < 20
+            while findtype 3849 chest as item
+             sysmsg  'Found str potion' 44
+                hotkey 'grab item'
+                wft 250
+                target item
+                while queued 
+                endwhile
+                @ignore item
+            endwhile
+            
+        endif
+        pause 250
+        @ignore chest
+    endfor
+endwhile
+sysmsg '>> Done' 66
+clearignore 

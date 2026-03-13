@@ -1,0 +1,15 @@
+if findtype 19977 backpack as mendrune
+    dclick mendrune
+if findtype 'Time bag' backpack as tsatchel
+    if findtype 19977 tsatchel as mendrune
+        dclick mendrune
+    else
+        overhead 'No mend rune found in time bag'
+    endif
+else
+    overhead 'No mend runes found'
+endif
+
+if skill 'healing' > 79
+    script 'AutoDexer_1.2'
+endif

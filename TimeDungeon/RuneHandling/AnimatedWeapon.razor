@@ -1,0 +1,15 @@
+if findtype 19993 backpack as animatedrune
+    dclick animatedrune
+elseif findtype 'Time bag' backpack as tsatchel
+    if findtype 19993 tsatchel as animatedrune
+        dclick animatedrune
+    else
+        overhead 'No animated weapon rune found in time bag'
+    endif
+else
+    overhead 'No animated weapon runes found'
+endif
+
+if skill 'healing' > 79
+    script 'AutoDexer_1.2'
+endif

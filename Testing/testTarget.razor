@@ -1,0 +1,123 @@
+#if not timerexists preventspam
+#    createtimer preventspam
+#    settimer preventspam 0
+#else
+#    settimer preventspam 0
+#endif
+#
+#while not dead
+#    if warmode
+#        if mykilltarget = lasttarget
+#            overhead 'Same target'
+#        else 
+#            @setvar! mykilltarget lasttarget
+#        endif
+#        
+#        if dead mykilltarget
+#            hotkey 'target closest grey monster'
+#            @setvar! mykilltarget lasttarget
+#            @setvar attacked 0
+#            
+#        elseif find mykilltarget ground -1 -1 20 and not find mykilltarget ground -1 -1 3 
+#            if timer preventspam > 5000
+#                overhead 'move closer' 44 mykilltarget 
+#                pause 250
+#                settimer prevetspam 0
+#            endif
+#            warmode 'off'
+#            @setvar! keepattacking 1
+#        elseif find mykilltarget ground -1 -1 2 and attacked != 1
+#            attack mykilltarget
+#            @setvar! attacked 1
+#        endif
+#    else
+#        if keepattacking = 1
+#            if not dead mykilltarget and find mykilltarget ground -1 -1 3
+#                attack mykilltarget
+#                warmode 'on'
+#            elseif not dead mykilltarget and not find mykilltarget ground -1 -1 8
+#                @setvar! mykilltarget 0
+#                @setvar! keepattacking 0
+#            endif
+#        endif
+#    endif
+#    if timer preventspam > 3000
+#        overhead '{{keepattacking}}'
+#        settimer preventspam 0
+#    endif
+#endwhile
+#
+#
+
+@setvar! rangecheck 6
+while not dead
+    
+    if warmode
+    
+        getlabel backpack clientsync
+        if find myKillTarget ground -1 -1 rangecheck
+            pause 250
+            replay
+            
+        
+        elseif not find myKillTarget ground -1 -1 rangecheck
+            ##sysmsg '>> NO TARGET' 44
+            hotkey 'Target closest murderer monster'
+            pause minimumWaitForPing
+            if insysmsg 'No one matching that was found'
+                @setvar! foundboss 0
+                clearsysmsg 
+                hotkey 'target closest grey monster'
+                pause minimumWaitForPing
+                if insysmsg 'No one matching that was found'
+                    @setvar! foundmob 0
+                    @setvar! myKillTarget 0
+                    warmode 'off'
+                else
+                    sysmsg '>>> Found a mob' 44
+                    @setvar! foundmob 1
+                    @setvar! myKillTarget lasttarget
+                    overhead '●▼♪♪ HERE ♪♪▼●' 2263 myKillTarget
+                endif
+            else
+                @setvar! foundboss 1
+                @setvar! myKillTarget lasttarget
+                overhead '●▼♪♪ HERE ♪♪▼●' 2263 myKillTarget
+            endif
+        endif
+
+        if foundboss = 1 or foundmob = 1
+            pause minimumWaitForPing
+            if noto myKillTarget = 'hostile'
+                attack myKillTarget
+            elseif noto myKillTarget = 'murderer'
+                attack myKillTarget
+            elseif noto myKillTarget = 'enemy'
+                attack myKillTarget
+            elseif noto myKillTarget = 'criminal'
+                attack myKillTarget
+            elseif noto myKillTarget = 'innocent'
+                overhead 'Youre  to attack an innocent' 44
+                @setvar! myKillTarget 0
+            elseif noto myKillTarget = 'invulnerable'
+                overhead 'Cant  invulnerable' 44
+                @setvar! myKillTarget 0
+            elseif noto myKillTarget = 'friend'
+                overhead 'Dont kill your friend' 44
+                @setvar! myKillTarget 0
+            endif  
+        else 
+            warmode 'off'
+            sysmsg '<< We are clear of targets or out of range. Rangecheck: ({{rangecheck}} tiles) >>' 44
+            pause minimumWaitForPing
+        endif
+        
+    endif
+
+endwhile
+
+
+
+
+
+

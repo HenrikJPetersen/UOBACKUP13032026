@@ -1,0 +1,15 @@
+if findtype 19990 backpack as tremorrune
+    dclick tremorrune
+elseif findtype 'Time bag' backpack as tsatchel
+    if findtype 19990 tsatchel as tremorrune
+        dclick tremorrune
+    else
+        overhead 'No tremor rune found in time bag'
+    endif
+else
+    overhead 'No tremor runes found'
+endif
+
+if skill 'healing' > 79
+    script 'AutoDexer_1.2'
+endif

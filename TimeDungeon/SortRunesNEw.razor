@@ -1,0 +1,8 @@
+@setvar tbag 0x5ABADE04
+while findtype 19976 backpack as rune
+    lift rune
+    drop tbag 43 65 0
+    while queued
+    endwhile
+    @ignore rune
+endwhile 

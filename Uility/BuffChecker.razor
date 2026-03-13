@@ -1,0 +1,59 @@
+@setvar! eat_food 1
+@setvar! auto_bless 1
+@setvar! auto_agi 1
+@setvar! auto_str 0
+@setvar! auto_mr 0
+
+
+
+
+##########################
+@setvar! minimumwait 400
+
+if not findbuff 'food' and eat_food = 1
+    overhead 'Missing food' 44
+    if findtype 'tray' backpack as food
+        dclick food
+        pause minimumwait
+    endif
+endif
+
+if not findbuff 'Cunning' 
+    overhead 'Missing bless' 44
+    cast 'Bless'
+    while not targetexists 
+    endwhile
+    target self
+endif
+if not findbuff 'Agility' and auto_agi = 1
+    overhead 'Missing agility pot'
+    if findtype 'Blue Potion' backpack as bluepot
+        dclick bluepot
+        pause minimumwait
+    endif
+endif
+if not findbuff 'Strength' and auto_str = 1
+    if findtype 'White Potion' backpack as whitepot
+        dclick whitepot
+        pause minimumwait
+    endif
+endif
+if not findbuff 'Magic Resist' and auto_mr = 1
+     if findtype 'Black Potion' backpack as whitepot
+        dclick whitepot
+        pause minimumwait
+    endif
+endif
+pause minimumwait
+if findtype "reagent satchel" self as satchel
+    pause 25
+    dclick satchel
+    pause 150
+    @menu satchel 0
+endif
+if findtype "alchemists satchel" self as satchel
+    pause 25
+    dclick satchel
+    pause 150
+    @menu satchel 0
+endif

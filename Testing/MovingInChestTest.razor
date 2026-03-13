@@ -1,0 +1,44 @@
+setvar unstack 'True'
+
+unsetvar container
+removelist 'SortElements'
+removelist 'ItemList'
+removelist 'FinalItemList'
+removelist 'vertical'
+removelist 'horizontal'
+removelist 'Hues'
+
+
+createlist 'SortElements'
+createlist 'ItemList'
+createlist 'FinalItemList'
+createlist 'vertical'
+createlist 'horizontal'
+createlist 'Hues'
+
+overhead '----> TARGET CONTAINER TO SORT <----' 38
+setvar container
+
+dclick container
+
+//Items to sort
+pushlist 'SortElements' 'parchment'
+
+
+
+pushlist 'Hues' 2915
+pushlist 'Hues' 2443
+pushlist 'Hues' 2740
+pushlist 'Hues' 2845
+
+
+
+clearignore 
+foreach vhue in Hues
+    while findtype 'parchment' container vhue as pick
+        lift pick 60000
+        drop container 1000 1000 1000
+        ignore pick
+    endwhile
+endfor
+

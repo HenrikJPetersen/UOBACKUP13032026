@@ -1,0 +1,15 @@
+if findtype 19991 backpack as circlerune
+    dclick circlerune
+elseif findtype 'Time bag' backpack as tsatchel
+    if findtype 19991 tsatchel as circlerune
+        dclick circlerune
+    else
+        overhead 'No circle rune found in time bag'
+    endif
+else
+    overhead 'No circle runes found'
+endif
+
+if skill 'healing' > 79
+    script 'AutoDexer_1.2'
+endif

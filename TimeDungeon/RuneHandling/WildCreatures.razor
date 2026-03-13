@@ -1,0 +1,15 @@
+if findtype 19983 backpack as creaturerune
+    dclick creaturerune
+elseif findtype 'Time bag' backpack as tsatchel
+    if findtype 19983 tsatchel as creaturerune
+        dclick creaturerune
+    else
+        overhead 'No creatures rune found in time bag'
+    endif
+else
+    overhead 'No creatures runes found'
+endif
+
+if skill 'healing' > 79
+    script 'AutoDexer_1.2'
+endif

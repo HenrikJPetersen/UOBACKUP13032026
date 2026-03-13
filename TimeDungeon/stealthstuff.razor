@@ -1,0 +1,86 @@
+if not listexists stealthmobs
+    createlist stealthmobs
+else 
+    clearlist stealthmobs
+endif
+if not listexists badbadthings
+    createlist badbadthings
+else 
+    clearlist badbadthings
+endif
+
+if not timerexists chesttimer
+    createtimer chesttimer
+elseif timer chesttimer > 15000
+    settimer chesttimer 0
+    @clearignore 
+    sysmsg '> Reset chesttimer' 44
+endif
+
+## Chest handling..    
+if not listexists chests
+    createlist chests
+else 
+    clearlist chests
+endif
+if not timerexists preventspam
+    createtimer preventspam
+    settimer preventspam 0
+elseif timerexists preventspam and timer preventspam > 15000
+    sysmsg '>> Reset spam timer <<' 44
+    settimer preventspam 0
+endif
+
+if findtypelist stealthmobs 'a river tribe oracle|an apostate ranger|a mountain tribe scout|a time lurker|a greater gazer' ground 0 0 18 
+    foreach mob in stealthmobs
+        overhead ' REVEALER ' 33
+        overhead ' REVEALER ' 2263
+        overhead '|| HERE ||' 2263 mob
+    endfor
+endif
+pause 150
+if timer preventspam > 8000
+    if findtype '20291' ground -1 -1 14 as bleedstatue
+        overhead '☻☻ BLEED ☻☻' 33
+        overhead '☻☻ BLEED ☻☻' 2263
+        overhead '> BLEED HERE <' 2263 bleedstatue
+    endif
+endif
+pause 150
+if timer preventspam > 8000
+    if findtype '14284|14232' ground -1 -1 6 as vortex
+        overhead '☻☻ VORTEX ☻☻' 33
+        overhead '☻☻ VORTEX☻☻' 2263
+        overhead '> VORTEX<' 2263 vortex
+    endif
+endif
+pause 150
+if findtypelist chests 45510|45536|45531|2643|3644|2448|2713|2608|3710|2637|3789|3790|3786|3791|3701|3712|3703|3651|3646|3645|3647|2475|2472|3650|3702|3646|3708|2474|2473|3709|2711|2604|2639|27288|27286|27287|27289 ground -1 -1 18
+    settimer chesttimer 0
+    foreach chst in chests
+        getlabel chst mychstlabel
+        if '0 items' in mychstlabel
+            overhead  '>> Empty <<' 44 chst
+            pause 25
+            @ignore chst
+        else    
+            overhead '>> HERE <<' 2263 chst
+            overhead ' {{mychstlabel}} ' 2263 chst
+            @ignore chst
+        endif
+    endfor
+endif
+if not listexists reliclist
+    createlist reliclist
+endif
+clearlist reliclist
+if timer preventspam > 8000
+    if findtypelist reliclist 53473|55420|54717|54591|49482|54831|54601|53876|55247|50612|53280|53694|50278|53696|18705|49528|54570|55204|54718 ground -1 -1 18
+        foreach relic in reliclist
+        overhead '▼▼ HERE ▼▼' 2263 relic
+        overhead '▼▼ HERE ▼▼' 2263 relic
+        endfor
+    endif
+endif
+
+replay

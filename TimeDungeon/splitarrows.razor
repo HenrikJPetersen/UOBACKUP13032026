@@ -1,0 +1,25 @@
+if findtype 12215 self as quiver
+ 
+    while findtype 3903 backpack as arrow
+        lift arrow 2
+        pause 150
+        drop quiver 0 0
+        while queued
+            pause 25
+        endwhile
+    endwhile
+endif
+//Bolts
+if findtype 12215 self as quiver
+  
+    while findtype 7163 backpack as arrow
+        
+        lift arrow 200
+        pause 150
+        drop quiver 0 0
+        while queued
+            pause 25
+        endwhile
+    endwhile
+endif
+overhead 'done splitting arrows/bolts'

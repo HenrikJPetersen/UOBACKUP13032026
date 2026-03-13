@@ -1,0 +1,22 @@
+// 19995 masssleep
+if findtype '19995' backpack as masssleeprune
+    overhead 'Found one in backpack'
+    //dclick masssleeprune
+    pause 1500
+    if insysmsg 'You must wait a moment before you may use another rune.'
+        if findtype 'Time bag' self as equippedsatchel
+            @menu equippedsatchel 0
+        endif
+    endif
+elseif findtype 'Time bag' self as equippedsatchel
+    if findtype '19995' equippedsatchel as masssleeprune
+        lift masssleeprune
+        drop backpack 43 65 0
+        pause 25
+        //dclick masssleeprune
+        pause 1500
+        if insysmsg 'You must wait a moment before you may use another rune.'
+            @menu equippedsatchel 0
+        endif
+    endif
+endif

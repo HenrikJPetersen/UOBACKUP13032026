@@ -1,0 +1,182 @@
+## Settings
+@setvar! enablerevealers 1   
+@setvar! enablechests 1 
+@setvar! enablevortex 0
+## Settings ##
+
+
+## DO NOT EDIT ## DO NOT EDIT ##
+## Timers
+## Timer: Revalerspam 
+if not timerexists revealspamtimer
+    createtimer revealspamtimer
+    settimer revealspamtimer 0
+endif
+## Timer: Chestspam
+if not timerexists chestspamtimer
+    createtimer chestspamtimer
+    settimer chestspamtimer 0
+endif
+## Timer: Bleedspam
+    if not timerexists vortexspamtimer
+    createtimer vortexspamtimer
+    settimer vortexspamtimer 0
+endif
+## Timers END ##
+
+    
+## Lists ##
+## List: Vortex handling
+if not listexists vortexlist 
+    createlist vortexlist
+else
+    clearlist vortexlist
+endif
+
+if not listexists ignoredvortexlist
+    createlist ignoredvortexlist
+else
+    if timer vortexspamtimer > 20000
+        clearignore 
+        settimer vortexspamtimer 0
+    elseif timer vortexspamtimer > 10500
+        clearlist ignoredvortexlist
+        settimer vortexspamtimer 0
+    endif
+endif
+
+## List: Chest handling
+if not listexists chestlist 
+    createlist chestlist
+else
+    clearlist chestlist
+endif
+
+if not listexists ignoredchestlist 
+    createlist ignoredchestlist
+else
+    if timer chestspamtimer > 20000
+        clearignore 
+        settimer chestspamtimer 0
+    elseif timer chestspamtimer > 10500
+        clearlist ignoredchestlist
+        settimer chestspamtimer 0
+    endif
+endif
+## List: Revealer handling
+if not listexists reveallist 
+    createlist reveallist
+else
+    clearlist reveallist
+endif
+if not listexists ignoredreveallist 
+    createlist ignoredreveallist
+else
+    if timer revealspamtimer > 10500
+        clearlist ignoredreveallist
+        settimer revealspamtimer 0
+    endif
+endif
+## Lists END ##
+if enablerevealers = 1
+    if findtypelist reveallist 'a river tribe oracle|an apostate ranger|a mountain tribe scout|a time lurker|an etinorox wisp' ground 0 0 18 
+        foreach mob in reveallist
+            if not inlist ignoredreveallist mob
+                overhead '>> REVEALER <<' 33 mob
+                overhead '>> REVEALER <<' 2263 mob
+                overhead '>> REVEALER <<' 33 mob
+                pushlist ignoredreveallist mob
+            elseif inlist ignoredreveallist mob
+            endif
+        endfor
+    endif
+endif
+if enablechests = 1
+    if findtypelist chestlist 3703|3651|3646|3645|3647|2475|2472|3650|3702|3646|3708|2474|2473|3709|2711|2604|2639|27288|27286|27287|27289 ground -1 -1 15
+        foreach chest in chestlist
+            getlabel chest mychestlabel
+            if ', 0 stones' in mychestlabel
+                overhead 'EMPTY' 44 chest
+                pushlist ignoredchestlist chest
+                ignore chest
+            elseif not inlist ignoredchestlist chest
+                overhead '☻☻ CHEST ☻☻' 2263 chest
+                pause 50
+                //sysmsg  '{{mychestlabel}}' 44
+                pushlist ignoredchestlist chest
+                if find chest ground 0 0 1
+                    dclick chest
+                    sysmsg '>LOOOOOOOT ME<' 2263 chest
+                    while queued 
+                    endwhile
+                    if insysmsg 'it appears to be locked'
+                    overhead '> Needs to knock or lockpick <' 2263 chest
+                    @ignore chest
+                    endif
+                    
+                    while findtype 18705|19976|19977|19978|19979|19980|19981|19981|19982|19983|19985|19986|19987|19988|19989|19990|19991|19992|19993|19994|19995|49482|49528|50278|50612|53280|53694|53696|53876|54570|54591|54601|54717|54718|54831|55204|55247|55420 chest as item
+                        getlabel item myitemlabel
+                        overhead 'Found a rune or relic: {{myitemlabel}}'
+                        hotkey 'grab item'
+                        wft 250
+                        target item
+                        while queued 
+                        endwhile
+                        @ignore item
+                    endwhile
+                    while findtype 12686|17087|5356|19984|199816|22336|3985|49729|5370 chest as item
+                        getlabel item myitemlabel
+                        overhead 'Found: {{myitemlabel}}'
+                        hotkey 'grab item'
+                        wft 250
+                        target item
+                        while queued 
+                        endwhile
+                        @ignore item
+                    endwhile
+                    ## Arcane scroll handling
+                    while findtype 3827 chest 2609 as item
+                        getlabel item myitemlabel
+                        overhead 'Found: {{myitemlabel}}'
+                        hotkey 'grab item'
+                        wft 250
+                        target item
+                        while queued 
+                        endwhile
+                        @ignore item
+                    endwhile
+                    while findtype 3852 chest as item
+                        overhead 'Found item'
+                        hotkey 'grab item'
+                        wft 250
+                        target item
+                        while queued 
+                        endwhile
+                        @ignore item
+                    endwhile
+                    
+                endif
+                sysmsg '>> Done' 44
+            elseif inlist ignoredchestlist chest
+            endif
+        endfor
+    endif
+endif
+if enablevortex = 1
+    if findtypelist vortexlist '14284|14232' ground 0 0 18 
+        foreach vortex in vortexlist
+            if not inlist ignoredvortexlist vortex
+                overhead '>> VORTEX <<' 33 vortex
+                overhead '>> VORTEX <<' 2263 vortex
+                overhead '>> VORTEX <<' 33 vortex
+                pushlist ignoredvortexlist vortex
+            elseif inlist ignoredvortexlist vortex
+            endif
+        endfor
+    endif
+endif
+pause 500
+replay
+
+
+    

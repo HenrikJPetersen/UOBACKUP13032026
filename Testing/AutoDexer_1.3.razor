@@ -1,0 +1,251 @@
+# Time helper
+setvar! smashPhantomArmor 0
+setvar! smashLichPhylacteries 0
+
+# Enable this for traps and armor/phylactory from phantoms/liches
+setvar! showAnnouncements 0
+setvar! showTraps 0
+
+
+# Trap handling
+setvar! disarmTraps 0
+
+# Pot handling
+setvar! autopot 1
+setvar! notifyPots 0
+
+# Chiv abillities
+setvar! autochiv 0
+
+
+## Stupid static lich phylactories
+clearignore
+
+
+
+## Setting spamtimers for notifications.
+if not timerexists spamtimerphantom
+    createtimer spamtimerphantom
+    settimer spamtimerphantom 4000
+else
+    settimer spamtimerphantom 4000
+endif
+
+if not timerexists spamtimerphylactories
+    createtimer spamtimerphylactories
+    settimer spamtimerphylactories 4000
+else
+    settimer spamtimerphylactories 4000
+endif
+
+if not timerexists spamtimertraps
+    createtimer spamtimertraps
+    settimer spamtimertraps 4000
+else
+    settimer spamtimertraps 4000
+endif
+
+if not findbuff 'food'
+    if findtype 'tray' backpack as food
+        dclick food
+    else
+        sysmsg 'No food buff and no food in backpack' 33
+    endif
+endif
+
+if notifyPots = 1
+    if not findbuff 'Strength'
+        overhead '>> MISSING STR <<' 36
+        overhead '>> MISSING STR <<' 33
+    endif
+    if not findbuff 'Agility' 
+        overhead '>> MISSING AGI <<' 36
+        overhead '>> MISSING AGI <<' 33
+    endif
+    if not findbuff 'Magic Resist Potion'
+        overhead '>> MISSING MR <<' 36
+        overhead '>> MISSING MR<<' 33
+    endif
+endif
+   
+if autopot = 1
+    if not findbuff 'Strength'
+        dclicktype 3849 backpack 0
+        pause 600
+    endif
+    if not findbuff 'Agility'
+        potion 'Agility'
+        pause 600
+    endif
+    if not findbuff 'Magic resist potion'
+        potion 'Nightsight'
+        pause 600
+    endif
+endif    
+
+## Always open potion satchels, never  drinking a pot, while you have them
+
+if findtype 'alchemists satchel' backpack as psatchel
+    dclick psatchel
+elseif findtype 'alchemists satchel' self as psatchel
+    dclick psatchel
+else
+    overhead 'Could not find a satchel'
+endif
+
+
+sysmsg 'Running: Autodexer_1.3_Time_version'
+
+while not dead 
+    ## Healing
+    if skill "healing" > 0 and not bandaging and hp < maxhp
+        hotkey 'Bandage Self'
+        wait 500
+    endif
+    if cooldown bandage > 5 and hp < 50 and not cooldown "heal potion" and skill "healing" > 0
+        potion 'heal'
+    endif
+    ## WARMODE STUFF
+    if autochiv = 1 and warmode
+        if skill 'chivalry' > 79
+            if not findbuff 'Divine Fury' 
+                say '[DivineFury'
+                cooldown divinefury 29500
+                pause 350
+            endif
+        endif
+    endif
+    ##########################
+    ### NOTIFICATION START ###
+    ##########################
+    
+    if showAnnouncements = 1
+        ## Phantom armor notification 
+        if listexists armorlistnotification
+            clearlist armorlistnotification
+        else
+            createlist armorlistnotification
+        endif
+        if findtypelist armorlistnotification 7175|5074|5063|7169|5061|5075|5070|7177|31191|7179|7168|7178|7174|5067|7610|5069|5068|5062|7176|31174|7170|7171|7609|7610|5089|5083|5085|5076|31012|5082|5077|5090|7176|5084|5078|7181|7180|31011|7609|31004|5205|5201|5203|31003|5207|5204|5202|5199|5206|5200|5198|31010|5105|5106|5131|5101|5102|31009|5100|5103|5099|7176|5104|5056|5059|31015|5060|31006|31007|31005|5051|5054|5099|5055|5102|7176|7173|5142|5143|5146|31008|5144|7172|5141|5140|7176|5136|5137|5139|5145|5138|5129|5132|5135|5133|5067|5134|5130 ground -1 -1 12 and timer spamtimerphantom > 4000
+            foreach armor in armorlistnotification
+                getlabel armor myarmorlabel
+                if 'mastercrafted' in myarmorlabel
+                    @ignore armor
+                elseif 'unidentified' in myarmorlabel
+                    @ignore armor
+                else
+                    for 1
+                        overhead '>> ARMOR PIECE <<' 2263 armor
+                        overhead '>> ARMOR PIECE <<' 33 armor
+                        overhead '↓' 2263 armor
+                    endfor
+                endif
+                settimer spamtimerphantom 0
+            endfor
+        endif
+            
+        ## Lich phylactories notification
+        if timer spamtimerphylactories > 4000
+            if findtype 7964 ground -1 -1 20 as item
+                getlabel item label
+                if "unidentified" in label
+               
+                else
+                    for 1
+                        overhead ">> Lich phylactory <<" 2263 item
+                        overhead ">> Lich phylactory <<" 33 item
+                        overhead '↓↓↓' 2263 item
+                    endfor
+                endif
+             
+            endif
+            settimer spamtimerphylactories 0
+        endif
+    endif
+    
+    ## Trap notification
+    if showTraps = 1
+        if listexists traplist
+            clearlist traplist
+        else
+            createlist traplist
+        endif
+        if findtypelist traplist 62874|14078 ground -1 -1 12 and timer spamtimertraps > 4000
+            foreach trap in traplist
+                getlabel trap myttraplabel
+                if "temporal boon" in myttraplabel
+                    overhead 'nice things happens, sometimes..' 44 trap
+                elseif "destruction" in myttraplabel or "explosion" in myttraplabel or "temporal" in traplabel
+                    for 2
+                        overhead '>> Im in danger <<' 33 trap
+                    endfor
+                else
+                    for 1
+                        overhead '>> {{myttraplabel}} <<' 2263 trap
+                        overhead '>> {{myttraplabel}} <<' 33 trap 
+                        overhead '↓↓↓' 2263 item
+                    endfor
+                endif
+            endfor
+            settimer spamtimertraps 0
+        endif
+    endif
+   
+    
+    ########################
+    ### NOTIFICATION END ###
+    ######################## 
+    
+    ## Smash phantom armors ##
+    if smashPhantomArmor = 1
+        if listexists armorlist
+            clearlist armorlist
+        else
+            createlist armorlist
+        endif
+        
+        if findtypelist armorlist 7175|5074|5063|7169|5061|5075|5070|7177|31191|7179|7168|7178|7174|5067|7610|5069|5068|5062|7176|31174|7170|7171|7609|7610|5089|5083|5085|5076|31012|5082|5077|5090|7176|5084|5078|7181|7180|31011|7609|31004|5205|5201|5203|31003|5207|5204|5202|5199|5206|5200|5198|31010|5105|5106|5131|5101|5102|31009|5100|5103|5099|7176|5104|5056|5059|31015|5060|31006|31007|31005|5051|5054|5099|5055|5102|7176|7173|5142|5143|5146|31008|5144|7172|5141|5140|7176|5136|5137|5139|5145|5138|5129|5132|5135|5133|5067|5134|5130 ground -1 -1 2
+            foreach armor in armorlist
+                getlabel armor myarmorlabel
+                if 'mastercrafted' in myarmorlabel
+                    @ignore armor
+                elseif 'unidentified' in myarmorlabel
+                    @ignore armor
+                else
+                    overhead 'Smashing phantom armor' 44
+                    dclick armor
+                endif
+            endfor
+        endif
+    endif
+    ## Smash lich phylactories
+    if smashLichPhylacteries = 1
+        if listexists phylactorylist
+            clearlist phylactorylist
+        else
+            createlist phylactorylist
+        endif
+        
+        if findtypelist phylactorylist 7964 ground -1 -1 2 
+            foreach phylactory in phylactorylist
+                getlabel phylactory myphylactorylabel
+                overhead 'Smashing: {{myphylactorylabel}}' 44
+                dclick phylactory
+                getlabel backpack ping
+            endfor
+        endif
+    endif
+
+        
+    ## Handle traps ##
+    if warmode and disarmTraps = 1
+        if findtype 62874|14078 ground -1 -1 2 and skill 'detectinghidden' >= 80 and findtype 29001 backpack as tool
+            dclick tool
+            wft 1500
+            target self
+        elseif not findtype 62874|14078 ground -1 -1 2 and timer spamtimertraps > 2000 
+            overhead 'No traps in range'
+            settimer spamtimertraps 0
+        endif
+    endif
+endwhile

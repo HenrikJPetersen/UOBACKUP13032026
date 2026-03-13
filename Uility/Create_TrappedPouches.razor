@@ -1,0 +1,39 @@
+if not varexist "storage"
+    overhead "Target your shelf"
+    setvar "storage"
+endif 
+    
+
+    
+
+
+
+    if findtype 'pouch' backpack 0 as pouch
+        cast 'magic trap'
+        wft
+        target pouch
+        pause 500
+    else
+        if findtype "storage shelf" ground any any 2 as storage
+            overhead "Resupply" 88
+            menu storage 0
+            wait 500
+            target self
+            wait 500
+            menu storage 1
+            wait 500
+        endif
+        overhead 'no more pouches to trap'
+        //break
+    endif
+
+if mana < 20
+    
+    if findbuff 'actively meditating'
+        pause 500
+    else
+        skill 'meditation'
+        wait 30000
+    endif
+endif
+replay

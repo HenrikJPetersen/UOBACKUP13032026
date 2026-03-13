@@ -1,0 +1,73 @@
+# Healing with bandages
+## Setting spamtimers for notifications.
+if not timerexists spamtimerbombs
+    createtimer spamtimerbombs
+    settimer spamtimerbombs 1000
+else
+    settimer spamtimerbombs 1000
+endif
+if listexists bomblistnotification
+    clearlist bomblistnotification
+else
+    createlist bomblistnotification
+endif
+while not dead
+    if skill "Healing" > 30 and findtype 3617 backpack and not hidden and hp < maxhp and not bandaging
+        hotkey 'bandage self'
+        wait 200
+    endif
+
+    # Close Wounds for bleed/disease
+
+    if findbuff 'Bleed' or findbuff "Disease" and not findbuff "Close Wounds" and not hidden and skill "Chivalry" > 121
+        say "[CloseWounds"
+        wait 500
+    endif
+    # Eat food if hungry
+    if not findbuff 'food satisfaction'
+        dclicktype tray backpack
+        pause 600
+    endif
+    # Veterinary supplies if not bandaging
+    if not bandaging and skill "Veterinary" > 80 and findtype 25750 backpack and not hidden
+        say "[VetSupplies"
+        wait 5000
+    endif
+    # Potions if hiding skill < 80
+    if skill "Hiding" < 80 and not hidden
+        # Strength Potion
+        if not findbuff 'Strength' and findtype 3849 backpack
+            if findtype 3849 self 0 as strpot
+            dclick strpot
+            wait 500
+            endif
+        endif
+    endif
+    # Magic Resist Potion
+    if not findbuff 'Magic Resist Potion' and findtype 3846 backpack
+        dclicktype 3846
+        wait 500
+    endif
+    # Agility Potion (alchemy check)
+    if not findbuff 'Agility' and findtype 3848 backpack 
+        dclicktype 3848
+        wait 500
+    endif
+    # Refresh Potion if low stamina
+    if stam < 85 and findtype 3851 backpack
+        dclicktype 3851
+        wait 500
+    endif
+
+    if findtypelist bomblistnotification '38226|38213|38215|38224|standing stone|43730' ground -1 -1 5 and timer spamtimerbombs > 1000
+        foreach bomb in bomblistnotification
+            for 1
+                overhead '>>☻☻ BOMB ☻☻<<' 2263 bomb
+                overhead '>>☻☻ BOMB ☻☻<<' 33 bomb
+                overhead '☻☻☻☻☻☻☻☻☻☻☻☻☻☻' 2263 bomb
+            endfor
+            settimer spamtimerbombs 0
+        endfor
+    endif
+endwhile
+loop

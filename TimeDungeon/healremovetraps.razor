@@ -1,0 +1,193 @@
+# Destroys nearby phantom armor pieces on the ground and detects useful stuff
+# Written by Frost (@jfrostp)
+
+setvar! smashPhantomArmor 1
+setvar! smashLichPhylacteries 1
+
+setvar! showTraps 1
+setvar! disarmTraps 1
+
+setvar! keepStamBelowMaxWithWizardHatWhenStealthing 1
+
+setvar! bandageLoop 1
+setvar! scavRunes 1
+
+setvar! showFootprints 1
+
+setvar! showItemOverheadMessages 1
+setvar! itemOverheadMessageFrequency 1000
+
+# Searing mote: 63131
+# Cultist page: 54690
+# Temporal boon: 14078
+# Time fracture: 31771
+# Kobold trap: 62874
+# Lich crystal: 7964
+# Quintessence point: 20270
+# Temporal Codex page: 16471
+# Parchment: 27612
+# Leather: 7175|5074|5063|7169|5061|5075|5070|7177|31191|7179|7168|7178|7174|5067|7610|5069|5068|5062|7176|31174
+# Studded: 7170|7171|7609|7610|5089|5083|5085|5076|31012|5082|5077|5090|7176|5084|5078|7181|7180|31011|7609
+# Bone: 31004|5205|5201|5203|31003|5207|5204|5202|5199|5206|5200|5198
+# Ringmail: 31010|5105|5106|5131|5101|5102|31009|5100|5103|5099|7176|5104
+# Chain: 5056|5059|31015|5060|31006|31007|31005|5051|5054|5099|5055|5102|7176
+# Plate: 7173|5142|5143|5146|31008|5144|7172|5141|5140|7176|5136|5137|5139|5145
+# Helms: 5138|5129|5132|5135|5133|5067|5134|5130
+# Runes: 19776|19777|19978|19979|19980|19992
+# Relics: 54684|53694|50612|50278|54230|54718|49528|53473|55247|55420
+
+if not timerexists spamLimiter
+    createtimer spamLimiter
+    settimer spamLimiter itemOverheadMessageFrequency
+endif
+
+# Overhead messages
+if showItemOverheadMessages = 1
+    if timer spamLimiter > itemOverheadMessageFrequency
+        for 16
+            # CURRENT QUESTS: Codex and cultist pages
+            if findtype 63131|54690|16471 ground -1 -1 index as item
+                getlabel item label
+                overhead "{{label}}" 36 item
+                @ignore item
+            endif
+            
+#            # OLD QUESTS: Old parchments, quintessence points, time fractures
+#            if findtype 20270|27612|31771 ground -1 -1 index as item
+#                getlabel item label
+#                overhead "{{label}}" 36 item
+#                @ignore item
+#            endif
+            
+            # Lich crystals
+            if smashLichPhylacteries = 1
+                if findtype 7964 ground -1 -1 index as item
+                    getlabel item label
+                    overhead "{{label}}" 36 item
+                    @ignore item
+                endif
+            endif
+            
+            # Overheads for phantom armor
+            if smashPhantomArmor = 1
+                if findtype 7175|5074|5063|7169|5061|5075|5070|7177|31191|7179|7168|7178|7174|5067|7610|5069|5068|5062|7176|31174|7170|7171|7609|7610|5089|5083|5085|5076|31012|5082|5077|5090|7176|5084|5078|7181|7180|31011|7609|31004|5205|5201|5203|31003|5207|5204|5202|5199|5206|5200|5198|31010|5105|5106|5131|5101|5102|31009|5100|5103|5099|7176|5104|5056|5059|31015|5060|31006|31007|31005|5051|5054|5099|5055|5102|7176|7173|5142|5143|5146|31008|5144|7172|5141|5140|7176|5136|5137|5139|5145|5138|5129|5132|5135|5133|5067|5134|5130 ground -1 -1 index as item
+                    getlabel item label
+                        
+                    if "unidentified" in label
+                    else
+                        overhead "{{label}}" 36 item
+                    endif
+                    @ignore item
+                endif
+            endif
+            
+            if showFootprints = 1
+                if findtype 23260 ground -1 -1 index as item
+                    getlabel item label
+                    overhead "{{label}}" 36 item
+                    @ignore item
+                endif
+            endif
+            
+            if showTraps = 1
+                if findtype 62874|14078 ground -1 -1 index as item
+                    getlabel item label
+                
+                    # Dangerous traps
+                    if "destruction" in label or "explosion" in label or "temporal" in label
+                        overhead "{{label}}" 38 item
+                    else
+                        # Less scary traps
+                        overhead "{{label}}" 76 item
+                    endif
+                    @ignore item
+                endif
+            endif
+            
+            if scavRunes = 1
+                if findtype 19977|54684|53694|50612|50278|54230|54718|49528|53473|55247|55420|19776|19777|19978|19979|19980|19981|19982|19983|19984|19985|19986|19987|19988|19989|19990|19991|19992|19993|19994|19995 ground -1 -1 index as item
+                    getlabel item label
+                    overhead "{{label}}" 36 item
+                    @ignore item
+                endif
+            endif
+        endfor
+        
+        settimer spamLimiter 0
+    endif
+endif
+
+#if scavRunes = 1
+#    while findtype 19977|19976|54684|53694|50612|50278|54230|54718|49528|53473|55247|55420|19776|19777|19978|19979|19980|19981|19982|19983|19984|19985|19986|19987|19988|19989|19990|19991|19992|19993|19994|19995 ground -1 -1 2 as item
+#        hotkey 'Grab Item'
+#        target item
+#        
+#        if insysmsg "too far" or insysmsg "cannot" or insysmsg "sight"
+#            @ignore item
+#        endif
+#    endwhile
+#endif
+
+if disarmTraps = 1
+    if skill "detectinghidden" >= 80
+        if findtype 29001 backpack as tool
+    if findtype 62874|14078 ground -1 -1 2 as trap
+                dclick tool
+                wft 500
+                target self
+                if insysmsg "disable"
+                    overhead 'Trap Disabled'
+                endif
+            endif
+        endif
+        wait 100
+    endif
+endif
+
+# Destroy phantoms
+if smashPhantomArmor = 1
+    while findtype 7175|5074|5063|7169|5061|5075|5070|7177|31191|7179|7168|7178|7174|5067|7610|5069|5068|5062|7176|31174|7170|7171|7609|7610|5089|5083|5085|5076|31012|5082|5077|5090|7176|5084|5078|7181|7180|31011|7609|31004|5205|5201|5203|31003|5207|5204|5202|5199|5206|5200|5198|31010|5105|5106|5131|5101|5102|31009|5100|5103|5099|7176|5104|5056|5059|31015|5060|31006|31007|31005|5051|5054|5099|5055|5102|7176|7173|5142|5143|5146|31008|5144|7172|5141|5140|7176|5136|5137|5139|5145|5138|5129|5132|5135|5133|5067|5134|5130 ground -1 -1 2 as item
+        getlabel item label
+        if "unidentified" in label
+        else
+            overhead 'Smashing {{label}}'
+            dclick item
+            getlabel backpack ping
+        endif
+        @ignore item
+    endwhile
+endif
+
+# Destroy liches/etc
+if smashLichPhylacteries = 1
+    while findtype 7964 ground -1 -1 2 as item
+        getlabel item label
+        overhead 'Smashing {{label}}'
+        dclick item
+        getlabel backpack ping
+        @ignore item
+    endwhile
+endif
+
+# Wizard hat stam swapping
+if keepStamBelowMaxWithWizardHatWhenStealthing = 1 and diffstam <= 1
+    if hidden and skill "stealth" >= 80
+        if findtype 5912 backpack as wizardHat
+            if findlayer self head as helm
+                dclick wizardHat
+                getlabel backpack ping
+                dclick helm
+                getlabel backpack ping
+                wait 100
+            endif
+        endif
+    endif
+endif
+
+if bandageLoop = 1 and skill "healing" > 0 and not bandaging and hp < maxhp
+    hotkey 'Bandage Self'
+endif
+
+@clearignore
+    
+loop

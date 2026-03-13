@@ -1,0 +1,166 @@
+## Change timesatchel to your satchel id
+if not varexist timesatchel
+    setvar timesatchel 0x66A61AC7
+endif
+## Runes
+## Mend : 19977  ## Iron flesh : 19978  ## Magic Ward : 19979  ## Knock : 19976  ## Fortify Ration : 19980  
+## Wild creatures : 19983  ## Negate time : 19985  ## Timely wealth : 19982  ## Repel : 19981  
+## Mass invis : 19981  ## Refresh : 19986  ## Circle of power : 19991  ## Awaken earth : 19988  
+## Conjure potion : 19989  ## Bloom : 19987  ## Mass sleep : 19995  ## Silver sapling : 19994  
+## Animated weapon : 19993  ## Meteor shower : 19992  ## Tremor : 19990  
+
+## Relics  
+## Vile Concotion: 55420  ## The final hour: 54717  ## Divination Orb: 54591  ## Barrel of filth: 49482  
+## Bomb cluster: 54831  ## Prodigy fiddle: 54601  ## Apothecary wheel: 53876  ## Brace of knives: 55247  
+## Warning canary: 50612  ## Beastmaster horn: 53280  ## Murder of crows: 53694  ## Statue of the siren: 50278  
+## Widows grief: 53696  ## Mirror of reflection: 18705  ## Rose of fading beauty: 49528  
+## Cross of compassion: 54570  ## Tyromancers cache: 55204  ## Scale of balance: 54718  
+    
+if not listexists runelist  
+    createlist runelist  
+    pushlist runelist 19977 front  
+    pushlist runelist 19978 back 
+    pushlist runelist 19979 back  
+    pushlist runelist 19976 back  
+    pushlist runelist 19980 back  
+    pushlist runelist 19983 back  
+    pushlist runelist 19985 back  
+    pushlist runelist 19982 back  
+    pushlist runelist 19981 back  
+    pushlist runelist 19984 back  
+    pushlist runelist 19986 back  
+    pushlist runelist 19991 back  
+    pushlist runelist 19988 back  
+    pushlist runelist 19989 back  
+    pushlist runelist 19987 back  
+    pushlist runelist 19995 back  
+    pushlist runelist 19994 back  
+    pushlist runelist 19993 back  
+    pushlist runelist 19992 back  
+    pushlist runelist 19990 back  
+else  
+    clearlist runelist  
+    pushlist runelist 19977 front  
+    pushlist runelist 19978 back  
+    pushlist runelist 19979 back  
+    pushlist runelist 19976 back  
+    pushlist runelist 19980 back  
+    pushlist runelist 19983 back  
+    pushlist runelist 19985 back  
+    pushlist runelist 19982 back  
+    pushlist runelist 19981 back  
+    pushlist runelist 19984 back  
+    pushlist runelist 19986 back  
+    pushlist runelist 19991 back  
+    pushlist runelist 19988 back  
+    pushlist runelist 19989 back  
+    pushlist runelist 19987 back  
+    pushlist runelist 19995 back  
+    pushlist runelist 19994 back  
+    pushlist runelist 19993 back  
+    pushlist runelist 19992 back  
+    pushlist runelist 19990 back  
+endif  
+    
+if not listexists reliclist
+    createlist reliclist
+    pushlist reliclist 55420 front
+    pushlist reliclist 54717 front
+    pushlist reliclist 54591 front
+    pushlist reliclist 49482 front
+    pushlist reliclist 54831 front
+    pushlist reliclist 54601 front
+    pushlist reliclist 53876 front
+    pushlist reliclist 55247 front
+    pushlist reliclist 50612 front
+    pushlist reliclist 53280 front
+    pushlist reliclist 53694 front
+    pushlist reliclist 50278 front
+    pushlist reliclist 53696 front
+    pushlist reliclist 18705 front
+    pushlist reliclist 49528 front
+    pushlist reliclist 54570 front
+    pushlist reliclist 55204 front
+    pushlist reliclist 54718 front
+else
+    clearlist reliclist
+    pushlist reliclist 55420 front
+    pushlist reliclist 54717 front
+    pushlist reliclist 54591 front
+    pushlist reliclist 49482 front
+    pushlist reliclist 54831 front
+    pushlist reliclist 54601 front
+    pushlist reliclist 53876 front
+    pushlist reliclist 55247 front
+    pushlist reliclist 50612 front
+    pushlist reliclist 53280 front
+    pushlist reliclist 53694 front
+    pushlist reliclist 50278 front
+    pushlist reliclist 53696 front
+    pushlist reliclist 18705 front
+    pushlist reliclist 49528 front
+    pushlist reliclist 54570 front
+    pushlist reliclist 55204 front
+    pushlist reliclist 54718 front
+endif
+
+
+foreach rune in runelist
+    if findtype rune timesatchel as runex
+        getlabel runex runelabel
+        sysmsg  '{{runelabel}}'
+    endif
+endfor
+foreach relic in reliclist
+    if findtype relic timesatchel as relicx
+        if counttype relic timesatchel as amount 
+        
+    getlabel relicx reliclabel
+    sysmsg  'Amount: {{amount}} - {{reliclabel}}'
+        endif
+    endif
+endfor
+
+
+stop
+foreach relic in reliclist  
+    if counttype relic timesatchel as amount  
+        if relic = 55420  
+              sysmsg 'Vile Concotion : {{amount}}'  
+        elseif relic = 54717  
+              sysmsg 'The final hour : {{amount}}'  
+        elseif relic = 54591  
+              sysmsg 'Divination Orb : {{amount}}'  
+        elseif relic = 49482  
+              sysmsg 'Barrel of filth : {{amount}}'  
+        elseif relic = 54831  
+              sysmsg 'Bomb cluster : {{amount}}'  
+        elseif relic = 54601  
+              sysmsg 'Prodigy fiddle : {{amount}}'  
+        elseif relic = 53876  
+              sysmsg 'Apothecary wheel : {{amount}}'  
+        elseif relic = 55247  
+              sysmsg 'Brace of knives : {{amount}}'  
+        elseif relic = 50612  
+              sysmsg 'Warning canary : {{amount}}'  
+        elseif relic = 53280  
+              sysmsg 'Beastmaster horn : {{amount}}'  
+        elseif relic = 53694  
+              sysmsg 'Murder of crows : {{amount}}'  
+        elseif relic = 50278  
+              sysmsg 'Statue of the siren : {{amount}}'  
+        elseif relic = 53696  
+              sysmsg 'Widows grief : {{amount}}'  
+        elseif relic = 18705  
+              sysmsg 'Mirror of reflection : {{amount}}'  
+        elseif relic = 49528  
+              sysmsg 'Rose of fading beauty : {{amount}}'  
+        elseif relic = 54570  
+              sysmsg 'Cross of compassion : {{amount}}'  
+        elseif relic = 55204  
+              sysmsg 'Tyromancers cache : {{amount}}'  
+        elseif relic = 54718  
+              sysmsg 'Scale of balance : {{amount}}'  
+        endif  
+    endif  
+endfor

@@ -1,0 +1,12 @@
+
+if insysmsg 'You have lost a little karma'
+    stop
+endif
+clearsysmsg 
+if not rhandempty
+    if findlayer self righthand as weap 
+        @menu weap 0
+    endif
+endif
+pause 5000
+replay

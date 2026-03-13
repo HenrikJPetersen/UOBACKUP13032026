@@ -1,0 +1,15 @@
+if findtype 19978 backpack as ironfleshrune
+    dclick ironfleshrune
+elseif findtype 'Time bag' backpack as tsatchel
+    if findtype 19978 tsatchel as ironfleshrune
+        dclick ironfleshrune
+    else
+        overhead 'No iron flesh rune found in time bag'
+    endif
+else
+    overhead 'No iron flesh runes found'
+endif
+
+if skill 'healing' > 79
+    script 'AutoDexer_1.2'
+endif

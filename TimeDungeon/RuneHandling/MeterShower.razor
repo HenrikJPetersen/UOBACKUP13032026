@@ -1,0 +1,15 @@
+if findtype 19992 backpack as meteorrune
+    dclick meteorrune
+elseif findtype 'Time bag' backpack as tsatchel
+    if findtype 19992 tsatchel as meteorrune
+        dclick meteorrune
+    else
+        overhead 'No meteor rune found in time bag'
+    endif
+else
+    overhead 'No meteor runes found'
+endif
+
+if skill 'healing' > 79
+    script 'AutoDexer_1.2'
+endif

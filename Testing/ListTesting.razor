@@ -1,0 +1,24 @@
+if not listexists testlist
+    createlist testlist
+elseif listexists testlist
+    clearlist testlist
+endif
+
+
+if findtypelist testlist "TheBenny" ground -1 -1 12
+endif
+
+foreach mob in testlist
+    overhead '{{index}}'
+    setvar myindex index
+    if atlist testlist myindex as mobx
+        if mob = mobx
+        overhead 'true'
+        endif
+    endif
+    
+    
+        
+endif
+    
+    

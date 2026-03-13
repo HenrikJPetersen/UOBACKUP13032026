@@ -1,0 +1,29 @@
+if findtype 3705 ground -1 -1 2 as bla
+    overhead 'HERE' 2263 bla
+    hotkey 'Set grab Item HotBag'
+    wft 500
+    target bla
+    if findtype 3702 backpack as lootingbag
+        while findtype 3821|3963|3980|3972|3973|3981|3976|3962|3974 lootingbag as item
+            hotkey 'Grab item'
+            wft 500
+            target item
+            while queued 
+            endwhile
+        endwhile
+        
+    endif
+elseif findtype 3705 ground -1 -1 10 blatwo
+    overhead 'Out of range' 2263 blatwo
+    replay
+else
+    sysmsg 'Cant find your pouch'
+    stop
+endif
+pause 150
+if findtype 3702 backpack as lootingbag
+hotkey 'Set grab Item HotBag'
+wft 500
+target lootingbag
+endif
+overhead 'DONE!!!' 33

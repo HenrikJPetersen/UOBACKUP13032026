@@ -1,0 +1,31 @@
+## Check for gold or dubs... Gold = 1 | dubs = 0
+@setvar! currencychecker 0
+##Check last season
+@setvar! checkLastSeason 0
+## Check lifetime or current season.
+@setvar! checkLifeTime 1
+#####################################
+if not gumpexists 724753076
+    say '[Serverrank'
+    waitforgump 724753076 1000
+endif
+pause 150
+if checkLastSeason = 0
+else
+    gumpresponse 10 724753076
+endif
+pause 150
+if checkLifeTime = 1
+else
+    gumpresponse 12 724753076
+endif
+pause 100
+while not ingump 'thukker'
+    if currencychecker = 1
+        gumpresponse 3 724753076
+    else
+        gumpresponse 6 724753076
+    endif
+    waitforgump 724753076
+    pause 250
+endwhile

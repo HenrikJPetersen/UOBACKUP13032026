@@ -1,0 +1,337 @@
+@setvar! autoequip 1
+@setvar! chivheals 0
+@setvar! autofood 1
+@setvar! holylight_hpcheck 35
+@setvar! noblesacrifice_hpcheck 35
+
+
+## PVP STUFF
+@setvar! pvpenabled 1
+@setvar! autocurepvp 0
+@setvar! autohealpotpvp 0
+
+
+if not timerexists preventspam
+    createtimer preventspam
+    settimer preventspam 0
+else
+    settimer preventspam 0
+endif
+
+if not listexists weaponlist
+    createlist weaponlist
+endif
+//clearignore 
+
+if corpse_finder = 1
+    sysmsg '>>> CORPSE FINDER ON <<<'
+else
+    sysmsg '>>> CORPSE FINDER OFF <<<' 33
+endif
+if autopot = 1
+    sysmsg '>>> AUTO POT ON <<<'
+else
+    sysmsg '>> AUTO POT IS OFF' 33
+    overhead '>> AUTO POT IS OFF' 33
+endif
+
+if autoequip = 1
+    if skill 'fencing' > 79 and rhandempty
+    while findtype "War fork|Rapier|Kryss|assassins dagger" backpack as weap
+            getlabel weap myweaponlabel
+            if 'aspect' in myweaponlabel or 'exceptional' in myweaponlabel
+                sysmsg 'equip'
+                dclick weap
+                pause 250
+                continue
+            else
+              
+                sysmsg 'Not found'
+            endif
+        endwhile
+    endif
+    if skill 'archery' > 79 and rhandempty
+        while findtype "crossbow" backpack as weap
+            getlabel weap myweaponlabel
+            if 'aspect' in myweaponlabel
+                sysmsg 'equip'
+                dclick weap
+                pause 250
+                continue
+            else
+                @ignore weap
+                sysmsg 'Not found'
+            endif
+        endwhile
+    endif
+
+    if skill 'parry' > 79 and lhandempty
+        while findtype "heater shield|Order shield|wooden shield" backpack as weap
+            getlabel weap myweaponlabel
+            if 'exceptional' in myweaponlabel
+                sysmsg 'equip'
+                dclick weap
+                pause 250
+                continue
+            else
+                @ignore weap
+                sysmsg 'Not found'
+            endif
+        endwhile
+    endif
+    if skill 'arcane' > 79 and rhandempty
+        while findtype "helix staff" backpack as weap
+            getlabel weap myweaponlabel
+            if 'exceptional' in myweaponlabel
+                sysmsg 'equip'
+                dclick weap
+                pause 250
+                continue
+            else
+                @ignore weap
+                sysmsg 'Not found'
+            endif
+        endwhile
+    endif
+endif
+
+while queued 
+    pause 50
+endwhile
+
+if skill 'fencing' >= 80 and not gumpexists 3954121934 and not lhandempty
+    say '[abilityhotbar'
+endif
+if skill 'ARCHERY' >= 80 and not gumpexists 3954121934 and not lhandempty
+    say '[abilityhotbar'
+endif
+if not gumpexists 2016719803
+    say '[codexhotbar'
+endif
+pause 150
+
+if not findbuff 'food'
+    if findtype 'tray' backpack as food
+        dclick food
+    else
+        sysmsg 'No food buff and no food in backpack' 44
+    endif
+endif
+
+if autopot = 1
+    if not findbuff 'Strength'
+        if findtype 'white potion' backpack
+            potion 'strength'
+        
+        else
+            sysmsg 'No food buff and no food in backpack' 44
+        endif
+    endif
+    if not findbuff 'Agility'
+        if findtype 'white potion' backpack
+        potion 'agility'
+        
+        else
+            sysmsg 'No food buff and no food in backpack' 44
+        endif
+    endif
+    if not findbuff 'Magic resist'
+        if findtype 'Black Potion' backpack
+            potion 'nightsight'
+        else
+            sysmsg 'No food buff and no food in backpack' 44
+        endif
+    endif
+endif
+    
+
+    
+while not dead
+    ## Field of souls, mount skeletal horse.
+    if not mounted and findtype 'a skeletal mount' ground -1 -1 3 as hor
+        dclick hor
+    endif
+    if findtype 'maus corpse flower' ground 0 0 30 as tt
+        overhead 'HERE' 2263 tt
+        if findtype 'maus corpse flower' ground 0 0 30 as take
+            dclick take
+        endif
+    endif
+    
+    ## Field of souls, auto pick souls..
+    if corpse_finder = 1
+        if findtype 'dead' ground 0 0 30 as eerie
+            for 3
+            overhead '===>> HERE <<===' 2263 eerie
+            overhead '===>> HERE <<===' 33 eerie 
+            endfor
+            sysmsg 'FOUND A CORPSE' 44
+        endif
+        if findtype 'dead' ground 0 0 4 
+            if mounted
+                dclick self
+                pause 150
+                if findtype 'soul jar' backpack as jar
+                    dclick jar
+                endif
+                pause 1000
+                //ID of mount or mount token
+                dclick 0x2E3ED
+            else
+                if findtype 'soul jar' backpack as jar
+                    dclick jar
+                endif
+            endif    
+        endif
+    endif
+    
+    ## Bandage handler
+    getlabel backpack clientsync
+    if not bandaging and hp < maxhp
+        while targetexists 
+        endwhile
+        hotkey 'Bandage self'
+        wait 500
+    endif
+    
+    ## Healpot handler
+    if autohealpot = 1
+        getlabel backpack clientsync
+        if not bandaging and hp < 50
+        clearsysmsg 
+            if findtype 'Yellow Potion' backpack
+                if not cooldown healpot
+                    potion 'heal'
+                    cooldown healpot 10000
+                    pause minimumWaitForPing
+                else 
+                    overhead 'coooldown healpot'
+                endif
+                if insysmsg 'You are already at full health.'
+                    cooldown healpot 0
+                endif
+            else
+                sysmsg 'OUT OF HEAL POTS' 33
+                @setvar! autohealpot 0
+            endif
+        endif
+        getlabel backpack clientsync
+        if cooldown bandage > 4 and hp < 50
+            clearsysmsg 
+            if findtype 'Yellow Potion' backpack
+                if not cooldown healpot
+                    potion 'heal'
+                    cooldown healpot 10000
+                    pause 150
+                else 
+                    overhead 'coooldown healpot'
+                endif
+                if insysmsg 'You are already at full health.'
+                    cooldown healpot 0
+                endif
+            else
+                sysmsg 'OUT OF HEAL POTS' 33
+                @setvar! autohealpot 0
+            endif
+        endif
+    endif
+    ## Healpot handler END
+    
+    ## Cure handler
+    if autocure = 1
+        getlabel backpack clientsync
+        if poisoned and diffhits > 40 and cooldown 'bandage' > 4
+            if findtype 'Orange potion' backpack
+                potion 'cure'
+            else
+                sysmsg 'OUT OF CURE POTS' 33
+                @setvar! autocure 0
+            endif
+        endif
+        getlabel backpack clientsync
+        if poisoned and hp < 40
+            if findtype 'Orange potion' backpack
+                potion 'cure'
+                wait minimumWaitForPing
+            else
+                sysmsg 'OUT OF CURE POTS' 33
+                @setvar! autocure 0
+            endif
+        endif
+    endif
+    ## Cure handler END
+    
+    ## Chiv heal handler
+    if chivheals = 1 and skill 'chivalry' > 100
+        getlabel backpack clientsync
+        if not cooldown 'holylight' and hp < holylight_hpcheck
+            @setvar! holylight 0
+            if ingump '12/12' 1387930325
+                @setvar! holylight 1
+            elseif ingump '11/12' 1387930325
+                @setvar! holylight 1
+            elseif ingump '10/12' 1387930325
+                @setvar! holylight 1
+            elseif ingump '9/12' 1387930325
+                @setvar! holylight 1
+            elseif ingump '8/12' 1387930325
+                @setvar! holylight 1
+            elseif ingump '7/12' 1387930325
+                @setvar! holylight 1
+            elseif ingump '6/12' 1387930325
+                @setvar! holylight 1
+            elseif ingump '5/12' 1387930325
+                @setvar! holylight 1
+            else
+                @setvar! holylight 0
+            endif
+            overhead '{{holylight}}'
+            
+            if holylight = 1
+                yell '[HolyLight'
+                cooldown holylight 30000
+                pause 300
+            else
+                sysmsg 'Not enough runes'
+                @setvar! holylight 0
+            endif
+        endif
+        getlabel backpack clientsync
+        if not cooldown 'noblesacrifice' and hp < holylight_hpcheck
+            @setvar! noblesacrifice 0
+            if ingump '12/12' 1387930325
+                @setvar! noblesacrifice 1
+            elseif ingump '11/12' 1387930325
+                @setvar! noblesacrifice 1
+            elseif ingump '10/12' 1387930325
+                @setvar! noblesacrifice 1
+            elseif ingump '9/12' 1387930325
+                @setvar! noblesacrifice 1
+            elseif ingump '8/12' 1387930325
+                @setvar! noblesacrifice 1
+            elseif ingump '7/12' 1387930325
+                @setvar! noblesacrifice 1
+            elseif ingump '6/12' 1387930325
+                @setvar! noblesacrifice 1
+            elseif ingump '5/12' 1387930325
+                @setvar! noblesacrifice 1
+            elseif ingump '4/12' 1387930325
+                @setvar! noblesacrifice 1
+            else
+                @setvar! noblesacrifice 0
+            endif
+            overhead '{{holylight}}'
+            if noblesacrifice = 1
+                sysmsg 'Should heal'
+                yell '[NobleSacrifice'
+                wft 500
+                target self
+                cooldown noblesacrifice 30000
+                pause 300
+            else
+                sysmsg 'Not enough runes'
+                @setvar! holylight 0
+            endif
+        endif
+    endif
+endwhile

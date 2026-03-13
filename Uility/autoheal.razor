@@ -1,0 +1,17 @@
+while not dead
+if hp < 60
+    if findtype 'Yellow Potion' backpack
+        if not cooldown healpot
+            potion 'heal'
+            cooldown healpot 10000
+            pause 150
+        else 
+            overhead 'coooldown healpot'
+        endif
+        if insysmsg 'You are already at full health.'
+            cooldown healpot 0
+        endif
+    endif
+
+endif
+endwhile

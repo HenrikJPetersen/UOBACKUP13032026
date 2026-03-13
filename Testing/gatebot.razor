@@ -1,0 +1,55 @@
+@setvar! dagger 0x4AD7F748
+while not dead 
+    clearsysmsg 
+//Dagger serial
+dclick dagger
+waitfortarget
+//RobotTurtle serial
+target 0x347334
+pause 250
+if targetexists 
+    overhead 'Robot not around'
+    hotkey 'cancel current target'
+    pause 1500
+    replay
+    elseif not targetexists and not insysmsg 'World save complete'
+    overhead 'GATE MY FRIEND'
+    cast 'gate travel'
+    while not targetexists 
+    endwhile
+    targettype 8901 backpack
+    pause 1500
+endif
+for 50
+    dclick dagger
+    waitfortarget
+    target 0x347334
+    pause 250
+    if targetexists 
+        overhead 'Dispelling gate'
+        cast 'Dispel field'
+        while not targetexists 
+        endwhile
+        while targetexists 
+            while not dead and findtype 3948 ground 0 0 2
+                if findtype 3948 ground 0 0 2 as mygate
+                    target mygate
+                else
+                endif
+            endwhile
+        endwhile
+        replay
+    elseif not targetexists 
+        pause 250
+    endif
+endfor
+pause 1000
+endwhile
+
+    
+
+
+
+
+
+    

@@ -1,0 +1,15 @@
+if findtype 19988 backpack as AwakenRune
+    dclick AwakenRune
+elseif findtype 'Time bag' backpack as tsatchel
+    if findtype 19988 tsatchel as AwakenRune
+        dclick AwakenRune
+    else
+        overhead 'No awaken rune found in time bag'
+    endif
+else
+    overhead 'No awaken runes found'
+endif
+
+if skill 'healing' > 79
+    script 'AutoDexer_1.2'
+endif

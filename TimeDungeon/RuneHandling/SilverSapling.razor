@@ -1,0 +1,15 @@
+if findtype 19994 backpack as saplingrune
+    dclick saplingrune
+elseif findtype 'Time bag' backpack as tsatchel
+    if findtype 19994 tsatchel as saplingrune
+        dclick saplingrune
+    else
+        overhead 'No sapling rune found in time bag'
+    endif
+else
+    overhead 'No sapling runes found'
+endif
+
+if skill 'healing' > 79
+    script 'AutoDexer_1.2'
+endif

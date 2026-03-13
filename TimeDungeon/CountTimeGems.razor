@@ -1,0 +1,27 @@
+if not listexists timegems
+    createlist timegems
+endif
+
+overhead '....Loading gems.....'
+if findtypelist timegems 'gem'
+    foreach item in timegems
+        getlabel item gemlabel
+        if 'precious' in gemlabel
+            overhead '~▶ Found a precious'
+        elseif 'bipartite' in gemlabel
+            overhead '~▶ -Found biparte'
+        elseif 'tripartite' in gemlabel
+            overhead '~▶ Found tripartite'
+        endif
+        hotkey 'Grab Item'
+        wft
+        target item
+    endfor
+else
+    overhead  '>> Could not find any gems' 33
+endif
+if counttype 'gem' as timegemnumber
+    overhead '{{timegemnumber}} timegems'
+endif
+
+    

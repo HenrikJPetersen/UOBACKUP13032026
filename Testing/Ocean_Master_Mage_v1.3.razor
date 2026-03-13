@@ -1,0 +1,336 @@
+@setvar! pvpenabled 1
+@setvar! autocurepvp 1
+@setvar! autohealpotpvp 1
+@setvar! autostrpot 1
+@setvar! showshipbombs 1
+@setvar! autospy 0
+@setvar! autocure 1
+@setvar! autohealpot 1
+
+
+@setvar! minimumWaitForPing 250
+
+
+
+while not dead 
+    
+
+
+    ## pvp start
+    if cooldown pvp and pvpenabled = 1
+        
+        getlabel backpack clientsync
+        ## healpot handler
+        if autohealpotpvp = 1
+            if hp < 40 
+                if findtype 'Yellow potion' backpack 
+                    if not cooldown healpot
+                        potion 'heal'
+                        cooldown healpot 10000
+                        pause minimumWaitForPing
+                    else
+                        sysmsg 'COOLDOWN HEALPOT' 44
+                    endif
+                else
+                    sysmsg 'NO MORE HEALPOTS' 33
+                    @setvar! autohealpot 0
+                endif
+            endif
+        endif
+        // healpot handler end
+        ## Autocure handler
+        if autocurepvp = 1
+            getlabel backpack clientsync
+            if poisoned and hp < 40
+                if findtype 'Orange potion' backpack
+                    potion 'cure'
+                else
+                    sysmsg 'OUT OF CURE POTS' 33
+                    @setvar! autocure 0
+                endif
+            endif
+        endif  
+        // Autocure handler end
+        ## Auto strpot handler
+        if autostrpot = 1
+            if not findbuff 'Strength' and cooldown pvp
+                if findtype 'White potion' backpack
+                    potion 'Strength'
+                    pause minimumWaitForPing
+                else
+                    sysmsg 'NO MORE STR POTS' 33
+                    @setvar! autostrpot 0
+                endif
+            endif
+        endif
+        // Auto strpot handler end
+        ## Para handler
+        if paralyzed 
+            if findtype 'pouch' backpack 38
+                say '[Pouch'
+                pause minimumWaitForPing
+            else
+                overhead 'out of trapped pouches'
+            endif
+        endif
+        // Para handler end
+        
+        ## Display text on shipbombs
+        if showshipbombs = 1
+            if findtype '5188' ground -1 -1 10 as sbomb
+                if timer preventspamtimer > 3000
+                    settimer preventspamtimer 0
+                    for 1
+                        overhead "↓↓ SHIP B898OMB ↓↓" 2263 sbomb
+                        overhead "↓↓ SHIP BOMB ↓↓" 33 sbomb
+                    endfor
+                endif
+            endif
+        endif
+        // Display text on shipbombs end
+        
+        ## Spyglass start
+        if not queued and not targetexists and not cooldown spyglass 
+        # Closegump for more smooth spyglass
+            if gumpexists 2890020940
+                gumpclose 2890020940
+                pause 25
+            endif
+            while targetexists 
+                sysmsg 'Target cursor up'
+                wait 500
+            endwhile
+            sysmsg '> Running spyglass: Master_mage_v1.3' 44
+            //Valorite
+            if findtype '5365' backpack 1763 as glass
+                while targetexists 
+                endwhile
+                dclick glass
+                wft 500
+                target 'self'
+                waitforgump 2890020940
+            //Agapite
+            elseif findtype '5365' backpack 2425 as glass
+                while targetexists 
+                endwhile
+                dclick glass
+                wft 500
+                target 'self'
+                waitforgump 2890020940
+            elseif findtype '5365' backpack as glass
+                while targetexists 
+                endwhile
+                dclick glass
+                wft 500
+                target 'self'
+                waitforgump 2890020940
+            elseif not findtype '5365' backpack
+                sysmsg 'No more spyglass in backpack' 33
+                cooldown spyglass 1000000
+            endif
+            
+            
+            if ingump 'Search for ships' 2890020940
+                gumpresponse 4 2890020940
+                cooldown spyglass 8000
+            endif 
+            pause minimumWaitForPing
+            while ingump "Next" 2890020940
+                if ingump "Next" 2890020940
+                    pause 500
+                    gumpresponse 3 2890020940
+                endif
+            endwhile
+        endif
+        // Spyglass end
+        if not timerexists vettimer
+            createtimer vettimer
+            settimer vettimer 0
+        endif
+        if skill 'veterinary' > 60 and followers > 2
+            if not bandaging and timer vettimer > 5000
+                clearsysmsg 
+                
+                if findtype 'veterinary supplies' backpack as vetkit
+                    dclick vetkit
+                endif
+                getlabel backpack clientsync
+                if insysmsg 'you or your nearby followers do not'
+                    settimer vettimer 0
+                endif
+            endif
+        endif
+        
+        replay
+    endif
+    // pvp end
+    
+    if showshipbombs = 1
+        if not timerexists preventspamtimer
+            createtimer preventspamtimer 
+            settimer preventspamtimer 3500
+        endif
+        if findtype '5188' ground -1 -1 10 as sbomb
+            if timer preventspamtimer > 3000
+                settimer preventspamtimer 0
+                for 1
+                    overhead "↓↓ SHIP B898OMB ↓↓" 2263 sbomb
+                    overhead "↓↓ SHIP BOMB ↓↓" 33 sbomb
+                endfor
+            endif
+        endif
+    endif
+    if autohealpot = 1
+        getlabel backpack clientsync
+        if hp < 40 
+            if findtype 'Yellow potion' backpack 
+                if not cooldown healpot
+                    potion 'heal'
+                    cooldown healpot 10000
+                    pause minimumWaitForPing
+                else
+                    sysmsg 'COOLDOWN HEALPOT' 44
+                endif
+            else
+                sysmsg 'NO MORE HEALPOTS' 33
+                @setvar! autohealpot 0
+            endif
+        endif
+    endif
+    
+    if autocure = 1
+        getlabel backpack clientsync
+        if poisoned and hp < 40
+            if findtype 'Orange potion' backpack
+                potion 'cure'
+            else
+                sysmsg 'OUT OF CURE POTS' 33
+                @setvar! autocure 0
+            endif
+        endif
+    endif
+    
+    if paralyzed 
+        if findtype 'pouch' backpack 38
+            say '[Pouch'
+            pause minimumWaitForPing
+        else
+            overhead 'out of trapped pouches'
+        endif
+    endif
+    if not timerexists vettimer
+        createtimer vettimer
+        settimer vettimer 0
+    endif
+    if skill 'veterinary' > 60 and followers > 2
+        if not bandaging and timer vettimer > 5000
+            clearsysmsg 
+            
+            if findtype 'veterinary supplies' backpack as vetkit
+                dclick vetkit
+            endif
+            getlabel backpack clientsync
+            if insysmsg 'you or your nearby followers do not'
+                settimer vettimer 0
+            endif
+        endif
+    endif
+    
+    if autospy = 1 
+        getlabel backpack clientsync
+        if not queued and not targetexists and not cooldown spyglass 
+        # Closegump for more smooth spyglass
+            if gumpexists 2890020940
+                gumpclose 2890020940
+                pause 25
+            endif
+            while targetexists 
+                sysmsg 'Target cursor up'
+                wait 500
+            endwhile
+            sysmsg '> Running spyglass: Master_mage_v1.3' 44
+            //Valorite
+            if findtype '5365' backpack 1763 as glass
+                while targetexists 
+                endwhile
+                dclick glass
+                wft 500
+                target 'self'
+                waitforgump 2890020940
+            //Agapite
+            elseif findtype '5365' backpack 2425 as glass
+                while targetexists 
+                endwhile
+                dclick glass
+                wft 500
+                target 'self'
+                waitforgump 2890020940
+            elseif findtype '5365' backpack as glass
+                while targetexists 
+                endwhile
+                dclick glass
+                wft 500
+                target 'self'
+                waitforgump 2890020940
+            elseif not findtype '5365' backpack
+                sysmsg 'No more spyglass in backpack' 33
+                cooldown spyglass 80000
+            endif
+            
+            if autocartobuff = 1
+                if skill 'cartography' > 79 and not cooldown pvp
+                    pause minimumWaitForPing
+                    if ingump '152' 2890020940
+                        for 2
+                            sysmsg 'Missing Cartography buff...' 33
+                        endfor
+                        if warmode 
+                        else
+                            if findtype '2726' backpack as explopack
+                                sysmsg 'Getting cartography buff'
+                                dclick explopack
+                            endif
+                        endif
+                    endif
+                endif
+            endif
+            getlabel backpack clientsync
+            clearsysmsg 
+            if ingump 'Search for ships' 2890020940
+                gumpresponse 4 2890020940
+                cooldown spyglass 10000
+            endif 
+            
+            ## Stop script if youre no longer on a ship 
+            if insysmsg 'You must be onboard a ship'
+                stop
+            endif
+            
+            if annouceplayerboats = 1
+                if ingump "a small ship" 2890020940 or ingump "a small dragon ship" 2890020940 or ingump "a medium ship" 2890020940 or ingump "a medium dragon ship" 2890020940 or ingump "a large ship" 2890020940 or ingump "a large dragon ship" 2890020940 or ingump "a carrack" 2890020940 or ingump "a galleon" 2890020940 or ingump "a longboat" 2890020940  or ingump "a ship of the line" 2890020940 
+                    for 2
+                        sysmsg '♦♦ PLAYER BOAT ♦♦' 33
+                        overhead '♦ PLAYER BOAT ♦' 2263
+                    endfor
+                endif
+            endif
+            getlabel backpack clientsync
+            while ingump "Next" 2890020940
+                ##if ingump "Next" 2890020940
+                    pause 750
+                    gumpresponse 3 2890020940
+                    if annouceplayerboats = 1
+                        if ingump "a small ship" 2890020940 or ingump "a small dragon ship" 2890020940 or ingump "a medium ship" 2890020940 or ingump "a medium dragon ship" 2890020940 or ingump "a large ship" 2890020940 or ingump "a large dragon ship" 2890020940 or ingump "a carrack" 2890020940 or ingump "a galleon" 2890020940 or ingump "a longboat" 2890020940  or ingump "a ship of the line" 2890020940 
+                            for 2
+                                sysmsg '♦♦ PLAYER BOAT ♦♦' 33
+                                overhead '♦ PLAYER BOAT ♦' 2263
+                            endfor
+                        endif
+                    endif
+                ##endif
+            endwhile
+        endif
+    endif
+
+
+endwhile

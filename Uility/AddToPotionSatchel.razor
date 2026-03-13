@@ -1,0 +1,25 @@
+if not listexists satchels
+    createlist satchels
+else 
+    clearlist satchels
+endif
+
+if findtypelist satchels 'alchemists satchel' backpack 
+    foreach s in satchels
+        dclick s
+        pause 50
+        getlabel s mysatchel
+        overhead '{{mysatchel}}'
+        if '0 stones' in mysatchel
+        else
+            menu s 0
+        endif
+    endfor
+endif
+
+
+#if findtype "alchemists satchel" backpack as satchel
+#    dclick satchel
+#    pause 150
+#    @menu satchel 0
+#endif

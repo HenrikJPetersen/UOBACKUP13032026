@@ -1,0 +1,15 @@
+if findtype 19986 backpack as refreshrune
+    dclick refreshrune
+elseif findtype 'Time bag' backpack as tsatchel
+    if findtype 19986 tsatchel as refreshrune
+        dclick refreshrune
+    else
+        overhead 'No refresh rune found in time bag'
+    endif
+else
+    overhead 'No refresh runes found'
+endif
+
+if skill 'healing' > 79
+    script 'AutoDexer_1.2'
+endif

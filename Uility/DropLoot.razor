@@ -1,0 +1,374 @@
+## Settings
+## Set the grab bag
+## 1 = you use a roundbag as grab bag, script will re-set if you have one in inventory.
+## 0 = Skip this.
+@setvar! use_round_bag 1
+
+## If youre using an organizer to drop off loot like paints/mcd/rm - remember to modify which organizer number you are using.
+@setvar! use_organizer_to_drop 1
+@setvar! organizer_number 2
+
+
+## TODO: Add material type to spyglass section
+
+
+## Setup DO NOT EDIT
+if listexists listoftomes
+    clearlist listoftomes
+else
+    createlist listoftomes
+endif
+if not varexist tomechest
+    overhead 'Variable for tomechest not found'
+    setvar tomechest
+endif
+
+if find tomechest 'ground' -1 -1 2
+else
+    sysmsg 'Please target container/chest where your tomes are located'
+    setvar tomechest
+endif
+
+
+
+
+## SETUP DONE
+
+## Dropping off gold and dubs 3891(dubs) 3821(gold)
+if findtype 'gold coin|doubloon' backpack
+    ## Setting bank deposit as grab item bag
+    if findtype "bank deposit safe" ground any any 2 as deposit
+        hotkey 'Set Grab Item HotBag'
+        wft 500
+        target deposit
+        pause 500
+    else
+        sysmsg 'Not found'
+    endif
+    
+    ## Dropping gold
+    while findtype 3891|3821 backpack as money
+        sysmsg 'Dropping money'
+        hotkey 'Grab item'
+        wft 100
+        target money
+        while queued 
+            wait 75
+        endwhile
+    endwhile
+else
+    sysmsg 'No gold/dubs in backpack - stop being poor(like deathroll)' 2263
+endif
+## Gold dropoff end
+pause 150
+if findtype 'Storage shelf' ground any any 2 as shelf
+    @menu shelf 0
+    wft 400
+    target self
+endif
+## Adding magic items to recycler
+if findtype 'ornate elven chest' ground -1 -1 2 as mrecycle
+    sysmsg '>> Adding to magic recycler' 44
+    pause 250
+    menu mrecycle 1
+    pause 250
+endif
+## Adding to tomes.
+dclick tomechest
+pause 150
+if findtypelist listoftomes 'book' tomechest
+    foreach tome in listoftomes
+        getlabel tome mytome
+        sysmsg '>> Adding to: {{mytome}}' 44
+        @menu tome 0
+        pause 150
+    endfor
+endif
+pause 150
+if findtype 'resource container' ground -1 -1 2 as spile
+    @menu spile 0
+    wft
+    if findtype 'bag' backpack as lootbag
+        sysmsg 'found lootbag'
+        target lootbag
+    else
+        target self
+    endif
+endif
+pause 150
+if use_organizer_to_drop = 1
+    if organizer_number = 1
+        hotkey 'Organizer Agent-01'
+    elseif organizer_number = 2
+        hotkey 'Organizer Agent-02'
+    elseif organizer_number = 3
+        hotkey 'Organizer Agent-03'
+    elseif organizer_number = 4
+        hotkey 'Organizer Agent-04'
+    elseif organizer_number = 5
+        hotkey 'Organizer Agent-05'
+    elseif organizer_number = 6
+        hotkey 'Organizer Agent-06'
+    elseif organizer_number = 7
+        hotkey 'Organizer Agent-07'
+    elseif organizer_number = 8
+        hotkey 'Organizer Agent-08'
+    elseif organizer_number = 9
+        hotkey 'Organizer Agent-09'
+    elseif organizer_number = 10
+        hotkey 'Organizer Agent-10'
+    elseif organizer_number = 11
+        hotkey 'Organizer Agent-11'
+    endif
+else
+    sysmsg '>> Organizer NOT activated - USE AT OWN RISK' 33
+    ## MCD/RM/BOOTY check...
+    if findtype 24434|17087|45315|4026|4025 backpack
+        sysmsg '■■■ FOUND VALUEABLE ITEMS IN INVENTORY ■■■' 2263
+        pause 25
+        sysmsg '■■■ FOUND VALUEABLE ITEMS IN INVENTORY ■■■' 33
+        pause 25
+        sysmsg '■■■ FOUND VALUEABLE ITEMS IN INVENTORY ■■■' 2263
+    endif
+endif
+pause 150
+if findtype 'Storage shelf' ground any any 2 as shelf or findtype 'gothic storage shelf' ground -1 -1 2 as shelf
+    @menu shelf 1
+endif
+pause 150
+if findtype 'Repair bench' ground -1 -1 3 as repair
+    dclick repair
+endif
+
+if land_loadout_test = 0 and name == "RobotTurtle"
+    sysmsg '>> land_loadout_test should be 0 : {{land_loadout_test}}' 44
+    if findtype 'storage shelf' ground -1 -1 2 as boatshelf or findtype 'gothic storage shelf' ground -1 -1 2 as boatshelf
+        hotkey 'Set Grab Item HotBag'
+        wft 500
+        target boatshelf
+    endif    
+    while queued
+        pause 100
+    endwhile
+    if findtype '7109' backpack as item
+        hotkey 'grab item'
+        wft 250
+        target item
+    endif
+    while queued
+        pause 100
+    endwhile
+    if findtype 5370 backpack 2799 -1 -1 as item
+        hotkey 'grab item'
+        wft 250
+        target item
+    endif
+    while queued
+        pause 100
+    endwhile
+    if skill 'inscription' < 120
+        if findtype 'Flamestrike scroll' backpack as item
+            hotkey 'grab item'
+            wft 250
+            target item
+        endif
+    endif
+endif
+
+
+if land_loadout_test = 1 and name == "RobotTurtle"
+    sysmsg '>> land_loadout_test should be 1 : {{land_loadout_test}}' 44
+    if findtype 'storage shelf' ground -1 -1 2 as boatshelf or findtype 'gothic storage shelf' ground -1 -1 2 as boatshelf
+        hotkey 'Set Grab Item HotBag'
+        wft 500
+        target boatshelf
+    endif
+    pause 150
+    ## Combine into findtypelist
+    if findtype 5188 backpack as item
+        hotkey 'grab item'
+        wft 250
+        target item
+    endif
+    while queued
+        pause 100
+    endwhile
+    if findtype 25758 backpack as item 
+        hotkey 'grab item'
+        wft 250
+        target item
+    endif
+    while queued
+        pause 100
+    endwhile
+    if findtype 3699 backpack as item 
+        hotkey 'grab item'
+        wft 250
+        target item
+    endif
+    while queued
+        pause 100
+    endwhile
+    if findtype '3854' backpack as item
+        hotkey 'grab item'
+        wft 250
+        target item
+    endif
+    while queued
+        pause 100
+    endwhile
+    if findtype '31169' backpack as item
+        hotkey 'grab item'
+        wft 250
+        target item
+    endif
+    while queued
+        pause 100
+    endwhile
+    if findtype '2726' backpack as item
+        hotkey 'grab item'
+        wft 250
+        target item
+    endif
+    while queued
+        pause 100
+    endwhile
+    if findtype '5074' backpack as item
+        hotkey 'grab item'
+        wft 250
+        target item
+    endif
+    while queued
+        pause 100
+    endwhile
+    if findtype '5061' backpack as item
+        hotkey 'grab item'
+        wft 250
+        target item
+    endif
+    while queued
+        pause 100
+    endwhile
+    if findtype '5063' backpack as item
+        hotkey 'grab item'
+        wft 250
+        target item
+    endif
+    while queued
+        pause 100
+    endwhile
+    if findtype '5075' backpack as item
+        hotkey 'grab item'
+        wft 250
+        target item
+    endif
+    while queued
+        pause 100
+    endwhile
+    if skill 'inscription' < 120
+        if findtype 'Flamestrike scroll' backpack as item
+            hotkey 'grab item'
+            wft 250
+            target item
+        endif
+    endif
+    while queued 
+    endwhile
+    if skill 'poisoning' < 80
+        if findtype '3850' backpack as item
+            hotkey 'grab item'
+            wft 250
+            target item
+        endif
+    endif
+    while queued 
+    endwhile
+    if skill 'alchemy' < 80
+        if findtype '3853' backpack as item
+            hotkey 'grab item'
+            wft 250
+            target item
+        endif
+    endif
+    while queued 
+    endwhile
+    ##End of combine
+    if findtype 5370 backpack 0 -1 -1 as item
+        hotkey 'grab item'
+        wft 250
+        target item
+    endif
+    while queued
+        pause 100
+    endwhile
+    if findtype 5365 backpack as spyglass
+        if not listexists myspyglasses
+            createlist myspyglasses
+        else
+            clearlist myspyglasses
+        endif
+       
+        if findtypelist myspyglasses 5365 backpack
+            foreach spygl in myspyglasses
+                getlabel spygl myspygllabel
+                if '163 uses' in myspygllabel
+                    hotkey 'grab item'
+                    wft 250
+                    target spygl
+                    pause 25
+                else
+                    @ignore spygl
+                endif
+                while queued
+                    pause 100
+                endwhile
+            endfor
+        endif
+    endif
+    if findtype 'bag' backpack as lootbag
+        hotkey 'Set Grab Item HotBag'
+        wft 500
+        target lootbag
+    endif
+else
+    sysmsg '>> land_loadout_test should be 0 : {{land_loadout_test}}' 44
+endif 
+if use_round_bag = 1
+    ## Setting round bag to grab item bag
+    if findtype '3702' backpack as hotbag
+        hotkey 'Set Grab Item HotBag'
+        wft 500
+        target hotbag
+    endif
+endif
+
+if skill 'archery' > 79 and counttype 'crossbow bolt' backpack < 250
+    overhead 'NEED BOLTS'
+    if findtype 'Storage shelf' ground any any 2 as shelf or findtype 'gothic storage shelf' ground -1 -1 2 as shelf
+        dclick shelf
+        waitforgump 3232825965 1500
+        gumpresponse 238 3232825965
+    endif
+    
+endif
+
+if findtype '20495' backpack as container_wand
+    @setvar! container_id_tool container_wand
+    @getlabel! container_wand my_containerwand_label
+    sysmsg '➥ Found container id wand: {{my_containerwand_label}}' 2263
+else
+    sysmsg '▲▲ Script will fail due to not having a container wand ▲▲ ' 33
+    stop
+endif
+if findtype '20496' backpack as id_wand
+    @setvar! single_id_tool id_wand
+    @getlabel! id_wand my_idwand_label
+    sysmsg ' ➥ Found single id wand: {{my_idwand_label}}' 2263
+else
+    sysmsg '▲▲ Script will fail due to not having an id wand ▲▲ ' 33
+    stop
+endif
+
+sysmsg '||||||||||||||||||||||' 44
+sysmsg '||||| DONE |||||' 44
+sysmsg '||||||||||||||||||||||' 44
