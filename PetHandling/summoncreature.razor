@@ -1,0 +1,18 @@
+if followers = 5    
+    cast 'dispel'
+    @setvar! targettodispel
+    while not targetexists 
+    endwhile
+    while targetexists 
+        target targettodispel
+    endwhile
+endif
+if skill 'necromancy' > 70
+    say '[wither'
+    pause 550
+    if skill "spirit speak" <= 79
+        say '[vengefulspirit'
+    endif
+endif
+pause 250
+cast 'Summ. Creature'

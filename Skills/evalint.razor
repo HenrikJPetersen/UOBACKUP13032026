@@ -1,0 +1,23 @@
+if skill 'evaluating intelligence' < 80
+    skill 'evaluatingintelligence'
+    wft 500
+    target 0x2F4D1C
+    pause 2000
+    if gumpexists 3280914284
+        gumpclose 3280914284
+        pause 250
+    endif
+else
+    
+endif
+if findbuff 'Food satis'
+    overhead 'Found'
+else
+    if findtype 'tray' backpack as food
+        overhead 'found food in backpack'
+        dclick food
+    else
+        overhead 'out of food'
+    endif
+endif
+replay

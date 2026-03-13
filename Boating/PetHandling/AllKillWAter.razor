@@ -1,0 +1,24 @@
+if listexists pets
+    clearlist pets
+    pause 15
+    pushlist pets 0x380BCD
+    pushlist pets 0x2D9B73
+    pushlist pets 0x43E5A5
+    pushlist pets 0x1117FB
+    pushlist pets 0x1E9B97
+    pushlist pets 0x871D74
+else
+    createlist pets
+    pause 15
+    replay
+endif
+pause 25
+sysmsg 'set your killtarget' 44
+@setvar! killtarget
+sysmsg 'Minions going at it!!'
+foreach pet in pets
+    @menu pet 1
+    wft 600
+    target killtarget
+    pause 100
+endfor

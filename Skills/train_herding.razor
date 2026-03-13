@@ -1,0 +1,12 @@
+if followers < 5
+    cast 'Summ. Creature'
+    while casting 
+    endwhile
+endif
+dclick 0x4F47BEE5 
+pause 2500
+if skill 'herding' = 60
+    stop
+else
+    replay
+endif

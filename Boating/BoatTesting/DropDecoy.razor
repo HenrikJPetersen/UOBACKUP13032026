@@ -1,0 +1,9 @@
+if findtype '5188' backpack as decoy
+    lift decoy 1
+    droprelloc 0 0 
+endif
+pause 100
+getlabel backpack mysynclabel
+if findtype '5188' backpack as sbomb
+    dclick sbomb
+endif

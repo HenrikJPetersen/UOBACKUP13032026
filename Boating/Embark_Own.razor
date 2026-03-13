@@ -1,0 +1,31 @@
+if gumpexists 4216593270
+    if ingump 'RobotTurtle' 4216593270 or ingump 'Zeans' 4216593270
+        gumpresponse 201 4216593270
+        if ingump 'Disembark'
+            while not targetexists 
+            endwhile
+            while targetexists 
+            endwhile
+        endif
+    else
+        for 2
+            sysmsg 'Wrong ship gump' 33
+        endfor
+        gumpclose 4216593270
+        replay
+    endif
+else
+    sysmsg '>> Ship gump missing' 44
+    if gumpexists 4216593270
+        replay
+    else
+        dclick boathp
+    endif
+    getlabel backpack mysynclabel
+    pause 25
+    if gumpexists 4216593270
+        replay
+    else
+        dclick boattillerman
+    endif
+endif

@@ -1,0 +1,40 @@
+@setvar! eatfood 1
+@setvar! divinefury 1
+
+if not timerexists divine
+    createtimer divine
+    settimer divine 0
+endif
+
+while not dead
+    if timer divine > 31500 and divinefury = 1
+        gumpresponse 17 1387930325
+        settimer divine 0
+    endif
+    if not findbuff 'Food satisfaction' and eatfood = 1
+        overhead 'No food buff - nom nom'
+        if findtype 'tray' backpack as nomnom
+            dclick nomnom
+        else
+            sysmsg 'No more food....'
+            @setvar! eatfood 0
+        endif
+    endif
+   
+    pause 1500
+   # if skill 'focus' = 100
+#        setskill 'focus' 'lock'
+#        warmode 'off'
+#        stop
+#    endif
+    if skill 'archery' = 90
+        setskill 'archery' 'lock'
+    endif
+
+    
+    
+    
+    if findtype 'quiver' backpack as q and counttype 'arrow' backpack > 10
+        @menu q 0 
+    endif
+endwhile

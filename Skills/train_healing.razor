@@ -1,0 +1,174 @@
+## Select which skill to train - it will train to 120.
+@setvar! peace 1
+@setvar! disc 1
+@setvar! provo 1
+
+
+## Optional for better gains: Run lyric armor and have bard reset links in mastery chain.
+## Cooldown called "Bard reset" - that activates on the overhead msg that it gives: 
+
+## Config:
+if not timerexists waitfor
+    createtimer waitfor
+    settimer waitfor 6000
+else
+    settimer waitfor 6000
+endif
+
+## Peace
+if skill 'peacemaking' < 120 and peace = 1
+    skill 'peacemaking'
+    pause 250
+    if insysmsg "What instrument"
+        hotkey 'cancel current target'
+        if findtype "bamboo flute" backpack as inny
+        dclick inny
+        elseif findtype "tambourine" backpack as inny
+            dclick inny
+        elseif findtype "drum" backpack as inny
+            dclick inny
+        elseif findtype "lute" backpack as inny
+            dclick inny
+        elseif findtype "lap harp" backpack as inny
+            dclick inny
+        else
+            overhead "I dont have an inny" 34
+            wait 2000
+            replay
+        endif
+        wft 500
+    endif
+    wft 1500
+    if findtype 'a sand crawler' ground 0 0 10 as mob
+        if noto mob = hostile
+            target mob
+        else
+            hotkey 'cancel current target'
+        endif
+    endif
+    settimer waitfor 0
+    while timer waitfor < 6000
+        if cooldown "bard reset"
+            cooldown "bard reset" 0
+            settimer waitfor 6000
+            pause 500
+            
+        endif
+    endwhile
+endif
+
+
+
+
+
+## Provo
+
+skill 'provocation'
+pause 500
+if insysmsg "What instrument shall you play"
+    hotkey 'cancel current target'
+    if findtype "bamboo flute" backpack as inny
+    dclick inny
+    elseif findtype "tambourine" backpack as inny
+        dclick inny
+    elseif findtype "drum" backpack as inny
+        
+        dclick inny
+    elseif findtype "lute" backpack as inny
+        dclick inny
+    elseif findtype "lap harp" backpack as inny
+        dclick inny
+    else
+        overhead "I dont have an inny" 34
+        wait 2000
+        replay
+    endif
+    wft 500
+    replay
+endif
+ 
+
+wft 1500
+if findtype 'a sand crawler' ground 0 0 10 as mob
+    if noto mob = hostile
+        target mob
+    else
+        hotkey 'cancel current target'
+    endif
+endif
+wft 1500
+target self
+settimer waitfor 0
+while timer waitfor < 6000
+    if cooldown "bard reset"
+        cooldown "bard reset" 0
+        settimer waitfor 6000
+        pause 500
+        
+    endif
+endwhile
+
+## Disc
+
+skill 'Discordance'
+pause 250
+if insysmsg "What instrument"
+    hotkey 'cancel current target'
+    if findtype "bamboo flute" backpack as inny
+    dclick inny
+    elseif findtype "tambourine" backpack as inny
+        dclick inny
+    elseif findtype "drum" backpack as inny
+        dclick inny
+    elseif findtype "lute" backpack as inny
+        dclick inny
+    elseif findtype "lap harp" backpack as inny
+        dclick inny
+    else
+        overhead "I dont have an inny" 34
+        wait 2000
+        replay
+    endif
+    wft 500
+endif
+wft 1500
+if findtype 'a sand crawler' ground 0 0 10 as mob
+    if noto mob = hostile
+        target mob
+    else
+        hotkey 'cancel current target'
+    endif
+endif
+settimer waitfor 0
+while timer waitfor < 6000
+    if cooldown "bard reset"
+        cooldown "bard reset" 0
+        settimer waitfor 6000
+        pause 500
+        
+    endif
+endwhile
+
+if insysmsg "What instrument"
+    hotkey 'cancel current target'
+    if findtype "bamboo flute" backpack as inny
+    dclick inny
+    elseif findtype "tambourine" backpack as inny
+        dclick inny
+    elseif findtype "drum" backpack as inny
+        dclick inny
+    elseif findtype "lute" backpack as inny
+        dclick inny
+    elseif findtype "lap harp" backpack as inny
+        dclick inny
+    else
+        overhead "I dont have an inny" 34
+        wait 2000
+        replay
+    endif
+    wft 500
+endif
+
+clearsysmsg 
+replay
+    

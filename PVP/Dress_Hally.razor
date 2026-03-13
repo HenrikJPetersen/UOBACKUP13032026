@@ -1,0 +1,20 @@
+if not lhandempty or not rhandempty
+    warmode 'off'
+    pause 50
+    clearhands 'left'
+    warmode 'off'
+    pause 50
+    warmode 'off'
+else
+    if skill 'swords' >= 79
+        if findtype 'halberd' backpack as item
+            if targetexists 
+                lift item
+                pause 150
+                drop self lefthand
+            else
+                dclick item
+            endif
+        endif
+    endif
+endif

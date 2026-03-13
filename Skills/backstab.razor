@@ -1,0 +1,26 @@
+if lhandempty
+    overhead 'You should equip your weapon, dummy..' 2263
+    stop
+endif
+
+if not cooldown hiding and hidden
+    hotkey 'Target Closest Grey Monster'
+    pause 100
+    if not find lasttarget ground -1 -1 1
+        for 3
+        overhead "▼ OUT OF RANGE ▼" 88 lasttarget
+        pause 150
+        endfor
+    else
+        hotkey 'Attack Last Target'
+        pause 500
+        skill 'hiding'
+        
+    endif
+elseif not hidden
+    hotkey 'Attack Last Target'
+else
+    overhead 'WAIT'
+    pause 500
+    
+endif

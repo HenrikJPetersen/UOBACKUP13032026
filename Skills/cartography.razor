@@ -1,0 +1,13 @@
+while not dead
+    if not gumpexists 453554062
+    say '[cq'
+    endif
+    if counttype 'map' > 10
+        overhead 'true'
+        organizer 6
+        while queued
+            overhead 'Waiting'
+            pause 2500
+        endwhile
+    endif 
+endwhile

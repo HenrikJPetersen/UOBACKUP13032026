@@ -1,0 +1,21 @@
+#if cooldown mindrot = 0
+#    say '[mindrot'
+#    cooldown mindrot 30000
+#else
+#    overhead 'MINDROT ON CD' 343
+#endif
+clearsysmsg 
+if not gumpexists 622436516
+    say '[necromancyhotbar'
+    pause 150
+    gumpresponse 15 
+elseif gumpexists 622436516
+    gumpresponse 15 622436516
+endif
+pause 150
+if insysmsg 'you must wait another'
+    overhead '▼▼ Mindrot CD ▼▼' 33
+elseif insysmsg 'Unholy symbols'
+    overhead '▲▲ MINDROT ▲▲' 2263
+    cooldown mindrot 29500
+endif

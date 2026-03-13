@@ -1,0 +1,116 @@
+if not timerexists waitfor
+    createtimer waitfor
+    settimer waitfor 5000
+else
+    settimer waitfor 5000
+endif
+while not dead  
+    
+if insysmsg "What instrument"
+    if findtype "bamboo flute" backpack as inny
+    dclick inny
+    elseif findtype "tambourine" backpack as inny
+        dclick inny
+    elseif findtype "drum" backpack as inny
+        dclick inny
+    elseif findtype "lute" backpack as inny
+        dclick inny
+    elseif findtype "lap harp" backpack as inny
+        dclick inny
+    else
+        overhead "I dont have an inny" 34
+        wait 2000
+        replay
+    endif
+    wft 500
+endif
+clearsysmsg 
+hotkey 'cancel current target'  
+pause 250
+skill 'discordance'
+wft 5000
+target 0x247F39
+settimer waitfor 0
+while timer waitfor < 5500
+    if cooldown "bard reset"
+        cooldown "bard reset" 0
+        settimer waitfor 5500
+        pause 500
+    endif
+endwhile
+ hotkey 'cancel current target' 
+pause 250 
+skill 'peacemaking' 
+wft 5000
+target 0x247F39
+settimer waitfor 0
+while timer waitfor < 5500
+    if cooldown "bard reset"
+        cooldown "bard reset" 0
+        settimer waitfor 5000
+        pause 500
+        replay
+    endif
+endwhile
+#
+#hotkey 'cancel current target' 
+#pause 1000 
+#skill 'provocation'
+#wft 500
+#pause 250
+#if insysmsg "What instrument"
+#    if findtype "bamboo flute" backpack as inny
+#        target inny
+#    elseif findtype "tambourine" backpack as inny
+#        target inny
+#    elseif findtype "drum" backpack as inny
+#        target inny
+#    elseif findtype "lute" backpack as inny
+#        target inny
+#    elseif findtype "lap harp" backpack as inny
+#        target inny
+#    else
+#        overhead "I dont have an inny" 34
+#        wait 2000
+#        replay
+#    endif
+#    wft 500
+#endif
+#if findtype 'a rock guar' ground 0 0 12 as mob
+#    if noto mob = hostile
+#        overhead 'COME AT ME!'
+#        target mob
+#    endif
+#elseif findtype 'a sand crawler' ground 0 0 12 as mob
+#    if noto mob = hostile
+#        overhead 'COME AT ME!'
+#        target mob
+#    endif
+#endif
+#wft
+#target self
+#settimer waitfor 0
+#while timer waitfor < 5500
+#    if cooldown "bard reset"
+#        cooldown "bard reset" 0
+#        settimer waitfor 5000
+#        pause 500
+#        replay
+#    endif
+#endwhile
+endwhile
+
+
+
+
+    
+      
+
+
+
+#
+#if findtype 'lap harp' backpack as instru
+#    dclick instru
+#endif
+#pause 5000
+#replay

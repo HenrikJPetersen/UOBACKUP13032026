@@ -1,0 +1,15 @@
+if skill 'necromancy' >= 65
+    say '[Corpseskin'
+    cast 'Flamestrike'
+else
+    cast 'Flamestrike'
+endif
+while not targetexists 
+endwhile
+while targetexists 
+    if targetexists 'harmful'
+        lasttarget
+    elseif targetexists 'beneficial'
+        target self
+    endif
+endwhile

@@ -1,0 +1,10 @@
+if findtype '3713' backpack as crook
+    getlabel crook mycrook
+    #if 'activated' in mycrook
+#        overhead 'already active'
+#    else
+        dclick crook
+    #endif
+else
+    overhead 'NO CROOK'
+endif

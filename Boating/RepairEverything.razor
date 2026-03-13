@@ -1,0 +1,39 @@
+@setvar repairHullOrder 2
+@setvar repairSailsOrder 1
+@setvar repairGunsOrder 3
+
+if repairHullOrder = 1                  
+    say '[RepairHull'
+elseif repairGunsOrder = 1                  
+    say '[RepairGuns'
+else 
+    say '[RepairSails'  
+endif
+wait 200                
+if insysmsg "guns do not need" or insysmsg 'hull does not need' or insysmsg 'sails do not need'
+    if repairHullOrder = 2
+        say '[RepairHull'
+    elseif repairSailsOrder = 2
+        say '[RepairSails'  
+    else 
+        say '[RepairGuns'
+    endif
+endif
+wait 200
+if insysmsg "guns do not need" or insysmsg 'hull does not need' or insysmsg 'sails do not need'
+    if repairGunsOrder = 3
+        say '[RepairGuns'
+    elseif repairSailsOrder = 3
+        say '[RepairSails'  
+    else 
+        say '[RepairHull'
+    endif
+endif
+
+if not insysmsg  "guns do not need"
+    wait 10600
+    replay
+else
+    overhead 'Finished Repairing'
+    sysmsg 'Finished Repairing'
+endif

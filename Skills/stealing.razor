@@ -1,0 +1,57 @@
+if not timerexists stealing
+    createtimer stealing
+    settimer stealing 0
+endif
+
+if not timerexists hiding
+    createtimer hiding 
+    settimer hiding 0
+endif
+
+
+if timer stealing > 5300 and skill 'stealing' < 80
+    dclick 0x40006803
+    sysmsg '> Stealing for gains' 33
+    settimer stealing 0
+    pause 1000
+endif
+
+if timer hiding > 11000 and skill 'hiding' < 80 or timer hiding > 11000 and skill 'stealth' < 80
+    if skill 'hiding' < 80
+    skill 'hiding'
+    sysmsg '> Hiding for gains' 44
+    settimer hiding 0
+    else
+        if hidden
+            skill 'stealth'
+            sysmsg '> Stealth for gains' 44
+            settimer hiding 0
+        else 
+            skill 'hiding'
+            sysmsg '> Hiding for stealth' 44
+            settimer hiding 0
+        endif
+    endif
+endif
+pause 1000
+replay
+
+
+
+
+if skill 'stealth' < 80
+
+    if not hidden or skill 'hiding' < 80
+        useskill "hiding"
+        pause 2000
+        dclick 0x40006DAF
+        
+        pause 9100
+    endif
+
+    while hidden and skill 'hiding' > 79
+        useskill "stealth"
+        pause 11000
+    endwhile
+endif
+replay

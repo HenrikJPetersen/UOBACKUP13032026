@@ -1,0 +1,16 @@
+if skill 'hiding' < 90
+    overhead 'HIDING'
+    skill 'hiding'
+    pause 11100
+    replay
+endif
+if skill 'stealth' < 120
+    if not hidden or skill 'hiding' < 90
+        useskill "hiding"
+    endif
+    while hidden and skill 'hiding' > 80
+        useskill "stealth"
+        pause 11000
+    endwhile
+endif
+replay

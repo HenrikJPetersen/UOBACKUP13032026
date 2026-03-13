@@ -1,0 +1,30 @@
+if findtype 'black potion' backpack as pooot
+    dclick pooot
+    pause 600
+else
+    sysmsg 'Did not find any pots to chuck' 2263
+    pause 9000
+endif
+pause 250
+if counttype 'empty bottle%s%' backpack > 10
+    sysmsg 'Found bottles'
+    dclick 0x49F20DFF
+    waitforgump 1859005118
+    menu 0x49F20DFF 0
+    waitfortarget
+    target 'self'
+    pause 250
+endif
+#if skill 'resisting spells' = 0
+#    
+#    pause 250
+#    setskill 'resisting spells' 'down'
+#endif
+if skill 'alchemy' = 80
+    setskill 'archery' 'lock'
+    if gumpexists 453554062
+        gumpresponse 7 453554062
+    endif
+endif
+replay
+

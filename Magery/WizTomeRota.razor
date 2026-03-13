@@ -1,0 +1,34 @@
+if cooldown pvp
+    cast 'Mind blast'
+#elseif skill 'hiding' > 80
+#    skill 'hiding'
+#elseif skill 'tactics' > 79
+#    attack lasttarget
+#else
+    #if skill 'necromancy' > 99
+      #say '[corpseskin'
+      #pause 50
+endif
+   # if not cooldown fireball
+#        cast 'fireball'
+    ##else
+        if not cooldown harm 
+        cast 'harm'
+    elseif not cooldown 'magic arrow'
+        cast 'magic arrow'
+    #elseif not cooldown lightning 
+#        cast 'lightning'
+    else
+        cast 'mind blast'
+    endif
+    while not targetexists 
+    endwhile
+    while targetexists 
+        if noto lasttarget = hostile or noto lasttarget = criminal or noto lasttarget = murderer 
+            lasttarget 
+        endif
+        if dead lasttarget 
+            hotkey 'cancel current target'
+        endif
+    endwhile
+endif

@@ -1,0 +1,130 @@
+// What organizer are you using to move wood into a boombox?
+@setvar! organiser 10
+// Are you a mage, you want pets to protect you?
+@setvar! summon_pets 0
+
+
+
+if counttype '7127' backpack 0 -1 > 2000
+    sysmsg '>> More than 2000 boards - recalling!'
+    script 'Lumber_Recall'
+    stop
+endif
+
+while insysmsg "now tracking"
+    overhead 'PKPKPK'
+    script 'Lumber_Recall'
+endwhile
+clearsysmsg 
+
+if not varexist needToOrganize
+    @setvar! needToOrganize 0
+endif
+
+if counttype '7133' backpack > 40
+    overhead 'Found logs' 33
+    while findtype '7133' backpack as log
+        dclick log
+        if needToOrganize = 0
+            setvar needToOrganize 1
+        endif
+    endwhile
+    pause 250
+endif
+if needToOrganize = 1
+    organizer 10
+    while queued 
+        pause 50
+    endwhile
+    if counttype 7127 backpack as logcount or counttype 7154 backpack as ingotcount
+        overhead 'Found {{logcount}} logs. Found {{ingotcount}} ingots.'
+    endif       
+    setvar needToOrganize 0
+endif
+if summon_pets = 1
+    if not findtype 'a water elemental' ground 0 0 8
+        cast 'water elemental'
+        while not findtype 'a water elemental'
+        endwhile
+        say 'all guard me'
+    endif
+endif
+if lhandempty ?? 0 
+    if findtype "hatchet" backpack
+        dclicktype 'hatchet' backpack
+        wait 200
+    endif
+endif   
+   
+if lhandempty ?? 0 
+    overhead "No more hatchets!" 34
+    replay
+endif
+
+pause 500
+
+overhead 'Lumberjacking' 0
+hotkey 'Use item in hand'
+wft 1000
+hotkey 'Target Self'
+pause 250
+
+for 75
+    wait 100
+    if insysmsg 'world is saving'
+        for 30
+            overhead 'Waiting for world save...'
+            pause 1000
+            if insysmsg 'save complete'
+                overhead 'Save complete - continue on!' 88
+                clearsysmsg 
+                pause 250
+                replay
+            elseif insysmsg "now tracking"
+                script 'Lumber_Recall'
+            endif
+        endfor
+    elseif insysmsg "now tracking"
+        script 'lumberrecall'
+    elseif lhandempty ?? 0 
+        overhead "Broke axe" 34
+        replay
+    elseif insysmsg 'You do not see any' or insysmsg 'You cannot produce any wood'
+        overhead 'Move to next spot' 88
+        pause 250
+        replay
+    elseif insysmsg "travel"
+        overhead 'Waiting for travel...'
+        pause 1000
+        replay
+    else
+        if insysmsg "any harvestable"
+            // No Ore
+            overhead 'Move to next spot' 88
+            replay
+        elseif insysmsg "skillgain" or insysmsg "harvesting is not allowed"
+            // Gained skill
+            replay
+        elseif insysmsg "world is saving" or insysmsg 'World save complete'
+            // World Save
+            replay
+        elseif insysmsg "You hack"
+            // Failed
+            replay
+        elseif insysmsg "You chop"
+            // Success
+            replay
+        elseif insysmsg "You must wait"
+            // Wait message
+            overhead 'You must wait..' 34
+            wait 500
+            replay
+        endif
+    endif
+endfor
+if insysmsg "You must wait"
+   overhead 'You must wait..' 34
+    wait 500
+    replay
+endif
+overhead 'Stopping script' 34

@@ -1,0 +1,32 @@
+if findtype '16019' ground any any 3 true as found
+    setvar npchatch found
+elseif findtype '16046' ground any any 3 true as found
+      setvar npchatch found
+elseif findtype '15973' ground any any 3 true as found
+     setvar npchatch found
+elseif findtype '16057' ground any any 3 true as found
+     setvar npchatch found
+else 
+    overhead "Cannot find hold, target"
+    @setvar! npchatch
+endif
+
+if findtype 'bag' backpack as lootbag
+    hotkey 'Set Grab Item HotBag'
+    wft 500
+    target lootbag
+else
+    hotkey 'Set Grab Item HotBag'
+    wft 500
+    target backpack
+endif
+dclick npchatch
+
+while findtype 3891 npchatch as dubs
+    lift dubs 500
+    drop npchatch -1 -1 0
+    
+    @ignore dubs
+endwhile
+
+clearignore

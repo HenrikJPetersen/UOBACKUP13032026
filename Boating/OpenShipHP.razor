@@ -1,0 +1,13 @@
+if listexists tiller_list
+    clearlist tiller_list
+else
+    createlist tiller_list
+endif
+clearignore 
+if findtypelist tiller_list 'tiller man' 'ground'
+    foreach tiller in tiller_list
+      dclick tiller
+      waitforgump 4216593270
+      @ignore tiller
+    endfor
+endif

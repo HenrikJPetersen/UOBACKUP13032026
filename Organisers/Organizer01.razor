@@ -1,0 +1,24 @@
+if listexists trapcontainerlist
+    clearlist trapcontainerlist    
+else
+    createlist trapcontainerlist    
+endif
+hotkey 'Set Organizer HotBag-01'
+while targetexists 
+endwhile
+organizer 1
+
+while queued
+endwhile
+clearignore 
+if findtypelist trapcontainerlist '2474|3645|2473|3710|3644' backpack
+    foreach id in trapcontainerlist
+        overhead 'Found'
+        hotkey 'Set Organizer HotBag-01'
+        while not targetexists 
+        endwhile
+        while targetexists 
+            target id
+        endwhile
+    endfor
+endif

@@ -1,0 +1,17 @@
+@setvar! mypettarget
+while not dead
+if not cooldown hiding
+    warmode 'off'
+    pause 150
+    skill 'hiding'
+    cooldown hiding 11500
+    warmode 'on'
+endif
+
+if warmode and cooldown hiding
+    attack mypettarget
+endif
+
+endwhile
+
+    

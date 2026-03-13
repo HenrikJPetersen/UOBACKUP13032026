@@ -1,0 +1,32 @@
+//hotkey 'clear target queue'
+if timerexists 'harm' 
+    if timer 'harm' > 5000 
+        overhead 'Clearing timers' 2263
+        removetimer 'harm'
+        removetimer 'marrow'
+        removetimer 'fireball'
+        removetimer 'lightning'
+    endif
+endif
+if not timerexists 'harm'
+    cast 'harm'
+    createtimer 'harm'
+    settimer 'harm' 0
+elseif not timerexists 'marrow'
+    cast 'Magic arrow'
+    createtimer 'marrow'
+elseif not timerexists 'fireball'
+    cast 'fireball'
+    createtimer 'fireball'
+elseif not timerexists 'lightning'
+    cast 'Lightning'
+    removetimer 'harm'
+    removetimer 'marrow'
+    removetimer 'fireball'
+else
+    overhead 'Reset timers' 2263
+    removetimer 'harm'
+    removetimer 'marrow'
+    removetimer 'fireball'
+    removetimer 'lightning'
+endif

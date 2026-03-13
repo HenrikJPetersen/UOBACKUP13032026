@@ -1,0 +1,14 @@
+while findtype '5912' backpack
+    dclicktype '3999'
+    wft 1000
+    targettype "wizard's hat"
+    pause 500
+endwhile
+pause 2500
+if findtype 'resource container' ground -1 -1 2 as spile
+    @menu spile 0
+    wft 500
+    target self
+endif
+replay
+

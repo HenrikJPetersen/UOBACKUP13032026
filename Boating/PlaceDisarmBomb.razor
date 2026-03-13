@@ -1,0 +1,10 @@
+if findtype '5188' ground any any 2 as sbomb
+    dclick sbomb
+endif
+if findtype '5188' ground -1 1 10 as sbomb
+    overhead "Move closer!" 34 sbomb
+    wait 50
+    replay 
+else 
+    dclicktype '5188'
+endif

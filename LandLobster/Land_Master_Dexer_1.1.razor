@@ -1,0 +1,159 @@
+@setvar autoattack 1
+@setvar! rangecheck 3
+@setvar! minimumWaitForPing 250
+@setvar! taunt 0
+
+if skill 'fencing' > 79
+    while findtype "kryss" backpack as weap
+        getlabel weap myweaponlabel
+        if 'aspect' in myweaponlabel
+            sysmsg 'equip'
+            dclick weap
+            pause 250
+            continue
+        else
+            @ignore weap
+            sysmsg 'Not found'
+        endif
+    endwhile
+endif
+
+if skill 'parry' > 79
+    while findtype "Order shield" backpack as weap
+        getlabel weap myweaponlabel
+        if 'exceptional' in myweaponlabel
+            sysmsg 'equip'
+            dclick weap
+            pause 250
+            continue
+        else
+            @ignore weap
+            sysmsg 'Not found'
+        endif
+    endwhile
+endif
+if not bandaging and hits < maxhits
+    while targetexists 
+    endwhile
+    hotkey 'Bandage self'
+    wait 500
+endif
+if not bandaging and hp < 45
+    clearsysmsg 
+    if findtype 'Yellow Potion' backpack
+        if not cooldown healpot
+            potion 'heal'
+            cooldown healpot 10000
+            pause 250
+        else 
+            overhead 'coooldown healpot'
+        endif
+        if insysmsg 'You are already at full health.'
+            cooldown healpot 0
+        endif
+    else
+        sysmsg 'OUT OF HEAL POTS' 33
+        @setvar! autohealpot 0
+    endif
+endif
+
+if cooldown bandage > 4 and hp < 40
+    clearsysmsg 
+    if findtype 'Yellow Potion' backpack
+        if not cooldown healpot
+            potion 'heal'
+            cooldown healpot 10000
+            pause 250
+        else 
+            overhead 'coooldown healpot'
+        endif
+        if insysmsg 'You are already at full health.'
+            cooldown healpot 0
+        endif
+    else
+        sysmsg 'OUT OF HEAL POTS' 33
+    @setvar! autohealpot 0  
+    endif
+endif
+if warmode 
+    if autoattack = 1
+        getlabel backpack clientsync
+        if find myKillTarget ground -1 -1 rangecheck
+            sysmsg '>> Found my target' 44
+            
+        
+        elseif not find myKillTarget ground -1 -1 rangecheck
+            sysmsg '>> NO TARGET' 44
+            hotkey 'Target closest murderer monster'
+            pause minimumWaitForPing
+            
+            if insysmsg 'No one matching that was found'
+                @setvar! foundboss 0
+                clearsysmsg 
+                hotkey 'target closest grey monster'
+                pause minimumWaitForPing
+                if insysmsg 'No one matching that was found'
+                    @setvar! foundmob 0
+                    @setvar! myKillTarget 0
+                    warmode 'off'
+                else
+                    sysmsg '>>> Found a mob' 44
+                    @setvar! foundmob 1
+                    @setvar! myKillTarget lasttarget
+                    overhead '●▼♪♪ HERE ♪♪▼●' 2263 myKillTarget
+                endif
+            else
+                @setvar! foundboss 1
+                @setvar! myKillTarget lasttarget
+                overhead '●▼♪♪ HERE ♪♪▼●' 2263 myKillTarget
+            endif
+            
+        endif
+        getlabel backpack mysynclabel
+        
+        if foundboss = 1 or foundmob = 1
+            
+            else
+            pause minimumWaitForPing
+            if noto myKillTarget = 'hostile'
+                attack myKillTarget
+            elseif noto myKillTarget = 'murderer'
+                attack myKillTarget
+            elseif noto myKillTarget = 'enemy'
+                attack myKillTarget
+            elseif noto myKillTarget = 'criminal'
+                attack myKillTarget
+            elseif noto myKillTarget = 'innocent'
+                overhead 'Youre  to attack an innocent' 44
+                @setvar! myKillTarget 0
+            elseif noto myKillTarget = 'invulnerable'
+                overhead 'Cant  invulnerable' 44
+                @setvar! myKillTarget 0
+            elseif noto myKillTarget = 'friend'
+                overhead 'Dont kill your friend' 44
+                @setvar! myKillTarget 0
+            endif  
+            
+        else 
+            warmode 'off'
+            sysmsg '<< We are clear of targets or out of range. Rangecheck: ({{rangecheck}} tiles) >>' 44
+            pause minimumWaitForPing
+        endif
+        
+        if taunt = 1 and find myKillTarget ground -1 -1 4 and not cooldown taunttted and skill 'parry' >= 80
+            say '[taunt'
+            wft 500
+            target self
+            cooldown taunttted 15000
+            pause 350
+        endif
+        ## Auto attack end.
+    endif
+endif
+replay
+    
+
+
+    
+
+    

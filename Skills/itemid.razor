@@ -1,0 +1,15 @@
+if skill 'itemidentification' = 69
+    setskill 'itemidentificaiton' 'lock'
+else
+    skill 'itemidentification'
+    waitfortarget 1500
+    #target 0x4E1C4DA5
+    #pause 2500
+    #replay
+    target 0x4DA7C151
+    pause 2100
+endif
+if not bandaging
+    hotkey 'bandage self'
+endif
+replay

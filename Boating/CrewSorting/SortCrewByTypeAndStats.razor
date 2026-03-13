@@ -1,0 +1,147 @@
+## Movementspeed:
+## Pilgrim, Navigator, Sea dog, Sailor, Merchant    
+if not varexist speedcrewchest
+    setvar speedcrewchest
+elseif not find speedcrewchest
+    overhead 'speedcrewchest NA'
+    setvar speedcrewchest
+endif
+
+## Pilgrims
+if not varexist pilgrimchest
+    setvar pilgrimchest
+elseif not find pilgrimchest
+    overhead 'pilgrimchest NA'
+    setvar pilgrimchest
+endif
+
+## Powder monkey
+if not varexist monkeychest
+    setvar monkeychest
+elseif not find monkeychest
+    overhead 'monkeychest NA'
+    setvar monkeychest
+endif
+
+## Merchants
+if not varexist merchantchest
+    setvar merchantchest
+elseif not find merchantchest
+    overhead 'monkeychest NA'
+    setvar merchantchest
+endif
+
+## Carpenters
+if not varexist carpenterchest
+    setvar carpenterchest
+elseif not find carpenterchest
+    overhead 'carpenterchest NA'
+    setvar carpenterchest
+endif
+
+
+
+
+## Speed crew..
+if ingump '2.50% Movement speed' 18934867
+    sysmsg '>> Found 2.50% movementspeed navigator' 55
+    //drop loc: 44 64 0 - top left
+    lift crew 
+    pause 250
+    drop speedcrewchest 44 64 0
+elseif ingump '2.00% Movement speed' 189348675
+    sysmsg '>> Found 2.00% movementspeed navigator' 55
+    //drop loc: 148 64 0 - top right
+    lift crew 
+    pause 250
+    drop speedcrewchest 148 64 0
+elseif ingump '1.50% Movement speed' 189348675
+    sysmsg '>> Found 1.50% movementspeed navigator' 55
+    //drop loc: 44 107 0 - btm left
+    lift crew 
+    pause 250
+    drop speedcrewchest 44 107 0
+endif
+#Pilgrims without speed.
+if ingump 'Pilgrim' 189348675 and not ingump 'Movement speed' 189348675
+    sysmsg '>> Found a pilgrim without movementspeed...'
+    if ingump 'Master' 189348675
+        //drop loc: 44 64 0 - top left
+        lift crew 
+        pause 250
+        drop pilgrimchest 44 64 0 
+    elseif ingump 'Expert' 189348675
+        //drop loc: 148 64 0 - top right
+        lift crew 
+        pause 250
+        drop pilgrimchest 148 64 0
+    elseif ingump 'Veteran' 189348675
+        //drop loc: 44 107 0 - btm left
+        lift crew 
+        pause 250
+        drop pilgrimchest 44 107 0
+    endif    
+endif
+## Powder monkeys
+if ingump 'Powder Monkey' 189348675
+    sysmsg '>> Found a powder monkey'
+    if ingump 'Master' 189348675
+        //drop loc: 44 64 0 - top left
+        lift crew 
+        pause 250
+        drop monkeychest 44 64 0 
+    elseif ingump 'Expert' 189348675
+        //drop loc: 148 64 0 - top right
+        lift crew 
+        pause 250
+        drop monkeychest 148 64 0
+    elseif ingump 'Veteran' 189348675
+        //drop loc: 44 107 0 - btm left
+        lift crew 
+        pause 250
+        drop monkeychest 44 107 0
+    endif    
+endif
+## Merchant
+if ingump 'Merchant' 189348675
+    sysmsg '>> Found a Merchant'
+    if ingump 'Master' 189348675
+        //drop loc: 44 64 0 - top left
+        lift crew 
+        pause 250
+        drop merchantchest 44 64 0 
+    elseif ingump 'Expert' 189348675
+        //drop loc: 148 64 0 - top right
+        lift crew 
+        pause 250
+        drop merchantchest 148 64 0
+    elseif ingump 'Veteran' 189348675
+        //drop loc: 44 107 0 - btm left
+        lift crew 
+        pause 250
+        drop merchantchest 44 107 0
+    endif    
+endif
+## Carpenter
+if ingump 'Carpenter' 189348675
+    sysmsg '>> Found a Carpenter'
+    if ingump 'Master' 189348675
+        //drop loc: 44 64 0 - top left
+        lift crew 
+        pause 250
+        drop carpenterchest 44 64 0 
+    elseif ingump 'Expert' 189348675
+        //drop loc: 148 64 0 - top right
+        lift crew 
+        pause 250
+        drop carpenterchest 148 64 0
+    elseif ingump 'Veteran' 189348675
+        //drop loc: 44 107 0 - btm left
+        lift crew 
+        pause 250
+        drop carpenterchest 44 107 0
+    endif    
+endif
+
+
+

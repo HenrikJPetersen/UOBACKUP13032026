@@ -1,0 +1,27 @@
+if skill 'spirit speak' = 120
+    stop
+endif
+
+if targetexists 
+    hotkey 'cancel current target'
+endif
+
+cast 'magic arrow'
+while casting
+endwhile
+wft 500
+target 0x2F4D1C
+    
+if mana < 50 and not cooldown mushroom
+   dclicktype 29012
+elseif mana < 40
+    skill 'meditation'
+    pause 500
+endif
+if not findbuff 'satisfaction'
+    overhead 'not found'
+    dclicktype 'tray'
+    pause 250
+endif
+
+replay

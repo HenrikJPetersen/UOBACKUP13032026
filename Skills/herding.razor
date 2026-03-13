@@ -1,0 +1,52 @@
+if not timerexists lichtimer
+    createtimer lichtimer
+    settimer lichtimer 0
+endif
+if targetexists 
+    hotkey 'cancel current target'
+endif
+if followers < 1
+    if counttype '3963' backpack < 3
+        if findtype 'Storage shelf' ground any any 2 as shelf or findtype 'gothic storage shelf' ground -1 -1 2 as shelf
+            @menu shelf 1
+        endif
+    endif
+    say '[wither'
+    pause 600
+    say '[vengefulspirit'
+    cast 'fire elemental'
+    while not findtype 'a lich' ground -1 -1 2
+    endwhile
+    pause 250
+    replay
+elseif skill 'herding' < 120 
+    if findtype '3713' backpack as crook
+        dclick crook
+        pause 2000
+    endif
+endif
+
+if skill 'veterinary' < 100
+    if not findtype '3617' backpack
+        if findtype 'Storage shelf' ground any any 2 as shelf or findtype 'gothic storage shelf' ground -1 -1 2 as shelf
+            @menu shelf 1
+        endif
+    endif
+    if not bandaging
+        hotkey 'Use bandage (no timer)'
+        wft 500
+        targettype 'a lich'
+    endif
+    pause 500
+endif
+//
+
+if timer lichtimer > 120000 and not bandaging
+    overhead '{{lichtimer}}'
+    say 'all release'
+    waitforgump 931181454 500
+    gumpresponse 1 931181454
+    settimer lichtimer 0
+endif
+
+replay

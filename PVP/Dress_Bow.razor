@@ -1,0 +1,28 @@
+if findlayer self righthand as item
+    clearhands 'right'
+    pause 25
+elseif findlayer self lefthand
+    clearhands 'left'
+    pause 50
+    if findtype 'bow' backpack as katana
+        if targetexists 
+            lift katana
+            drop self lefthand
+        else
+            dclick katana
+        endif
+    endif
+elseif not findlayer self lefthand and not findlayer self righthand
+    if findtype 'bow' backpack as katana
+        if targetexists 
+            lift katana
+            drop self lefthand
+        else
+            dclick katana
+        endif
+    endif
+endif
+
+
+
+

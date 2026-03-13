@@ -1,0 +1,34 @@
+say 'All Guard Me'
+if not listexists petlist
+    createlist petlist
+else 
+    clearlist petlist
+endif
+clearignore 
+pushlist petlist "a black bear" front
+pushlist petlist "a brown bear" front
+pushlist petlist "a cave bear" front
+pushlist petlist "a polar bear" front
+pushlist petlist "a grizzly bear" front
+pushlist petlist "a sand crab" front
+pushlist petlist "an aegis rat" front
+pushlist petlist "a monitor hatchling" front
+pushlist petlist "a searing lizard" front
+pushlist petlist "shallow water" front
+pushlist petlist "a flamehound" front
+pushlist petlist "a firebat" front
+pushlist petlist "a jaguar" front
+pushlist petlist "a primordial whelp" front
+
+foreach pet in petlist
+    if findtype pet ground 0 0 8 as creature
+        getlabel creature mypetlabel
+        if noto creature = "friend"
+            menu creature 4
+            overhead '>> FOLLOWING <<' 2263 creature
+        else
+            overhead 'Found another players pet'
+        endif
+    endif
+endfor
+        

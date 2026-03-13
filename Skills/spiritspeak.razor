@@ -1,0 +1,40 @@
+if skill 'spirit speak' = 120
+    stop
+endif
+
+if findtype "reagent satchel" self as satchel
+    if counttype '3973' satchel < 10 as co
+        getlabel satchel mysatchel
+        overhead '{{mysatchel}} - {{co}}'
+        if findtype 'gothic storage shelf' ground as shelf
+            @menu shelf 0
+            wft 500
+            target self
+            pause 250
+            @menu shelf 1
+        endif
+    endif
+endif
+#
+#if skill 'arcane' = 100
+#    warmode 'off'
+#    stop
+#endif
+if not cooldown casting
+    cast 'create food'
+    cooldown casting 1000
+endif
+if mana < 50 and not cooldown mushroom
+   dclicktype 29012
+elseif mana < 40
+    skill 'meditation'
+    pause 500
+endif
+if not findbuff 'satisfaction'
+    overhead 'not found'
+    dclicktype 'tray'
+    pause 250
+endif
+
+replay
+#

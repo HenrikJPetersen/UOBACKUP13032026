@@ -1,0 +1,20 @@
+while followers < 1
+    cast 'earth elemental'
+endwhile
+
+while findtype 'an earth elemental' ground 0 0 1 as pet
+    if lhandempty
+        overhead 'true'
+        if findtype 'bow' backpack as bow
+            dclick bow
+        endif
+    endif
+    pause 250
+    if noto pet = 'friend'
+        overhead 'attacking pet'
+        attack pet
+        say 'all stop'
+    endif
+    pause 10000
+endwhile
+replay

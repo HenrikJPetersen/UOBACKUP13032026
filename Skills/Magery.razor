@@ -1,0 +1,120 @@
+if skill 'magery' < 60
+    if hp > 30
+        cast 'lightning'
+        wft 3000
+        target self
+        pause 300
+    else
+        cast 'greater heal'
+        wft 5000
+        target self
+        pause 300
+    endif
+    if mana > 20
+    else
+        while mana < 20
+            if findbuff 'Actively meditating'
+                wait 1000
+            else
+                skill 'meditation'
+                pause 1000
+            endif
+        endwhile
+    endif
+    //CAST LIGHTNING
+elseif skill 'magery' < 70
+    cast 'Invisibility'
+        wft 3000
+        target self
+        pause 300
+        if mana > 40
+        else
+            while mana < 40
+                if findbuff 'Actively meditating'
+                    wait 1000
+                else
+                    skill 'meditation'
+                    pause 1000
+                endif
+            endwhile
+        endif
+    //CAST INVIS
+elseif skill 'magery' < 80
+        cast 'meteor swarm'
+        wft 5000
+        target self
+        pause 300
+        if mana > 40
+        else
+            while mana < 40
+                if findbuff 'Actively meditating'
+                    wait 1000
+                else
+                    skill 'meditation'
+                    pause 1000
+                endif
+            endwhile
+        endif
+elseif skill 'magery' < 85
+    if mana > 50
+        cast 'flamestrike'
+        wft 5000
+        target 0x2F4D1C
+        pause 300
+    else
+        while mana < 50
+            if findbuff 'Actively meditating'
+                wait 1000
+            else
+                skill 'meditation'
+                pause 1000
+            endif
+        endwhile
+    endif
+elseif skill 'magery' < 100
+    if findtype "reagent satchel" self as satchel
+    if counttype '3974' satchel < 5 
+    if findtype 'storage shelf' ground any any 2 as sshelf or findtype 'gothic storage shelf' ground any any 2 as sshelf
+                @menu sshelf 1
+                pause 500
+            endif
+        endif
+    endif
+    if findtype "a water elemental" as ele
+        @menu ele 9
+    endif
+    if mana > 50
+            clearsysmsg 
+            cast 'Water elemental'
+            while not findtype "a water elemental" ground 0 0 1
+                pause 350
+            if insysmsg 'magery skillgain'
+                    pause 250
+                    replay
+                endif
+                if findtype "a water elemental" as ele
+                    @menu ele 9
+                    pause 250
+                endif
+            endwhile
+        else
+            while mana < 50
+                if findbuff 'Actively meditating'
+                    wait 1000
+                else
+                    skill 'meditation'
+                    pause 1000
+                endif
+            endwhile
+        endif
+elseif skill 'magery' = 100
+    overhead 'You are done' 2263
+    pause 1000
+    overhead 'You are done' 2263
+    pause 1000
+    overhead 'You are done' 2263
+    pause 1000
+    overhead 'You are done' 2263
+    break
+endif
+replay

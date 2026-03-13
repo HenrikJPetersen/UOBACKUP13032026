@@ -1,0 +1,49 @@
+while not dead 
+    if skill 'healing' > 50 and not bandaging and hp < maxhp
+        hotkey 'bandage self'
+    endif
+    #if cooldown moving
+#        overhead 'true'
+#    else
+#        overhead 'false' 33
+#    endif
+    if hp < 50
+        overhead '>>> HEAL HEAL <<<' 2263
+    endif
+    if paralyzed and hp < 45 and not cooldown moving
+        say '[pouch'
+        pause 150
+        cast 'greater heal'
+        pause 150
+    endif
+    if hp < 45 and not cooldown moving
+        cast 'greater heal'
+        pause 150
+    endif
+    if paralyzed and not targetexists 'beneficial'
+        say '[pouch'
+        pause 150
+    endif
+    if hp < 60  and targetexists 'beneficial'
+        target self
+    endif
+    if not targetexists 'beneficial' and hp < 60 and not cooldown 'heal potion'
+        potion 'heal'
+        cooldown 'heal potion' 10500
+        pause 150
+    endif
+    if not targetexists 'beneficial' and poisoned and hp < 60
+        while poisoned
+            potion 'cure'
+            pause 150
+        endwhile
+    endif
+    if poisoned and hp < 45 
+        potion 'cure'
+    endif
+    if hp < 45 and not cooldown 'heal potion'
+        potion 'heal'
+        cooldown 'heal potion' 10500
+        pause 150
+    endif
+endwhile

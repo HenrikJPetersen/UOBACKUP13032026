@@ -1,0 +1,347 @@
+@setvar! disableOverhead 0
+@setvar! eatfood 1
+@setvar! autoequip 1
+@setvar! drinkMrPotion 0
+@setvar! strengthpotionduration 132000
+##To reset pvp cooldown if needed. 
+##cooldown pvp 0
+## The time between each vet supplies attempt. Everything above 5000 is the time between vet attempts - so 7000 will be 2 seconds - does not apply in pvp mode
+@setvar! maxWaitVet 6500
+
+## Adjust to your ping - im running around 100 ping and need 250 to avoid 'wait to perform another action'
+@setvar! minimumWait 250
+# SHOULD BE THE SAME AS IN YOUR RECYCLE SCRIPT IF USING CONTAINER WAND..
+@setvar! minimum_id_amount 10
+@setvar! countvetups 1
+@setvar! autorecycle 1
+
+
+if not warmode 
+    sysmsg 'Wont heal, you are not in warmode' 33
+endif
+## DO NOT EDIT BELOW ## DO NOT EDIT BELOW ## DO NOT EDIT BELOW ## DO NOT EDIT BELOW ##
+if not timerexists preventspam
+    createtimer preventspam
+    settimer preventspam 10000
+endif
+if not timerexists preventspamPvp
+    createtimer preventspamPvp
+    @settimer! preventspamPvp 0
+endif
+if not timerexists vetTimer
+    createtimer vetTimer
+    @settimer! vetTimer 0
+endif
+
+while targetexists 
+    if diffhits > 30 and not bandaging
+        if not lhandempty
+            clearhands 'left'
+            pause minimumWait
+        endif
+        potion 'heal'
+        
+    endif
+    pause minimumWait
+endwhile
+
+if countvetups = 1
+    if counttype 'veterinary supplies' < 30
+        if timer preventspam > 10000
+            overhead '☻ VET SUP < 30 ☻' 33
+            sysmsg '☻ VET SUP < 30 ☻' 33
+            settimer preventspam 0
+        endif
+    elseif counttype 'veterinary supplies' < 50
+        if timer preventspam > 10000
+            overhead '☻ VET SUP < 50 ☻' 243
+            sysmsg '☻ VET SUP < 50 ☻' 243
+            settimer preventspam 0
+        endif
+    endif
+endif
+
+## PVP handling - Requires a cooldown that triggers from the overhead msg: "is attacking you" - recommend setting it to around 300 seconds :)
+if cooldown pvp != 0
+    if findtype '12686' backpack as nomnom
+        dclick nomnom
+        wft 500
+        target self
+    endif
+    if timer preventspam > 10000
+        overhead '☻☻ PVP MODE ☻☻' 2263
+        settimer preventspam 0
+    endif
+    if not bandaging and hits < maxhits
+        if findtype '25750' backpack as vets
+            dclick vets
+        elseif findtype '3617' backpack as aids
+            dclick aids 
+            wft 500
+            target self
+        endif
+        pause 500
+    endif
+    if hits < 70
+        if not cooldown 'heal potion'
+             if not lhandempty
+                clearhands 'left'
+                pause minimumWait
+            endif
+            potion 'Heal'
+            pause minimumWait
+            
+           
+        else
+            if timer preventspamPvp > 3000
+                overhead '☻ HEAL POT CD ☻' 34
+                settimer preventspamPvp 0
+            endif
+        endif
+    endif
+    if paralyzed 
+        if findtype 'pouch' backpack 38
+            say '[Pouch'
+            pause minimumWait
+        else
+            if timer preventspamPvp > 3000
+                overhead 'out of trapped pouches'
+                settimer preventspamPvp 0
+            endif
+        endif
+    endif
+    if poisoned
+        if findtype 'Orange potion' backpack
+            if not lhandempty
+                clearhands 'left'
+                pause minimumWait
+            endif
+            potion 'cure'
+            pause minimumWait
+        else
+            if timer preventspamPvp > 3000
+                overhead '☻ NO CURE POTS' 34
+                settimer preventspamPvp 0
+            endif
+        endif
+    endif
+    if findbuff 'Weaken'
+        if findtype 'White potion' backpack
+            if not lhandempty
+                clearhands 'left'
+                pause minimumWait
+            endif
+            potion 'Strength'
+            pause minimumWait
+        else
+            if timer preventspamPvp > 3000
+                overhead '☻ NO STR POTS' 34
+                settimer preventspamPvp 0
+            endif
+        endif
+    endif
+    if weight > maxweight
+        if findtype "gold coin" backpack as item
+            lift item 2000
+            droprelloc 0 0
+            wait minimumWait
+            if insysmsg "cannot drop anything"
+                drop backpack -1 -1 -1
+            endif
+            wait minimumWait
+        else
+            overhead "We are overweight and cannot drop anything" 34
+        endif
+    endif
+    replay
+endif
+## END PVP handling ##
+
+## Weight check 
+## Found an issue with parry and unequipping a shield when overweight - need to change it to work with parry
+## possible a reduced weight check.
+if maxweight = 390
+    if weight > 394
+        if findtype 'White Potion' backpack
+            if not lhandempty
+                clearhands 'left'
+                pause minimumWait
+            endif
+            potion 'strength'
+            pause minimumWait
+            cooldown 'strength potion' strengthpotionduration
+        else
+            if disableOverhead = 0
+                overhead '↓ overweight ↓' 23 
+            endif
+            pause minimumWait
+            lifttype '3821' 500
+            pause minimumWait
+            droprelloc 0 0
+            pause minimumWait
+        endif
+    endif
+elseif maxweight = 460
+    if weight > 464
+        if disableOverhead = 0
+            overhead '↓ overweight ↓' 23 
+        endif
+        pause minimumWait
+        lifttype '3821' 100
+        pause minimumWait
+        droprelloc 0 0
+        pause minimumWait
+    endif
+endif
+
+## HP CHECK
+if hits < 65
+    if not bandaging
+        if findtype '25750' backpack as vets
+            dclick vets
+        elseif findtype '3617' backpack as aids
+            dclick aids 
+            wft 500
+            target self
+        endif
+        pause minimumWait
+    endif
+    if not findbuff 'Strength'
+        if not lhandempty
+            clearhands 'left'
+            pause minimumWait
+        endif
+        potion 'Strength'
+        cooldown 'strength potion' 132000
+        pause minimumWait
+    endif
+    if cooldown 'heal potion' = 0
+        if not lhandempty
+            clearhands 'left'
+            pause minimumWait
+        endif
+        potion 'Heal'
+        
+        pause minimumWait
+    else
+        if disableOverhead = 0
+            if timer preventspam > 10000
+                for 2
+                    overhead 'EMERGENCY' 33
+                    pause minimumWait
+                    settimer preventspam 0
+                endfor
+            endif
+        endif
+    endif
+endif
+## END HP CHECK ##
+
+
+## Utility ##
+
+if poisoned
+    if not lhandempty
+        clearhands 'left'
+        pause minimumWait
+    endif
+    potion 'cure'
+    pause minimumWait
+endif
+if not findbuff 'Food' and eatfood = 1
+    if findtype 'tray' backpack as food
+        dclick food
+    endif
+endif
+
+if drinkMrPotion = 1
+    if findbuff 'bleed' or findbuff 'disease'
+        if not bandaging and diffhits > 2
+            if findtype '25750' backpack as vets
+                dclick vets
+            elseif findtype '3617' backpack as aids
+                dclick aids 
+                wft 500
+                target self
+            endif
+            pause minimumWait 
+        endif
+        if not findbuff 'Magic Resist'
+            if findtype 'Black potion' backpack as resistpot
+                if not lhandempty
+                    clearhands 'left'
+                    pause minimumWait
+                endif
+                dclick resistpot
+                pause minimumWait
+                if disableOverhead = 0
+                    if timer preventspam > 10000
+                        overhead 'DOT on you'
+                        settimer preventspam 0
+                    endif
+                endif
+            else
+                if disableOverhead = 0
+                    if timer preventspam > 10000
+                        overhead 'No Resist pot'
+                        settimer preventspam 0
+                    endif
+                endif
+            endif 
+        endif
+    endif
+endif
+if findbuff 'Weaken' and weight > maxweight
+    if findtype 'White potion' backpack
+            if not lhandempty
+                clearhands 'left'
+                pause minimumWait
+            endif
+        potion 'Strength'
+        cooldown 'strength potion' 132000
+    else
+        if findtype "gold coin" backpack as item
+            lift item 2000
+            droprelloc 0 0
+            wait minimumWait
+            if insysmsg "cannot drop anything"
+                drop backpack -1 -1 -1
+            endif
+            wait minimumWait
+        else
+            overhead "We are overweight and cannot drop anything" 34
+        endif
+    endif
+endif
+
+## VET SUPPLIES!
+if warmode on
+    if not bandaging and timer vetTimer > maxWaitVet 
+        //overhead 'Started vet {{vetTimer}}' 
+        if findtype '25750' backpack as vets
+            dclick vets
+        elseif findtype '3617' backpack as aids
+            dclick aids 
+            wft 500
+            target self
+        endif
+        pause minimumWait
+        if insysmsg 'You or your nearby followers do not require healing'
+            settimer vetTimer 5000
+        else
+            settimer vetTimer 0
+        endif
+
+    endif
+elseif diffhits > 7 and not bandaging 
+    if findtype '25750' backpack as vets
+        dclick vets
+    elseif findtype '3617' backpack as aids
+        dclick aids 
+        wft 500
+        target self
+    endif
+else
+    stop
+endif
+replay

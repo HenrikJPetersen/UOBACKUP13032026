@@ -1,0 +1,70 @@
+clearsysmsg 
+if not timerexists provotimer
+    createtimer provotimer
+    settimer provotimer 0
+else
+    settimer provotimer 0
+endif
+
+skill 'provocation'
+wft 500
+pause 450
+if insysmsg 'You must wait a few moments to use another skill' or insysmsg 'You must wait a few moments before you may provoke or pacify another'
+    pause 500
+    replay
+endif
+
+if insysmsg "What instrument"
+    if findtype "bamboo flute" backpack as inny
+        target inny
+    elseif findtype "tambourine" backpack as inny
+        target inny
+    elseif findtype "drum" backpack as inny
+        target inny
+    elseif findtype "lute" backpack as inny
+        target inny
+    elseif findtype "lap harp" backpack as inny
+        target inny
+    else
+        overhead "I dont have an inny" 34
+        wait 2000
+        replay
+    endif
+    wft 500
+endif
+if findtype 'a rock guar' ground 0 0 6 as mob
+    if noto mob = hostile
+        overhead 'COME AT ME!'
+        target mob
+    else
+        hotkey 'Cancel current target'
+    endif
+    elseif findtype 'a sand crawler' ground 0 0 6 as mob
+    if noto mob = hostile
+        overhead 'COME AT ME!'
+        target mob
+    else
+        hotkey 'Cancel current target'
+    endif
+endif
+wft
+target self
+settimer provotimer 0
+pause 250
+
+while cooldown provocation or cooldown "Provo Fail" 
+    if cooldown "bard reset"
+        cooldown provocation 0
+        cooldown "Provo Fail" 0
+        pause 1000
+        replay
+    endif
+    if timer provotimer > 11500
+        overhead 'TIMEOUT'
+        replay
+    endif
+    ##overhead {{provotimer}}
+endwhile
+
+
+replay

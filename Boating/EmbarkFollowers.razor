@@ -1,0 +1,15 @@
+if gumpexists 4216593270
+    if ingump 'RobotTurtle' 4216593270 or ingump 'Zeans' 4216593270
+        gumpresponse 202 4216593270
+    endif
+else
+    dclick boathp
+    getlabel backpack mysynclabel
+    pause 50
+    if gumpexists 4216593270
+        if ingump 'RobotTurtle' 4216593270 or ingump 'Zeans' 4216593270
+            gumpresponse 202 4216593270
+        endif
+        stop
+    endif
+endif

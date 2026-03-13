@@ -1,0 +1,19 @@
+if not lhandempty or not rhandempty
+    warmode 'off'
+    pause 50
+    clearhands 'left'
+    warmode 'off'
+    pause 50
+    warmode 'off'
+else
+    if skill 'swords' >= 80
+        if findtype 'double axe' backpack as item
+            if targetexists 
+                lift item
+                drop self lefthand
+            else
+                dclick item
+            endif
+        endif
+    endif
+endif

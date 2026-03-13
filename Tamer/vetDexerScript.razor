@@ -1,0 +1,392 @@
+@setvar! disableOverhead 0
+@setvar! eatfood 1
+@setvar! autoequip 1
+@setvar! drinkMrPotion 0
+## Set to whatever you got, if youre running vet links
+@setvar! strengthpotionduration 132000
+##To reset pvp cooldown if needed. 
+##cooldown pvp 0
+## The time between each vet supplies attempt. Everything above 5000 is the time between vet attempts - so 7000 will be 2 seconds - does not apply in pvp mode
+
+
+## Adjust to your ping - im running around 100 ping and need 250 to avoid 'wait to perform another action'
+@setvar! minimumWait 250
+# SHOULD BE THE SAME AS IN YOUR RECYCLE SCRIPT IF USING CONTAINER WAND..
+@setvar! minimum_id_amount 10
+@setvar! countvetups 0
+@setvar! autorecycle 0
+
+
+## DO NOT EDIT BELOW ## DO NOT EDIT BELOW ## DO NOT EDIT BELOW ## DO NOT EDIT BELOW ##
+if not timerexists preventspam
+    createtimer preventspam
+    settimer preventspam 10000
+endif
+if not timerexists preventspamPvp
+    createtimer preventspamPvp
+    @settimer! preventspamPvp 0
+endif
+if not timerexists vetTimer
+    createtimer vetTimer
+    @settimer! vetTimer 0
+endif
+
+while targetexists 
+    if diffhits > 30 and not bandaging
+        #if not lhandempty
+#            clearhands 'left'
+#            pause minimumWait
+        endif
+        potion 'heal'
+        
+    endif
+    pause minimumWait
+endwhile
+
+if countvetups = 1
+    if counttype 'veterinary supplies' < 30
+        if timer preventspam > 10000
+            overhead '☻ VET SUP < 30 ☻' 33
+            sysmsg '☻ VET SUP < 30 ☻' 33
+            settimer preventspam 0
+        endif
+    elseif counttype 'veterinary supplies' < 50
+        if timer preventspam > 10000
+            overhead '☻ VET SUP < 50 ☻' 243
+            sysmsg '☻ VET SUP < 50 ☻' 243
+            settimer preventspam 0
+        endif
+    endif
+endif
+
+if findtype '3713' backpack as crook
+    getlabel crook mycrook
+    if 'activated' in mycrook
+        
+    else
+        dclick crook
+    endif
+   
+else
+    overhead 'NO CROOK'
+endif
+
+
+
+## PVP handling - Requires a cooldown that triggers from the overhead msg: "is attacking you" - recommend setting it to around 300 seconds :)
+if cooldown pvp != 0
+    if findtype '12686' backpack as nomnom
+        dclick nomnom
+        wft 500
+        target self
+    endif
+    if timer preventspam > 10000
+        overhead '☻☻ PVP MODE ☻☻' 2263
+        settimer preventspam 0
+    endif
+    if not bandaging and hits < maxhits
+        if findtype '25750' backpack as vets
+            dclick vets
+        elseif findtype '3617' backpack as aids
+            dclick aids 
+            wft 500
+            target self
+        endif
+        pause 500
+    endif
+    if hits < 70
+        if not cooldown 'heal potion'
+             #if not lhandempty
+#                clearhands 'left'
+#                pause minimumWait
+#            endif
+            if findtype '3852' backpack
+                potion 'Heal'
+                pause minimumWait
+            else
+                overhead 'NO MORE HEAL POTS' 33
+            endif
+           
+        else
+            if timer preventspamPvp > 3000
+                overhead '☻ HEAL POT CD ☻' 34
+                settimer preventspamPvp 0
+            endif
+        endif
+    endif
+    if paralyzed 
+        if findtype 'pouch' backpack 38
+            say '[Pouch'
+            pause minimumWait
+        else
+            if timer preventspamPvp > 3000
+                overhead 'out of trapped pouches'
+                settimer preventspamPvp 0
+            endif
+        endif
+    endif
+    if poisoned
+        if findtype 'Orange potion' backpack
+            #if not lhandempty
+#                clearhands 'left'
+#                pause minimumWait
+#            endif
+            potion 'cure'
+            pause minimumWait
+        else
+            if timer preventspamPvp > 3000
+                overhead '☻ NO CURE POTS' 34
+                settimer preventspamPvp 0
+            endif
+        endif
+    endif
+    if findbuff 'Weaken'
+        if findtype 'White potion' backpack
+            #if not lhandempty
+#                clearhands 'left'
+#                pause minimumWait
+#            endif
+            if findtype '3849' backpack
+                potion 'Strength'
+                pause minimumWait
+            else
+                overhead 'NO MORE STR POTS' 33
+            endif
+        else
+            if timer preventspamPvp > 3000
+                overhead '☻ NO STR POTS' 34
+                settimer preventspamPvp 0
+            endif
+        endif
+    endif
+    
+    if weight > maxweight
+        if findtype "gold coin" backpack as item
+            lift item 2000
+            droprelloc 0 0
+            wait minimumWait
+            if insysmsg "cannot drop anything"
+                drop backpack -1 -1 -1
+            endif
+            wait minimumWait
+        else
+            overhead "We are overweight and cannot drop anything" 34
+        endif
+    endif
+    replay
+endif
+## END PVP handling ##
+
+## Weight check 
+## Found an issue with parry and unequipping a shield when overweight - need to change it to work with parry
+## possible a reduced weight check.
+if maxweight = 390
+    if weight > 394
+        if findtype 'White Potion' backpack
+            #if not lhandempty
+#                clearhands 'left'
+#                pause minimumWait
+#            endif
+            potion 'strength'
+            pause minimumWait
+            cooldown 'strength potion' strengthpotionduration
+        else
+            if disableOverhead = 0
+                overhead '↓ overweight ↓' 23 
+            endif
+            pause minimumWait
+            lifttype '3821' 500
+            pause minimumWait
+            droprelloc 0 0
+            pause minimumWait
+        endif
+    endif
+elseif maxweight = 460
+    if weight > 464
+        if disableOverhead = 0
+            overhead '↓ overweight ↓' 23 
+        endif
+        pause minimumWait
+        lifttype '3821' 100
+        pause minimumWait
+        droprelloc 0 0
+        pause minimumWait
+    endif
+endif
+
+## HP CHECK
+
+## END HP CHECK ##
+
+
+## Utility ##
+
+
+
+## END UTILITY ##
+
+
+## AutoEquip
+if autoequip = 1
+    if listexists weaponlist
+        clearlist weaponlist
+    else
+        createlist weaponlist
+    endif
+   
+    #if rhandempty
+#        clearignore 
+#    endif
+   
+    if skill 'parry' = 80 and lhandempty
+        if findtype 'wooden shield' backpack as shield
+            dclick shield
+            pause minimumWait
+        endif
+    endif
+    
+    #setvar  
+    if lhandempty and skill 'fishing' >= 80 and findtype 'harpoon' as poon
+        dclick poon
+        pause minimumWait
+    endif 
+    
+    if skill 'fencing' > 79 and rhandempty and findtypelist weaponlist 'war fork|kryss|short spear' backpack 
+        foreach weap in weaponlist
+            getlabel weap found
+            pause 150
+            if "aspect" in found 
+                dclick weap
+                pause minimumWait
+                replay
+            else
+                @ignore weap
+            endif
+        endfor
+    endif 
+    if skill 'mace fighting' > 79 and rhandempty and findtypelist weaponlist 'war axe|maul|club' backpack 
+        foreach weap in weaponlist
+            getlabel weap found
+            pause 150
+            if "aspect" in found 
+                dclick weap
+            pause minimumWait
+                replay
+            else
+                @ignore weap
+            endif
+        endfor
+    endif
+    if skill 'swords' > 79 and rhandempty and findtypelist weaponlist 'viking sword|katana|longsword' backpack 
+        foreach weap in weaponlist
+            getlabel weap found
+            pause 150
+            if "aspect" in found 
+                dclick weap
+            pause minimumWait
+                replay
+            else
+                @ignore weap
+            endif
+        endfor
+    endif
+    if skill 'archery' > 79 and rhandempty and findtypelist weaponlist 3920|5042 backpack 
+        foreach weap in weaponlist
+            getlabel weap found
+            pause 150
+            if "aspect" in found 
+                dclick weap
+                pause minimumWait
+                replay
+            else
+                @ignore weap
+            endif
+        endfor
+    endif    
+    ## Could not get wrestling to work with martial manuals like the rest of the weapons - so this is a dirty quickfix.
+    if skill 'wrestling' > 79 and rhandempty 
+        if findtype '22187' backpack as weap
+            dclick weap
+            pause minimumWait
+        endif
+    endif 
+endif
+
+
+## End autoequip
+
+
+## VET SUPPLIES!
+if warmode on
+    
+    
+    if not bandaging
+        if findtype '25750' backpack as vets
+            dclick vets
+        elseif findtype '3617' backpack as aids
+            dclick aids 
+            wft 500
+            target self
+        endif
+        pause minimumWait
+        if insysmsg 'You or your nearby followers do not require healing'
+            settimer vetTimer 5000
+        else
+            settimer vetTimer 0
+        endif
+    endif
+#elseif diffhits > 10 and not bandaging 
+#    if findtype '25750' backpack as vets
+#        dclick vets
+#    elseif findtype '3617' backpack as aids
+#        dclick aids 
+#        wft 500
+#        target self
+#    endif
+#else
+#    stop
+endif
+if autorecycle = 1 
+# RECYCLE PART
+    if not find lootbag backpack
+        if findtype 'bag' backpack as lbag
+            @setvar! lootbag lbag
+            if auto_set_grabbag = 1
+                sysmsg '>> Setting it to grab item hotbag' 44
+                hotkey 'Set Grab Item HotBag'
+                wft 500
+                target lootbag
+                sysmsg '☻ Grabbag set ☻' 44        
+            endif
+            sysmsg '>> Lootbag set succesfully' 44
+        else
+            sysmsg '▲▲ Cannot set lootbag ▲▲' 33
+            sysmsg '▲▲ Make sure you got a round bag in inventory ▲▲' 33
+            @setvar! lootbag
+            
+        endif
+    endif
+
+    if not listexists triggerlist
+        createlist triggerlist
+    else
+        clearlist triggerlist
+    endif
+
+    if findtypelist triggerlist 30099|531043|31045|31049|31001|31000|5135|5042|3920|5117|9917|3922|5121|5125|3719|5123|3938|5044|5181|3932|5179|5040|5127|3713|3568|5112|3721|5177|3934|5185|5119|3937|5046|5049|3913|3911|3915|3909|5115|5187|3917|5182|22187|5063|5129|5132|5075|5074|5061|5070|7175|7179|7169|5090|5089|5076|7610|5085|7170|7181|5204|5207|5203|5201|5205|5101|5105|5131|5078|7947|5060|5059|5103|5056|5106|5142|5146|5143|5138|5144|5139|7173|7177|7034|7033|7027|7035|7026|7029|7031|7107|7109|10245|3740|3762|3763|3742|3834 lootbag
+    endif
+
+    # Check if we should recycle    
+    if weight > 423 and list triggerlist > 0
+        sysmsg '☻☻ Recycling weight and item ☻☻' 44
+        @setvar! start_recycling 1
+        @setvar! use_container_id 0
+        script 'RecycleTheStuff'
+    elseif list triggerlist >= minimum_id_amount
+        sysmsg '☻☻ Recycling countype > 10 ☻☻' 44
+        @setvar! start_recycling 1
+        @setvar! use_container_id 1
+        script 'RecycleTheStuff'    
+    endif
+endif
+replay

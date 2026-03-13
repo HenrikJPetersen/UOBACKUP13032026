@@ -1,0 +1,30 @@
+
+
+if findtype 'a colossal frog' ground 0 0 5 as provotarget 
+    skill 'provocation'
+    wft 500
+    target provotarget
+    wft 500
+    if findtype 'a corpser' ground 0 0 5 as targ 
+        target targ
+    endif
+    
+elseif findtype 'a giant frog' ground 0 0 5 as provotarget
+    skill 'provocation'
+    wft 500
+    target provotarget
+    wft 500
+    if findtype 'a corpser' ground 0 0 5 as targ 
+        target targ
+    endif
+    elseif findtype 'a headless' ground 0 0 5 as provotarget
+    skill 'provocation'
+    wft 500
+    target provotarget
+    wft 500
+    if findtype 'a corpser' ground 0 0 5 as targ 
+        target targ
+    endif    
+endif
+pause 11200
+replay

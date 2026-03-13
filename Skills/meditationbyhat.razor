@@ -1,0 +1,22 @@
+if skill 'meditation' = 50 
+    stop
+endif
+if not timerexists medi
+    createtimer medi
+    settimer medi 0
+endif
+if mana = maxmana
+    undress 'hat'
+    pause 650
+    dress 'hat'
+    pause 250
+    overhead 'Medi timer: {{medi}}'
+    if timer medi > 7100
+        skill 'meditation'
+        settimer medi 0
+    endif
+endif
+if skill 'meditation' = 80 
+    setskill 'meditation' 'lock'
+endif
+replay

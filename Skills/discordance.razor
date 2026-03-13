@@ -1,0 +1,13 @@
+
+skill 'discordance'
+wft 500
+if insysmsg 'what instrument' backpack 
+    pause 150
+    if findtype 'tambourine' backpack as instru
+        target instru
+        pause 150
+    endif
+endif
+target self
+pause 5500
+replay

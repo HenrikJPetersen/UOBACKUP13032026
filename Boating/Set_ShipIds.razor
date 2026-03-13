@@ -1,0 +1,44 @@
+if find boathp ground
+    overhead 'Found your boat hp bars'
+else
+    sysmsg 'attempting to set boathp variable'
+    if findtype 'status bar' ground 150 -1 12 as statusbar
+        overhead 'Found status bar'
+        sysmsg 'Found statusbar(boathp)'
+        if counttype 'statuis bar' ground 150 -1 12 > 1
+            sysmsg 'Found more ships - set the variable manually'
+            setvar boathp
+        else
+            sysmsg 'Setting the boathp - successfully'
+            setvar boathp statusbar
+
+        endif
+    else
+        while not findtype 'status bar' ground 150 -1 12
+        overhead 'TURN YOUR BOAT: Attempting to find status bar.' 33
+        endwhile
+        replay
+    endif
+endif
+
+if find boattillerman ground
+    overhead 'Found your tillerman'
+else
+    sysmsg 'attempting to set boattillerman variable'
+    if findtype 'tiller man' ground -1 -1 12 as tillerman
+        overhead 'Found tiller man'
+        sysmsg 'Found tillerman(boattillerman)'
+        if counttype 'tiller man' ground -1 -1 12 > 1
+            sysmsg 'Found more ships - set the variable manually'
+            setvar boattillerman
+        else
+            sysmsg 'Setting the boattillerman - successfully'
+            setvar boattillerman tillerman
+        endif
+    else
+        while not findtype 'tiller man' ground -1 -1 12
+        overhead 'TURN YOUR BOAT: Attempting to find tillerman.' 33
+        endwhile
+        replay
+    endif
+endif
