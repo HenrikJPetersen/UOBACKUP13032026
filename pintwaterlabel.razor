@@ -1,0 +1,15 @@
+clearignore
+pause 500
+## PRINT ALL WATER BOTTLE LABELS:
+if counttype '3902' backpack > 1 as mylabel
+    overhead 'TOTAL FLASKS {{mylabel}}'
+endif
+overhead 'PRINT LABEL START(WE LOVE CHATGPT)'    
+while findtype '3902' backpack as waterbottle
+    getlabel waterbottle mybottletxt
+    overhead  mybottletxt
+    pause 250
+    ignore waterbottle
+    
+endwhile
+overhead 'PRINT LABEL END'

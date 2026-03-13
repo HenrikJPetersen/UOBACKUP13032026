@@ -1,0 +1,14 @@
+if not timerexists stopwatch
+    createtimer stopwatch
+    settimer stopwatch 0
+elseif timerexists stopwatch
+    settimer stopwatch 0
+endif
+
+for 40
+    overhead '{{index}}'
+    hotkey 'next grey monster target'
+    attack lasttarget
+    
+endfor
+overhead '{{stopwatch}}'

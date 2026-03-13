@@ -1,0 +1,63 @@
+setvar aggressive 0
+pause 25
+clearsysmsg 
+if gumpexists  4267467659
+    gumpclose 4267467659
+endif
+pause 250
+skill 'tracking'
+if insysmsg 'You are unable to detect signs of anything outside your field of vision'
+    stop
+endif
+waitforgump 4267467659 250
+if aggressive = 1
+    gumpresponse 2 4267467659
+else
+    gumpresponse 3 4267467659
+endif
+waitforgump 4267467659
+pause 250
+if ingump 'Polar Bear' 4267467659 or ingump 'jaguar' 4267467659 or ingump 'Tundra' 4267467659
+    for 3
+        overhead 'FOUND ONE' 33
+    endfor
+    stop
+endif
+
+while ingump 'Next' 4267467659
+    pause 250
+    if ingump 'Polar Bear' 4267467659 or ingump 'jaguar' 4267467659 or ingump 'Tundra' 4267467659
+        for 3
+        overhead 'FOUND ONE' 33
+        endfor
+        stop
+    endif
+    gumpresponse 3 4267467659
+    waitforgump 4267467659
+    while not ingump 'next' 4267467659
+        pause 500
+        if ingump '2/2' 4267467659
+            stop
+        elseif ingump '3/3' 4267467659
+            stop
+        elseif ingump '4/4' 4267467659  
+            stop
+        elseif ingump '5/5' 4267467659  
+            stop
+        elseif ingump '6/6' 4267467659  
+            stop
+        endif    
+        
+    endwhile
+endwhile
+ if ingump 'Polar Bear' 4267467659 or ingump 'jaguar' 4267467659 or ingump 'Tundra' 4267467659
+    for 3
+    overhead 'FOUND ONE' 33
+    endfor
+    stop
+endif
+
+
+
+
+gumpresponse 3

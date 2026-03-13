@@ -1,0 +1,296 @@
+setvar Unstack 1
+
+## Do not edit below
+@clearignore
+unsetvar DistroChest
+unsetvar LootChest
+
+##List handling
+removelist 'SaveWorld'
+removelist 'ItemList'
+removelist 'vertical'
+removelist 'horizontal'
+removelist 'stufftodistro'
+
+createlist 'ItemList'
+createlist 'stufftodistro'
+createlist 'vertical'
+createlist 'horizontal'
+clearsysmsg 
+
+overhead '>> SET LOOTCHEST <<' 44
+@setvar! LootChest
+pause 25
+overhead '-->> SET DISTRO CHEST<<--' 44
+@setvar! DistroChest
+pause 25
+
+if not varexist LootChest 
+    overhead '[SCRIPT STOPPED]' 38
+    stop
+endif
+
+@clearignore
+
+## Unstacking
+
+if Unstack = 1
+    sysmsg 'Unstacking' 44
+    ## Unstack cores
+    if counttype 'aspect core|chroma core' LootChest > 1
+        while findtype 'aspect core' LootChest as pick
+            lift pick 
+            drop LootChest 140 0 0
+            while queued
+                pause 75
+            endwhile
+            pause 650
+            @ignore pick
+        endwhile
+    endif
+    
+    
+    ## Distils
+    if counttype 'flask' LootChest > 1
+        while findtype 'flask' LootChest as pick
+            lift pick 
+            drop LootChest 140 0 0
+            while queued
+                pause 75
+            endwhile
+            pause 650
+            @ignore pick
+        endwhile
+    endif
+    
+    ## Unstack scrolls
+    if counttype 'scroll of calling' LootChest > 1
+        while findtype 'scroll of calling' LootChest as pick
+            lift pick
+            drop LootChest 140 0 0
+            while queued
+                pause 75
+            endwhile
+            pause 650
+            @ignore pick
+        endwhile
+    else
+        sysmsg 'Nothing stacked'
+    endif
+    ## MCD
+    if counttype 'Book of Truth' LootChest > 1
+        while findtype 'Book of Truth' LootChest as pick
+            lift pick
+            drop LootChest 140 0 0
+            while queued
+                pause 75
+            endwhile
+            pause 650
+            @ignore pick
+        endwhile
+    endif
+    ## RMs
+    if counttype 'research materials' LootChest > 1
+        while findtype 'research materials' LootChest as pick
+            lift pick
+            drop LootChest 140 0 0
+            while queued
+                pause 75
+            endwhile
+            pause 650
+            @ignore pick
+        endwhile
+    endif
+    ## Blackrock fragments
+    if counttype 'blackrock fragment' LootChest > 1
+        while findtype 'blackrock fragment' LootChest as pick
+            lift pick
+            drop LootChest 140 0 0
+            while queued
+                pause 75
+            endwhile
+            pause 650
+            @ignore pick
+        endwhile
+    endif
+    ## Infinity coins
+    if counttype 'ankh coin' LootChest > 1
+        while findtype 'ankh coin' LootChest as pick
+            lift pick
+            drop LootChest 140 0 0
+            while queued
+                pause 75
+            endwhile
+            pause 650
+            @ignore pick
+        endwhile
+    endif
+    ##Skill orbs
+    if counttype 'void orb' LootChest > 1
+        while findtype 'void orb' LootChest as pick
+            lift pick
+            drop LootChest 140 0 0
+            while queued
+                pause 75
+            endwhile
+            pause 650
+            @ignore pick
+        endwhile
+    endif
+    ## Resource maps
+    if counttype 'map' LootChest > 1
+        while findtype 'void orb' LootChest as pick
+            lift pick
+            drop LootChest 140 0 0
+            while queued
+                pause 75
+            endwhile
+            pause 650
+            @ignore pick
+        endwhile
+    endif
+    ## Survival gear
+    if counttype 'dig tool' LootChest > 1
+        while findtype 'dig tool' LootChest as pick
+            lift pick
+            drop LootChest 140 0 0
+            while queued
+                pause 75
+            endwhile
+            pause 650
+            @ignore pick
+        endwhile
+    endif
+    ## Hair dyes
+     if counttype '3843' LootChest > 1
+        while findtype '3843' LootChest as pick
+            lift pick
+            drop LootChest 140 0 0
+            while queued
+                pause 75
+            endwhile
+            pause 650
+            @ignore pick
+        endwhile
+    endif
+    ## Furniture dyes
+     if counttype '29025' LootChest > 1
+        while findtype '29025' LootChest as pick
+            lift pick
+            drop LootChest 140 0 0
+            while queued
+                pause 75
+            endwhile
+            pause 650
+            @ignore pick
+        endwhile
+    endif
+    ## Arcane scrolls 2609
+    if counttype '3827' LootChest 2609 > 1
+        while findtype '3827' LootChest 2609 as pick
+            lift pick 4
+            drop LootChest 140 0 0
+            while queued
+                pause 75
+            endwhile
+            pause 650
+            @ignore pick
+        endwhile
+    endif
+   
+  
+endif
+
+@clearignore 
+
+
+
+## Create the grid of where to drop items.
+pushlist 'vertical' '104'
+pushlist 'vertical' '112'
+pushlist 'vertical' '120'
+pushlist 'vertical' '126'
+pushlist 'vertical' '132'
+pushlist 'vertical' '136'
+pushlist 'vertical' '140'
+pushlist 'vertical' '144'
+pushlist 'vertical' '147'
+pushlist 'horizontal' '17'
+pushlist 'horizontal' '26'
+pushlist 'horizontal' '34'
+pushlist 'horizontal' '42'
+pushlist 'horizontal' '51'
+pushlist 'horizontal' '59'
+pushlist 'horizontal' '67'
+pushlist 'horizontal' '76'
+pushlist 'horizontal' '84'
+pushlist 'horizontal' '92'
+pushlist 'horizontal' '101'
+pushlist 'horizontal' '109'
+pushlist 'horizontal' '117'
+pushlist 'horizontal' '126'
+pause 100
+
+
+## Push items to the stufftodistro list..
+if findtypelist 'stufftodistro' 'blackrock fragment|ankh coin|dig tools|3827|29025|3843|map|research materials|Book of Truth|void orb|scroll of calling|aspect core|chroma core|flask' LootChest
+endif
+
+
+if list stufftodistro > 0
+    foreach item in stufftodistro
+        pushlist 'ItemList' item 'front'
+    endfor
+else
+    sysmsg 'did not find any items to distro'
+    stop
+endif
+
+
+@clearignore 
+
+// Start our sort by looping on our drop coordinate
+overhead '>> Adding to distro chest <<' 68
+foreach y in vertical
+    foreach x in horizontal
+        if debug = 1
+            overhead '{{y}} : {{x}}'
+        endif
+        if list 'ItemList' > 0
+            if insysmsg 'The world will save in 15 seconds' or listexists 'SaveWorld'
+                if not listexists 'SaveWorld'
+                    createlist 'SaveWorld'
+                    createtimer 'WorldSave'
+                    settimer 'WorldSave' 0
+                endif
+                if timer 'WorldSave' > 12000 or insysmsg 'The world is saving'
+                    overhead '[PAUSE - World Save inc.]' 68
+                    while not insysmsg 'World save complete'
+                        wait 100
+                    endwhile
+                    removelist 'SaveWorld'
+                    removetimer 'WorldSave'
+                    overhead '[RESUMING]' 68
+                endif
+            endif
+            if poplist ItemList front as pick
+                getlabel pick mypicklabel
+                if 'arcane scroll' in mypicklabel
+                    lift pick 4
+                else
+                    lift pick 
+                endif
+                drop DistroChest x y 0
+                pause 100
+                @ignore pick
+                pause 550
+            endif
+        else
+            // Nothing left to organize, stop the script.
+            overhead '[DISTRO SORTED]' 68
+            stop
+        endif
+    endfor
+endfor
+@clearignore
+ 

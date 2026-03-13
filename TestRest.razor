@@ -1,0 +1,31 @@
+## Wait for res
+while not gumpexists 0xB04C9A31 and dead
+    pause 150
+endwhile
+## Accept res
+gumpresponse 1 0xB04C9A31
+pause 25
+## Equipping time satchel asap
+while not dead
+    if findtype 'Time bag' backpack as equipasap
+        sysmsg 'Equipping time satchel'
+        lift equipasap
+        drop self 'outertorso'
+        pause 250
+        dclick equipasap
+    elseif findtype 'Time bag' self as equippedsatchel
+        getlabel equippedsatchel satchellabel
+        if 'time dungeon satchel' in satchellabel
+            sysmsg 'Already equipped!! yaaaay'
+        endif
+        stop
+    elseif not findtype 'Time bag' backpack or not findtype 'Time bad' self
+        sysmsg '>> You aint got no time satchel, dummy' 44
+        stop
+    else
+        sysmsg '>> ?????' 33
+        stop
+    endif
+endwhile
+## Add dress function 
+## dress 'Full'

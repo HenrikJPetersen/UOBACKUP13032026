@@ -1,0 +1,96 @@
+# Healing with bandages
+
+if skill "Healing" > 0 and findtype 3617 backpack and not hidden and hp < maxhp and not bandaging
+    hotkey 'bandage self'
+    wait 200
+endif
+
+# Close Wounds for bleed/disease
+
+if findbuff 'Bleed' or findbuff "Disease" and not findbuff "Close Wounds" and not hidden and skill "Chivalry" > 69
+    say "[CloseWounds"
+    wait 500
+endif
+
+# Eat food if hungry
+if not findbuff 'Food Satisfaction' and findtype "tray" backpack as food
+    while targetexists 
+    endwhile
+    dclick food
+    wait 500
+endif
+
+# Veterinary supplies if not bandaging
+
+if not bandaging and skill "Veterinary" > 80 and findtype 25750 backpack and not hidden 
+    while targetexists 
+    endwhile
+    say "[VetSupplies"
+endif
+
+if not bandaging and skill "Veterinary" > 80 and not findtype 25750 backpack and not hidden
+    while targetexists 
+    endwhile
+    hotkey 'bandage self'
+endif
+
+
+# Potions if hiding skill < 80
+if skill "Hiding" < 80 and not hidden
+# Strength Potion
+if not findbuff 'Strength' and findtype 3849 backpack
+    if findtype 3849 self 0 as strpot
+        while targetexists 
+        endwhile
+        dclick strpot
+        wait 500
+    endif
+endif
+
+
+
+### ADDED: I would add magic resist decrease buff check here so if you are debuffed, i'd eat a magic resist to remove it.
+#if findbuff 'Magic Resist Decrease'
+#    while targetexists 
+#    endwhile    
+#    potion 'nightsight' 
+#    pause 350
+#endif
+# Magic Resist Potion
+if not findbuff 'Magic Resist Potion' and findtype 3846 backpack
+    while targetexists 
+    endwhile
+    dclicktype 3846
+    wait 500
+endif
+
+# Agility Potion (alchemy check)
+if not findbuff 'Agility' and findtype 3848 backpack
+    while targetexists 
+    endwhile
+    dclicktype 3848
+    wait 500
+endif
+
+# Refresh Potion if low stamina
+if stam < 81 and findtype 3851 backpack
+    while targetexists 
+    endwhile
+    dclicktype 3851
+    wait 500
+endif
+
+
+endif
+
+# Optional poison cure with Chivalry
+
+if findbuff "Poison" and not findbuff "Cleanse By Fire" and not hidden and skill "Chivalry" > 69
+
+ say "[CleanseByFire"
+
+ wait 500
+
+endif
+
+loop

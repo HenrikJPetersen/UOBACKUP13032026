@@ -1,0 +1,134 @@
+if not listexists runereliclist 
+    createlist runereliclist
+else
+    clearlist runereliclist
+endif
+
+overhead 'START RUNE COUNT'
+if findtype 'Time bag' backpack as tsatchel
+    dclick tsatchel
+    pause 500
+    if findtypelist runereliclist 19976|19977|19978|19979|19980|19981|19982|19983|19984|19985|19986|19987|19988|19989|19989|19990|19991|19992|19993|19994|19995 tsatchel
+        foreach item in runereliclist
+            getlabel item myrunereliclabel
+            overhead 'myrunereliclabel'
+        endfor
+    endif
+    
+    overhead 'END COUNT'
+    overhead 'START COUNT RELICS'
+    if findtype '54831' tsatchel as rune
+        if counttype '54831' tsatchel as amount
+        overhead 'Found {{amount}} Bomb cluster relics'
+        endif
+    endif
+    // Barrel of filth 49482
+    if findtype '49482' tsatchel as rune
+        if counttype '49482' tsatchel as amount
+        overhead 'Found {{amount}} Barrel of filth relics'
+        endif
+    endif
+    // Brace of knives 55247
+    if findtype '55247' tsatchel as rune
+        if counttype '55247' tsatchel as amount
+        overhead 'Found {{amount}} Brace of knives relics'
+        endif
+    endif
+    // Hourglass 54717
+    if findtype '54717' tsatchel as rune
+        if counttype '54717' tsatchel as amount
+        overhead 'Found {{amount}} Hourglass relics'
+        endif
+    endif
+    // Warning canary 50612
+    if findtype '50612' tsatchel as rune
+        if counttype '50612' tsatchel as amount
+        overhead 'Found {{amount}} Warning canary relics'
+        endif
+    endif
+    // Rose of fading beauty 49528
+    if findtype '49528' tsatchel as rune
+        if counttype '49528' tsatchel as amount
+        overhead 'Found {{amount}} Rose of fading beauty relics'
+        endif
+    endif
+    // Perilous Python 53473
+    if findtype '53473' tsatchel as rune
+        if counttype '53473' tsatchel as amount
+        overhead 'Found {{amount}} Perilous Python relics'
+        endif
+    endif
+    // Vile concoction 55420
+    if findtype '55420' tsatchel as rune
+        if counttype '55420' tsatchel as amount
+        overhead 'Found {{amount}} Vile concoction relics'
+        endif
+    endif
+    // Mirror of reflection 18705
+    if findtype '18705' tsatchel as rune
+        if counttype '18705' tsatchel as amount
+        overhead 'Found {{amount}} Mirror of reflection relics'
+        endif
+    endif
+    // Tyromancers cache 55204
+    if findtype '55204' tsatchel as rune
+        if counttype '55204' tsatchel as amount
+        overhead 'Found {{amount}} Tyromancers cache relics'
+        endif
+    endif
+    // Apothecary wheel 53876
+    if findtype '53876' tsatchel as rune
+        if counttype '53876' tsatchel as amount
+        overhead 'Found {{amount}} Apothecary wheel relics'
+        endif
+    endif
+    // Prodigy fiddle 54601
+    if findtype '54601' tsatchel as rune
+        if counttype '54601' tsatchel as amount
+        overhead 'Found {{amount}} Prodigy fiddle relics'
+        endif
+    endif
+    // Widows grief 53696
+    if findtype '53696' tsatchel as rune
+        if counttype '53696' tsatchel as amount
+        overhead 'Found {{amount}} Widows grief relics'
+        endif
+    endif
+    // Statue of the siren 50278
+    if findtype '50278' tsatchel as rune
+        if counttype '50278' tsatchel as amount
+        overhead 'Found {{amount}} Statue of the siren relics'
+        endif
+    endif
+    // Murder of crows 53694
+    if findtype '53694' tsatchel as rune
+        if counttype '53694' tsatchel as amount
+        overhead 'Found {{amount}} Murder of crows relics'
+        endif
+    endif
+    // Screaming mandrake 54230
+    if findtype '54230' tsatchel as rune
+        if counttype '54230' tsatchel as amount
+        overhead 'Found {{amount}} Screaming mandrake relics'
+        endif
+    endif
+    // Beastmasters horn 53280
+    if findtype '53280' tsatchel as rune
+        if counttype '53280' tsatchel as amount
+        overhead 'Found {{amount}} Beastmasters horn relics'
+        endif
+    endif
+    // Cross of compassion 54570
+    if findtype '54570' tsatchel as rune
+        if counttype '54570' tsatchel as amount
+        overhead 'Found {{amount}} Cross of compassion relics'
+        endif
+    endif
+    // Scale of balance 54718
+    if findtype '54718' tsatchel as rune
+        if counttype '54718' tsatchel as amount
+        overhead 'Found {{amount}} Scale of balance relics'
+        endif
+    endif
+    overhead 'START COUNT RELICS'
+endif

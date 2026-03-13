@@ -1,0 +1,22 @@
+if not listexists targets
+    createlist targets
+elseif listexists targets
+    clearlist targets
+endif
+if not timerexists stopwatch
+    createtimer stopwatch
+    settimer stopwatch 0
+elseif timerexists stopwatch
+    settimer stopwatch 0
+endif
+    
+
+if findtypelist targets "a mongbat|a giant rat|a giant bat|a wounded harpy" ground -1 -1 22
+endif
+
+overhead 'Attacking - {{stopwatch}}' 
+foreach mob in targets
+    attack mob
+    overhead '{{index}}' 2263
+endfor
+overhead 'Done attacking - {{stopwatch}}'

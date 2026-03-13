@@ -1,0 +1,38 @@
+if not listexists arcanesetlist
+    createlist arcanesetlist
+else
+    clearlist arcanesetlist
+endif
+
+if findtypelist arcanesetlist 39912|39891 backpack
+    foreach rune in arcanesetlist
+        
+        setvar notfound 1
+        while notfound = 1
+            pause 250
+            if findtype rune ground -1 -1 20
+                setvar notfound 1
+                overhead 'Already placed that rune'
+            elseif not findtype rune ground -1 -1 20
+                dclick rune
+                pause 250
+                if insysmsg 'An arcane rune already exists at this location'
+                    overhead 'Move'
+                    setvar notfound 1
+                    pause 250
+                else
+                    setvar notfound 0
+                    pause 250
+                endif
+            endif
+        endwhile
+    endfor
+endif
+
+if findtype ground -1 -1 20
+    
+    
+    
+
+
+

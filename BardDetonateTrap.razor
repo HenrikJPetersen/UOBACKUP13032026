@@ -1,0 +1,37 @@
+if findlayer self head as ch
+    getlabel ch mychlabel
+    ## overhead '{{mychlabel}}'
+    if 'frost' in mychlabel and hp > 60
+        if not cooldown "aspectchange"
+            say '[aspectarmor lyric'
+            overhead 'Changed to lyric aspect' 
+            if findlayer self head as new
+                while 'frost' in newlabel
+                    getlabel new newlabel
+                    overhead '{{newlabel}}'
+                    pause 250
+                endwhile
+            endif
+            say '[detonatetrap'
+        else
+            say 'CD Aspect change' 33
+        endif
+        
+    elseif 'lyric' in mychlabel
+        overhead 'LYRIC ACTIVE - BOOM'
+        say '[detonatetrap'
+    endif
+endif
+
+
+skill 'discord'
+wft 500
+target lasttarget
+pause 100
+getlabel lasttarget mytargetlabel
+overhead '{{mytargetlabel}}'
+if 'discord' in mytargetlabel and cooldown discord
+    overhead 'BOOOM BOOOM'
+elseif cooldown "discord failure'
+    overhead 'You sing like a bitch'
+endif

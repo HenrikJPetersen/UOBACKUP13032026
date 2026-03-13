@@ -1,0 +1,30 @@
+## Open the desk
+if not gumpexists 112273811
+    if findtype 'dig desk' ground any any 2 as desk
+        dclick desk
+        waitforgump 112273811 1500
+    else
+        sysmsg 'Cant find your desk' 33
+    endif
+endif
+## Navigate to spoils to claim
+if not ingump "Claim" 112273811
+    gumpresponse 3 112273811
+endif
+if ingump "You do not have any unclaimed spoils"
+    sysmsg 'Done'
+    stop
+endif
+## Take the spoils out
+gumpresponse 100 112273811
+waitforgump 112273811
+
+
+
+if counttype 'gold coin' backpack > 25000
+    if findtype 'bank deposit safe' ground any any 2  as safe 
+        @menu safe 0
+    endif
+endif
+pause 100
+replay

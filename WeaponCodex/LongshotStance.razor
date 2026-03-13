@@ -1,0 +1,15 @@
+if findtype "archery codex" backpack as archCodex
+    getlabel archCodex archCodexLabel
+    //wait 100
+    if 'Longshot' in archCodexLabel
+        overhead '[Longshot Active]' 66
+    elseif mana < 3
+        overhead '[No Mana]' 33
+    else 
+        yell '[ArcheryAmmunition4'
+        overhead '[Longshot Activated]' 66
+    endif
+else 
+    overhead 'Codex not found!' 33
+    yell '[ArcheryAmmunition4'
+endif

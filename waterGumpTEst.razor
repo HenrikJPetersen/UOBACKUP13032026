@@ -1,0 +1,44 @@
+clearignore 
+if not listexists pouchlist
+    createlist pouchlist
+elseif listexists pouchlist
+    clearlist pouchlist
+endif
+# Locate pouches in backpack and generate a list
+while findtype '3705' backpack as fpouch
+    pushlist pouchlist fpouch
+    @ignore fpouch
+    pause 250
+endwhile
+overhead 'START' 33
+foreach pouch in pouchlist
+    getlabel pouch mypouchlabel
+    overhead '{{mypouchlabel}}'
+    if counttype '3902' pouch = 3
+        overhead 'Found 3 flasks in pouch'
+    else
+        overhead 'Something is wrong'
+    endif
+        
+            
+    while findtype '3902' pouch as myflask
+        getlabel myflask myflasklabel
+        pause 250
+        if counttype '3902' pouch == 3
+            # Add first to gump 
+            overhead 'FIRST: {{myflasklabel}} '
+        elseif counttype '3902' pouch == 2
+            # Add second to gump
+        overhead 'SECOND: {{myflasklabel}}'
+        elseif counttype '3902' == 1
+            # Add third to gump
+            overhead 'THIRD: {{myflasklabel}}'
+        endif    
+        @ignore! myflask
+        unsetvar myflasklabel
+        pause 250
+    endwhile
+endfor
+overhead 'END' 33    
+clearlist pouchlist
+clearignore
